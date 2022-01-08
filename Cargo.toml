@@ -22,7 +22,7 @@ lto = true
 
 [dependencies]
 serde_json = "1.0.74"
-serde = { version = "1.0.133", features = ["derive"]}
+serde = { version = "1.0.133", features = ["derive"] }
 
 js-sys = "0.3.55"
 

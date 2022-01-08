@@ -1,5 +1,11 @@
 {
   "upload": "分析本地 *.heapsnapshot 文件",
   "start-record": "开始录制 heapsnapshot",
-  "end-record": "结束录制 heapsnapshot"
+  "end-record": "结束录制 heapsnapshot",
+  "loading": "正在加载 snapshot",
+  "load-done": "加载 snapshot 完成",
+  "reading": "正在读取 snapshot",
+  "read-done": "读取 snapshot 完成",
+  "decoding": "正在反序列化 snapshot",
+  "decode-done": "反序列化 snapshot 完成"
 }

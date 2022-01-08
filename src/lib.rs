@@ -1,4 +1,3 @@
-use crate::utils::Log;
 use wasm_bindgen::prelude::*;
 
 pub use snapshot_parser::SnapshotParser;
@@ -15,8 +14,6 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 pub fn main_js() -> Result<(), JsValue> {
     #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
-
-    Log::str("wasm is working");
 
     Ok(())
 }

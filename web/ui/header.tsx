@@ -1,4 +1,5 @@
 import React, { Component, ReactNode } from "react";
+import { observer } from "mobx-react";
 import { CgSoftwareUpload } from "react-icons/cg";
 import { IoRecordingOutline } from "react-icons/io5";
 
@@ -29,6 +30,7 @@ class Button extends Component<IButtonProps> {
   }
 }
 
+@observer
 export class Header extends Component {
   private parseLocal = () => {
     void Service.parseLocal();
@@ -52,6 +54,8 @@ export class Header extends Component {
           content={<CgSoftwareUpload />}
           onClick={this.parseLocal}
         />
+
+        <div className="msg">{Service.viewModel.msg}</div>
       </div>
     );
   }

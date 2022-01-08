@@ -12,8 +12,6 @@ pub struct SnapshotParser {
 impl SnapshotParser {
     #[wasm_bindgen(constructor)]
     pub fn new(byte_size: u32) -> Self {
-        Log::str("creating SnapshotParser");
-
         Self {
             buffer: Uint8Array::new_with_length(byte_size),
         }
@@ -21,12 +19,12 @@ impl SnapshotParser {
 
     #[wasm_bindgen]
     pub fn load(&self, b: &[u8]) {
-        Log::string(format!("start load {} bytes to SnapshotParser", b.len()));
+        Log::str2("reading", format!("{} bytes", b.len()));
         self.buffer.copy_from(b);
-        Log::str("load finished");
+        Log::str("read-done");
 
-        Log::str("parsing snapshot buffer...");
+        Log::str("decoding");
         let result: SnapshotData = serde_json::from_slice(&self.buffer.to_vec()).unwrap();
-        Log::str("parsing snapshot finished");
+        Log::str("decode-done");
     }
 }
