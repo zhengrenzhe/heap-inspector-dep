@@ -10,13 +10,13 @@ console.log(`use ${env} mode`);
 
 const cfg: WebpackCfg & DevServeCfg = {
   mode: env,
-  devtool: "source-map",
+  devtool: "eval-source-map",
   entry: {
-    web: resolve(__dirname, "web/web.ts"),
-    background: resolve(__dirname, "web/background.ts"),
+    web: resolve(__dirname, "./web/web.ts"),
+    background: resolve(__dirname, "./web/background.ts"),
   },
   output: {
-    path: resolve(__dirname, "dist"),
+    path: resolve(__dirname, "./dist"),
     filename: "[name].js",
   },
   module: {
@@ -33,7 +33,10 @@ const cfg: WebpackCfg & DevServeCfg = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".less", ".js", ".jsx"],
+    extensions: [".tsx", ".ts", ".less", ".js", ".jsx"],
+    alias: {
+      "@": resolve(__dirname, "./web"),
+    },
   },
   devServer: {
     port: 3000,
@@ -47,11 +50,11 @@ const cfg: WebpackCfg & DevServeCfg = {
       chunks: ["web"],
       filename: "index.html",
       inject: "body",
-      template: resolve(__dirname, "web/web.html"),
+      template: resolve(__dirname, "./web/web.html"),
     }),
     new WasmPackPlugin({
       crateDirectory: resolve(__dirname),
-      watchDirectories: [resolve(__dirname, "src")],
+      watchDirectories: [resolve(__dirname, "./src")],
       extraArgs: "--target web --mode normal",
       forceMode: "production",
     }),

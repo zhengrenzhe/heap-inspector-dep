@@ -1,0 +1,5 @@
+{
+  "upload": "分析本地 *.heapsnapshot 文件",
+  "start-record": "开始录制 heapsnapshot",
+  "end-record": "结束录制 heapsnapshot"
+}
