@@ -38,3 +38,62 @@ pub enum Type {
     MultiType(Vec<String>),
     SingleType(String),
 }
+
+impl Type {
+    pub fn get_multi_with_index(&self, index: usize) -> Option<&String> {
+        match self {
+            Type::MultiType(types) => types.get(index),
+            Type::SingleType(v) => Some(v),
+        }
+    }
+
+    pub fn get_single(&self) -> Option<&String> {
+        match self {
+            Type::MultiType(_) => None,
+            Type::SingleType(s) => Some(s),
+        }
+    }
+}
+
+pub struct Node {
+    pub node_type: String,
+    pub name: String,
+    pub id: u32,
+    pub self_size: u32,
+    pub edge_count: u32,
+}
+
+impl SnapshotData {
+    pub fn get_all_nodes(&self) -> Vec<Node> {
+        let node_count = self.snapshot.node_count;
+        let node_field_size = self.snapshot.meta.node_fields.len() as u32;
+
+        let mut nodes: Vec<Node> = vec![];
+        let mut index: u32 = 0;
+
+        loop {
+            if index >= node_count {
+                break;
+            }
+
+            let base = index * node_field_size;
+
+            nodes.push(Node {
+                node_type: self.snapshot.meta.node_types[0]
+                    .get_multi_with_index(self.nodes[base as usize] as usize)
+                    .unwrap()
+                    .clone(),
+                name: self.strings[self.nodes[(base + 1) as usize] as usize].clone(),
+                id: self.nodes[(base + 2) as usize],
+                self_size: self.nodes[(base + 3) as usize],
+                edge_count: self.nodes[(base + 4) as usize],
+            });
+
+            index += 1;
+        }
+
+        nodes
+    }
+
+    pub fn get_edges() {}
+}

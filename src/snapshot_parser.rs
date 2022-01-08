@@ -26,5 +26,8 @@ impl SnapshotParser {
         Log::str("decoding");
         let result: SnapshotData = serde_json::from_slice(&self.buffer.to_vec()).unwrap();
         Log::str("decode-done");
+
+        let nodes = result.get_all_nodes();
+        Log::string(format!("{}", nodes.len()));
     }
 }
