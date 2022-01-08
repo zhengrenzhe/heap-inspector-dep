@@ -1,8 +1,9 @@
 import React, { Component, ReactNode } from "react";
-
-import { i18n } from "@/i18n";
 import { CgSoftwareUpload } from "react-icons/cg";
 import { IoRecordingOutline } from "react-icons/io5";
+
+import { i18n } from "@/i18n";
+import { Service } from "@/service";
 
 function Logo() {
   return <span className="logo">Heap Visualization</span>;
@@ -29,7 +30,9 @@ class Button extends Component<IButtonProps> {
 }
 
 export class Header extends Component {
-  private uploadFile = () => {};
+  private parseLocal = () => {
+    void Service.parseLocal();
+  };
 
   private startRecord = () => {};
 
@@ -47,7 +50,7 @@ export class Header extends Component {
         <Button
           title={i18n("upload")}
           content={<CgSoftwareUpload />}
-          onClick={this.uploadFile}
+          onClick={this.parseLocal}
         />
       </div>
     );

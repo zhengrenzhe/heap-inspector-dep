@@ -36,6 +36,7 @@ const cfg: WebpackCfg & DevServeCfg = {
     extensions: [".tsx", ".ts", ".less", ".js", ".jsx"],
     alias: {
       "@": resolve(__dirname, "./web"),
+      "@wasm": resolve(__dirname, "./pkg"),
     },
   },
   devServer: {

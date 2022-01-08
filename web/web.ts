@@ -1,4 +1,4 @@
-import init from "../pkg";
+import init from "@wasm";
 import { mountUI } from "@/ui";
 
 (async () => {
