@@ -2,8 +2,8 @@
   "name": "heap-visualization",
   "version": "0.1.0",
   "scripts": {
-    "build": "rimraf dist pkg && webpack -c webpack.config.ts",
-    "start": "rimraf dist pkg && webpack-dev-server -c webpack.config.ts",
+    "build": "rimraf dist pkg && NODE_ENV=production webpack -c webpack.config.ts",
+    "start": "rimraf dist pkg && NODE_ENV=development webpack-dev-server -c webpack.config.ts",
     "test": "cargo test && wasm-pack test --headless"
   },
   "devDependencies": {

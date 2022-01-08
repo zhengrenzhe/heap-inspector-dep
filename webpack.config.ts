@@ -4,8 +4,12 @@ import { Configuration as DevServeCfg } from "webpack-dev-server";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
 
+const env = process.env.NODE_ENV as "production" | "development";
+
+console.log(`use ${env} mode`);
+
 const cfg: WebpackCfg & DevServeCfg = {
-  mode: "development",
+  mode: env,
   devtool: "source-map",
   entry: {
     web: resolve(__dirname, "web/web.ts"),
@@ -49,6 +53,7 @@ const cfg: WebpackCfg & DevServeCfg = {
       crateDirectory: resolve(__dirname),
       watchDirectories: [resolve(__dirname, "src")],
       extraArgs: "--target web --mode normal",
+      forceMode: "production",
     }),
   ],
 };
