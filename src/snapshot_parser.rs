@@ -28,6 +28,7 @@ impl SnapshotParser {
         Log::str("decode-done");
 
         let nodes = result.get_all_nodes();
-        Log::string(format!("{}", nodes.len()));
+        assert_eq!(nodes.len() as u32, result.snapshot.node_count);
+        Log::str2("get-nodes-done", format!("{}", nodes.len()));
     }
 }
