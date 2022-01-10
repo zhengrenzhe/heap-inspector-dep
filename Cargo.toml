@@ -53,3 +53,7 @@ console_error_panic_hook = "0.1.7"
 wasm-bindgen-test = "0.3.28"
 futures = "0.1.31"
 wasm-bindgen-futures = "0.3.27"
+
+# fix build in m1 pro
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
