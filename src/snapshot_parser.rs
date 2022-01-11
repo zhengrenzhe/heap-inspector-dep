@@ -27,8 +27,12 @@ impl SnapshotParser {
         let result: SnapshotData = serde_json::from_slice(&self.buffer.to_vec()).unwrap();
         Log::str("decode-done");
 
-        let nodes = result.get_all_nodes();
-        assert_eq!(nodes.len() as u32, result.snapshot.node_count);
-        Log::str2("get-nodes-done", format!("{}", nodes.len()));
+        let graph = result.get_graph_data();
+        assert_eq!(graph.nodes.len() as u32, result.snapshot.node_count);
+        assert_eq!(graph.edges.len() as u32, result.snapshot.edge_count);
+        Log::str2(
+            "get-graph-done",
+            format!("nodes:{} edges:{}", graph.nodes.len(), graph.edges.len()),
+        );
     }
 }
