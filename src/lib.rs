@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::*;
 
 pub use snapshot_parser::SnapshotParser;
-
+mod graph;
 mod snapshot;
 mod snapshot_parser;
 mod utils;

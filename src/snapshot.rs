@@ -1,4 +1,6 @@
+use crate::graph::{Edge, Graph, Node};
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct SnapshotData {
@@ -46,25 +48,6 @@ impl EdgeOrNodeType {
             EdgeOrNodeType::SingleType(value) => Some(value).unwrap(),
         }
     }
-}
-
-pub struct Node {
-    pub node_type_index: u32,
-    pub name_index: u32,
-    pub id: u32,
-    pub self_size: u32,
-    pub edge_count: u32,
-}
-
-pub struct Edge {
-    pub source_node_id: u32,
-    pub target_node_id: u32,
-    pub edge_type_index: u32,
-}
-
-pub struct Graph {
-    pub edges: Vec<Edge>,
-    pub nodes: Vec<Node>,
 }
 
 impl SnapshotData {

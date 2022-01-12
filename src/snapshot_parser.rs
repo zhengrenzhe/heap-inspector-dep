@@ -1,6 +1,8 @@
-use crate::snapshot::{Edge, Graph, SnapshotData};
+use crate::graph::Graph;
+use crate::snapshot::SnapshotData;
 use crate::utils::Log;
-use js_sys::Uint8Array;
+use js_sys::{Object, Uint8Array};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -33,5 +35,8 @@ impl SnapshotParser {
         Self { raw_bytes, graph }
     }
 
-    pub fn get_graph(&self) {}
+    #[wasm_bindgen]
+    pub fn get_graph(self) -> JsValue {
+        self.graph.get_search_result()
+    }
 }
