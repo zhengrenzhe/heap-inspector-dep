@@ -1,6 +1,5 @@
 use crate::graph::{Edge, Graph, Node};
 use serde::{Deserialize, Serialize};
-use wasm_bindgen::prelude::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct SnapshotData {

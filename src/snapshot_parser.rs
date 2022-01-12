@@ -1,9 +1,8 @@
 use crate::graph::Graph;
 use crate::snapshot::SnapshotData;
 use crate::utils::Log;
-use js_sys::{Object, Uint8Array};
-use serde::{Deserialize, Serialize};
-use wasm_bindgen::prelude::*;
+use js_sys::Uint8Array;
+use wasm_bindgen::prelude::{wasm_bindgen, JsValue};
 
 #[wasm_bindgen]
 pub struct SnapshotParser {
