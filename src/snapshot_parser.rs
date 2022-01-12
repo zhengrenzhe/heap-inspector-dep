@@ -1,4 +1,4 @@
-use crate::snapshot::{Graph, SnapshotData};
+use crate::snapshot::{Edge, Graph, SnapshotData};
 use crate::utils::Log;
 use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
@@ -32,4 +32,6 @@ impl SnapshotParser {
 
         Self { raw_bytes, graph }
     }
+
+    pub fn get_graph(&self) {}
 }

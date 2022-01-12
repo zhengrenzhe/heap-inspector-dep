@@ -28,6 +28,7 @@ class Srv {
       const buffer = new Uint8Array(reader.result as ArrayBuffer);
       this.set_msg("load-done");
       this.parser = new SnapshotParser(buffer);
+      this.parser.get_graph();
     };
   }
 }
