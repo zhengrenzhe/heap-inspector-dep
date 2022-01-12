@@ -1,6 +1,4 @@
 use serde::{Deserialize, Serialize};
-use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsObject;
 
 #[derive(Serialize, Deserialize)]
 pub struct SnapshotData {
@@ -25,10 +23,10 @@ pub struct SnapshotSnapshot {
 #[derive(Serialize, Deserialize)]
 pub struct SnapshotMeta {
     pub edge_fields: Vec<String>,
-    pub edge_types: Vec<Type>,
+    pub edge_types: Vec<EdgeOrNodeType>,
     pub location_fields: Vec<String>,
     pub node_fields: Vec<String>,
-    pub node_types: Vec<Type>,
+    pub node_types: Vec<EdgeOrNodeType>,
     pub sample_fields: Vec<String>,
     pub trace_function_info_fields: Vec<String>,
     pub trace_node_fields: Vec<String>,
@@ -36,23 +34,16 @@ pub struct SnapshotMeta {
 
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Type {
+pub enum EdgeOrNodeType {
     MultiType(Vec<String>),
     SingleType(String),
 }
 
-impl Type {
-    pub fn get_multi_with_index(&self, index: usize) -> Option<&String> {
+impl EdgeOrNodeType {
+    pub fn get_value(&self, index: usize) -> &String {
         match self {
-            Type::MultiType(types) => types.get(index),
-            Type::SingleType(v) => Some(v),
-        }
-    }
-
-    pub fn get_single(&self) -> Option<&String> {
-        match self {
-            Type::MultiType(_) => None,
-            Type::SingleType(s) => Some(s),
+            EdgeOrNodeType::MultiType(values) => values.get(index).unwrap(),
+            EdgeOrNodeType::SingleType(value) => Some(value).unwrap(),
         }
     }
 }
@@ -71,13 +62,13 @@ pub struct Edge {
     pub edge_type_index: u32,
 }
 
-pub struct GraphData {
+pub struct Graph {
     pub edges: Vec<Edge>,
     pub nodes: Vec<Node>,
 }
 
 impl SnapshotData {
-    pub fn get_graph_data(&self) -> GraphData {
+    pub fn get_graph(&self) -> Graph {
         let node_count = self.snapshot.node_count;
         let node_field_size = self.snapshot.meta.node_fields.len() as u32;
 
@@ -125,6 +116,6 @@ impl SnapshotData {
             }
         }
 
-        GraphData { edges, nodes }
+        Graph { edges, nodes }
     }
 }

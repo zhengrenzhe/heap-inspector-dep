@@ -14,18 +14,13 @@ extern "C" {
 pub struct Log {}
 
 impl Log {
-    pub fn str(v: &str) {
+    pub fn info(v: &str) {
         console::log_1(&JsValue::from_str(v));
         set_msg(String::from(v));
     }
 
-    pub fn str2(m1: &str, m2: String) {
+    pub fn info2(m1: &str, m2: String) {
         console::log_2(&JsValue::from_str(m1), &JsValue::from_str(m2.as_str()));
         set_msg2(String::from(m1), m2);
-    }
-
-    pub fn string(v: String) {
-        console::log_1(&JsValue::from_str(v.as_str()));
-        set_msg(v)
     }
 }

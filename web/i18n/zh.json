@@ -8,5 +8,7 @@
   "read-done": "读取 snapshot 完成",
   "decoding": "正在反序列化 snapshot",
   "decode-done": "反序列化 snapshot 完成",
-  "get-graph-done": "节点计算完成"
+  "get-graph-done": "节点计算完成",
+  "parsing": "正在解析 snapshot 文件",
+  "parsing-done": "解析 snapshot 完成"
 }

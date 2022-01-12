@@ -27,8 +27,7 @@ class Srv {
     reader.onload = () => {
       const buffer = new Uint8Array(reader.result as ArrayBuffer);
       this.set_msg("load-done");
-      this.parser = new SnapshotParser(buffer.byteLength);
-      this.parser.load(buffer);
+      this.parser = new SnapshotParser(buffer);
     };
   }
 }
