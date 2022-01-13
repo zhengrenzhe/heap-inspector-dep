@@ -42,11 +42,11 @@ impl SnapshotParser {
 
     #[wasm_bindgen]
     pub fn get_graph(&self) -> JsValue {
-        let nodes = self.graph.nodes[100..300]
+        let nodes = self.graph.nodes[10000..20000]
             .iter()
             .map(|x| x.get_graph_data())
             .collect();
-        let edges = self.graph.edges[100..300]
+        let edges = self.graph.edges[10000..20000]
             .iter()
             .map(|x| x.get_graph_data())
             .collect();

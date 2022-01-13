@@ -1,10 +1,15 @@
-import { Graph, Tooltip } from "@antv/g6";
+import { Graph, Tooltip, Minimap } from "@antv/g6";
+
+const minimap = new Minimap({
+  size: [150, 100],
+  type: "keyShape",
+});
 
 const tooltip = new Tooltip({
   offsetX: 0,
   offsetY: 0,
   itemTypes: ["node", "edge"],
-  trigger: "mouseenter",
+  trigger: "click",
   getContent(e) {
     const id: string = e!.item!.get("id");
     const detailInfo = SnapshotService.getNodeInfo(id);
@@ -34,9 +39,20 @@ class _RenderService {
       width: rect.width,
       height: rect.height,
       modes: {
-        default: ["drag-canvas", "drag-node"],
+        default: [
+          {
+            type: "zoom-canvas",
+            enableOptimize: true,
+            optimizeZoom: 0.9,
+          },
+          {
+            type: "drag-canvas",
+            enableOptimize: true,
+          },
+          "drag-node",
+        ],
       },
-      plugins: [tooltip],
+      plugins: [tooltip, minimap],
       defaultNode: {
         size: 10,
         style: {
