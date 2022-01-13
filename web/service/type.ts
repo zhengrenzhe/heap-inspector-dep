@@ -1,15 +1,12 @@
 export interface INode {
+  [key: string]: any;
   id: string;
-  node_type_index: number;
-  name_index: number;
-  self_size: number;
-  edge_count: number;
 }
 
 export interface IEdge {
+  [key: string]: any;
   source: string;
   target: string;
-  edge_type_index: number;
 }
 
 export interface ISearchResult {

@@ -39,7 +39,7 @@ class FilterRow extends Component<IRowProps> {
 
 export class Canvas extends Component {
   public componentDidMount() {
-    SnapshotService.initGraph();
+    SnapshotService.init();
   }
 
   public render() {
