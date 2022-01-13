@@ -70,6 +70,8 @@ impl SnapshotData {
                 id: self.nodes[(base + 2) as usize],
                 self_size: self.nodes[(base + 3) as usize],
                 edge_count: self.nodes[(base + 4) as usize],
+                trace_node_id: self.nodes[(base + 5) as usize],
+                detachedness: self.nodes[(base + 6) as usize],
             });
 
             index += 1;
@@ -89,9 +91,9 @@ impl SnapshotData {
                 let edge_base = base + index * edge_field_size;
 
                 edges.push(Edge {
+                    edge_type_index: self.edges[edge_base as usize],
                     source_node_id: self.nodes[self.edges[(edge_base + 2) as usize] as usize],
                     target_node_id: self.nodes[self.edges[(edge_base + 3) as usize] as usize],
-                    edge_type_index: self.edges[edge_base as usize],
                 });
 
                 index += 1

@@ -21,5 +21,10 @@
   "reference-depth": "引用深度",
   "eg-reference-depth": "0",
   "filter": "过滤",
-  "info": "信息"
+  "info": "信息",
+  "node_id": "节点ID",
+  "node_type": "节点类型",
+  "node_name": "节点名称",
+  "self_size": "自身大小",
+  "edge_count": "关连节点数量"
 }

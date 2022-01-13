@@ -4,14 +4,24 @@ const tooltip = new Tooltip({
   offsetX: 0,
   offsetY: 0,
   itemTypes: ["node", "edge"],
-  trigger: "click",
+  trigger: "mouseenter",
   getContent(e) {
-    console.log(e);
-    return "<span>XX</span>";
+    const id: string = e!.item!.get("id");
+    const detailInfo = SnapshotService.getNodeInfo(id);
+    const info = Object.entries(detailInfo).map(
+      ([key, value]) =>
+        `<div class="node-info-row">
+          <span>${i18n(key as keyof I18n)}:</span>
+          <span>${value}</span>
+        </div>`
+    );
+    return `<div class="node-info-panel">${info.join("")}</div>`;
   },
 });
 
 import { ISearchResult } from "./type";
+import { SnapshotService } from "@/service/SnapshotService";
+import { I18n, i18n } from "@/i18n";
 
 class _RenderService {
   private graph: Graph | undefined;
@@ -50,30 +60,6 @@ class _RenderService {
         gpuEnabled: true,
         workerEnabled: true,
       },
-    });
-
-    this.attachEvent();
-  }
-
-  private attachEvent() {
-    this.graph?.on("node:click", (e) => {
-      const nodeId = parseInt(e.item!.get("id"));
-      console.log(nodeId);
-    });
-    this.graph?.on("edge:click", (e) => {
-      console.log(e);
-    });
-    this.graph?.on("node:mouseenter", (e) => {
-      this.graph?.setItemState(e.item!, "active", true);
-    });
-    this.graph?.on("node:mouseleave", (e) => {
-      this.graph?.setItemState(e.item!, "active", false);
-    });
-    this.graph?.on("edge:mouseenter", (e) => {
-      this.graph?.setItemState(e.item!, "active", true);
-    });
-    this.graph?.on("edge:mouseleave", (e) => {
-      this.graph?.setItemState(e.item!, "active", false);
     });
   }
 

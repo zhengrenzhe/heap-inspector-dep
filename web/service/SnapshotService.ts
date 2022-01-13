@@ -4,7 +4,7 @@ import { i18n, I18n } from "@/i18n";
 
 import { ViewModel } from "./ViewModel";
 import { RenderService } from "./RenderService";
-import { ISearchResult } from "./type";
+import { INodeDetailInfo, ISearchResult } from "./type";
 
 class _SnapshotService {
   public viewModel = new ViewModel();
@@ -38,6 +38,10 @@ class _SnapshotService {
       const result = this.parser.get_graph() as ISearchResult;
       RenderService.render(result);
     };
+  }
+
+  public getNodeInfo(id: string) {
+    return this.parser?.get_node_info_by_id(id) as INodeDetailInfo;
   }
 }
 
