@@ -39,6 +39,18 @@ class _RenderService {
         workerEnabled: true,
       },
     });
+
+    this.attachEvent();
+  }
+
+  private attachEvent() {
+    this.graph?.on("node:click", (e) => {
+      const nodeId = parseInt(e.item!.get("id"));
+      console.log(nodeId);
+    });
+    this.graph?.on("edge:click", (e) => {
+      console.log(e);
+    });
   }
 
   public render(data: ISearchResult) {
