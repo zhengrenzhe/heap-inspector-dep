@@ -21,3 +21,7 @@ export interface INodeDetailInfo {
   self_size: number;
   edge_count: number;
 }
+
+export interface IFilterCondition {
+  constructor_name: string;
+}

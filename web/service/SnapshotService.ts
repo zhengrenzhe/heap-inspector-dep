@@ -35,7 +35,7 @@ class _SnapshotService {
       const buffer = new Uint8Array(reader.result as ArrayBuffer);
       this.set_msg("load-done");
       this.parser = new SnapshotParser(buffer);
-      const result = this.parser.get_graph() as ISearchResult;
+      const result = this.parser.get_graph_with_condition({}) as ISearchResult;
       RenderService.render(result);
     };
   }
