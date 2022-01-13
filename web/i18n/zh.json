@@ -26,5 +26,6 @@
   "node_type": "节点类型",
   "node_name": "节点名称",
   "self_size": "自身大小",
-  "edge_count": "关连节点数量"
+  "edge_count": "关连节点数量",
+  "apply-filter": "应用过滤条件"
 }

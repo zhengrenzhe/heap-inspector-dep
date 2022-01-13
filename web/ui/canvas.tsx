@@ -19,7 +19,7 @@ class FilterRow extends Component<IRowProps> {
           {i18n(this.props.labelName)}
         </label>
         {this.props.selectOptions ? (
-          <select>
+          <select className="filter-select">
             {this.props.selectOptions.map((s, i) => (
               <option value={s.value} key={i}>
                 {i18n(s.name)}
@@ -87,6 +87,10 @@ export class Canvas extends Component {
               ]}
               inputType="number"
             />
+
+            <button className="filter-apply-button">
+              {i18n("apply-filter")}
+            </button>
           </Panel>
         </div>
         <div id="canvas" />
