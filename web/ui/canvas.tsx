@@ -1,79 +1,84 @@
 import React, { Component } from "react";
-import { i18n } from "@/i18n";
+import { I18n, i18n } from "@/i18n";
+
+interface IRowProps {
+  id: string;
+  labelName: keyof I18n;
+  inputPlaceholder: keyof I18n;
+  inputType?: "text" | "number";
+  selectOptions?: { value: string; name: keyof I18n }[];
+}
+class FilterRow extends Component<IRowProps> {
+  public render() {
+    return (
+      <div className="row">
+        <label htmlFor={this.props.id} className="filter-label">
+          {i18n(this.props.labelName)}
+        </label>
+        {this.props.selectOptions ? (
+          <select>
+            {this.props.selectOptions.map((s, i) => (
+              <option value={s.value} key={i}>
+                {i18n(s.name)}
+              </option>
+            ))}
+          </select>
+        ) : null}
+        <input
+          type={this.props.inputType || "text"}
+          id={this.props.id}
+          min={0}
+          className="filter-input"
+          placeholder={i18n(this.props.inputPlaceholder)}
+        />
+      </div>
+    );
+  }
+}
 
 export class Canvas extends Component {
   public render() {
     return (
       <div className="canvas-root">
         <div className="filter-panel">
-          <div className="row">
-            <label htmlFor="filter-constructor-name" className="filter-label">
-              {i18n("filter-constructor-name")}
-            </label>
-            <input
-              type="text"
-              id="filter-constructor-name"
-              className="filter-input"
-              placeholder={i18n("eg: LogService")}
-            />
-          </div>
+          <FilterRow
+            id="filter-constructor-name"
+            inputPlaceholder="eg: LogService"
+            labelName="filter-constructor-name"
+          />
 
-          <div className="row">
-            <label htmlFor="filter-self-size" className="filter-label">
-              {i18n("self-size")}
-            </label>
-            <select
-              id="filter-self-size"
-              className="filter-select"
-              defaultValue="more-than"
-            >
-              <option value="more-than">{i18n("more-than")}</option>
-              <option value="less-than">{i18n("less-than")}</option>
-            </select>
-            <input
-              type="number"
-              className="filter-input"
-              placeholder={i18n("bytes")}
-            />
-          </div>
+          <FilterRow
+            id="filter-self-size"
+            labelName="self-size"
+            inputPlaceholder="bytes"
+            inputType="number"
+            selectOptions={[
+              { value: "more-than", name: "more-than" },
+              { value: "less-than", name: "less-than" },
+            ]}
+          />
 
-          <div className="row">
-            <label htmlFor="filter-self-size" className="filter-label">
-              {i18n("retain-size")}
-            </label>
-            <select
-              id="filter-self-size"
-              className="filter-select"
-              defaultValue="more-than"
-            >
-              <option value="more-than">{i18n("more-than")}</option>
-              <option value="less-than">{i18n("less-than")}</option>
-            </select>
-            <input
-              type="number"
-              className="filter-input"
-              placeholder={i18n("bytes")}
-            />
-          </div>
+          <FilterRow
+            id="filter-retain-size"
+            labelName="retain-size"
+            inputPlaceholder="bytes"
+            inputType="number"
+            selectOptions={[
+              { value: "more-than", name: "more-than" },
+              { value: "less-than", name: "less-than" },
+            ]}
+          />
 
-          <div className="row">
-            <label htmlFor="filter-self-size" className="filter-label">
-              {i18n("reference-depth")}
-            </label>
-            <select
-              id="filter-self-size"
-              className="filter-select"
-              defaultValue="more-than"
-            >
-              <option value="more-than">{i18n("more-than")}</option>
-              <option value="less-than">{i18n("less-than")}</option>
-            </select>
-            <input
-              type="number"
-              className="filter-input"
-              placeholder={i18n("eg-reference-depth")}
-            />
-          </div>
+          <FilterRow
+            id="filter-reference-depth"
+            labelName="reference-depth"
+            inputPlaceholder="eg-reference-depth"
+            selectOptions={[
+              { value: "more-than", name: "more-than" },
+              { value: "less-than", name: "less-than" },
+            ]}
+            inputType="number"
+          />
         </div>
         <div id="canvas" />
       </div>
