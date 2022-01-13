@@ -1,4 +1,15 @@
-import { Graph } from "@antv/g6";
+import { Graph, Tooltip } from "@antv/g6";
+
+const tooltip = new Tooltip({
+  offsetX: 0,
+  offsetY: 0,
+  itemTypes: ["node", "edge"],
+  trigger: "click",
+  getContent(e) {
+    console.log(e);
+    return "<span>XX</span>";
+  },
+});
 
 import { ISearchResult } from "./type";
 
@@ -15,6 +26,7 @@ class _RenderService {
       modes: {
         default: ["drag-canvas", "drag-node"],
       },
+      plugins: [tooltip],
       defaultNode: {
         size: 10,
         style: {
@@ -50,6 +62,18 @@ class _RenderService {
     });
     this.graph?.on("edge:click", (e) => {
       console.log(e);
+    });
+    this.graph?.on("node:mouseenter", (e) => {
+      this.graph?.setItemState(e.item!, "active", true);
+    });
+    this.graph?.on("node:mouseleave", (e) => {
+      this.graph?.setItemState(e.item!, "active", false);
+    });
+    this.graph?.on("edge:mouseenter", (e) => {
+      this.graph?.setItemState(e.item!, "active", true);
+    });
+    this.graph?.on("edge:mouseleave", (e) => {
+      this.graph?.setItemState(e.item!, "active", false);
     });
   }
 

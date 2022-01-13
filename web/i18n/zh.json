@@ -20,5 +20,6 @@
   "retain-size": "持有大小",
   "reference-depth": "引用深度",
   "eg-reference-depth": "0",
-  "filter": "过滤"
+  "filter": "过滤",
+  "info": "信息"
 }
