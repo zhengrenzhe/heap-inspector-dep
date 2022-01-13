@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { I18n, i18n } from "@/i18n";
+import { Service } from "@/service";
 
 interface IRowProps {
   id: string;
@@ -37,6 +38,10 @@ class FilterRow extends Component<IRowProps> {
 }
 
 export class Canvas extends Component {
+  public componentDidMount() {
+    Service.initGraph();
+  }
+
   public render() {
     return (
       <div className="canvas-root">
