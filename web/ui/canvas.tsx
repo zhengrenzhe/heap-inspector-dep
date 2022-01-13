@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { I18n, i18n } from "@/i18n";
 import { SnapshotService } from "@/service";
 
+import { Panel } from "./panel";
+
 interface IRowProps {
   id: string;
   labelName: keyof I18n;
@@ -45,45 +47,47 @@ export class Canvas extends Component {
   public render() {
     return (
       <div className="canvas-root">
-        <div className="filter-panel">
-          <FilterRow
-            id="filter-constructor-name"
-            inputPlaceholder="eg: LogService"
-            labelName="filter-constructor-name"
-          />
+        <div className="panels">
+          <Panel name="filter">
+            <FilterRow
+              id="filter-constructor-name"
+              inputPlaceholder="eg: LogService"
+              labelName="filter-constructor-name"
+            />
 
-          <FilterRow
-            id="filter-self-size"
-            labelName="self-size"
-            inputPlaceholder="bytes"
-            inputType="number"
-            selectOptions={[
-              { value: "more-than", name: "more-than" },
-              { value: "less-than", name: "less-than" },
-            ]}
-          />
+            <FilterRow
+              id="filter-self-size"
+              labelName="self-size"
+              inputPlaceholder="bytes"
+              inputType="number"
+              selectOptions={[
+                { value: "more-than", name: "more-than" },
+                { value: "less-than", name: "less-than" },
+              ]}
+            />
 
-          <FilterRow
-            id="filter-retain-size"
-            labelName="retain-size"
-            inputPlaceholder="bytes"
-            inputType="number"
-            selectOptions={[
-              { value: "more-than", name: "more-than" },
-              { value: "less-than", name: "less-than" },
-            ]}
-          />
+            <FilterRow
+              id="filter-retain-size"
+              labelName="retain-size"
+              inputPlaceholder="bytes"
+              inputType="number"
+              selectOptions={[
+                { value: "more-than", name: "more-than" },
+                { value: "less-than", name: "less-than" },
+              ]}
+            />
 
-          <FilterRow
-            id="filter-reference-depth"
-            labelName="reference-depth"
-            inputPlaceholder="eg-reference-depth"
-            selectOptions={[
-              { value: "more-than", name: "more-than" },
-              { value: "less-than", name: "less-than" },
-            ]}
-            inputType="number"
-          />
+            <FilterRow
+              id="filter-reference-depth"
+              labelName="reference-depth"
+              inputPlaceholder="eg-reference-depth"
+              selectOptions={[
+                { value: "more-than", name: "more-than" },
+                { value: "less-than", name: "less-than" },
+              ]}
+              inputType="number"
+            />
+          </Panel>
         </div>
         <div id="canvas" />
       </div>

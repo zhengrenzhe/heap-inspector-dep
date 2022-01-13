@@ -69,14 +69,27 @@ body,
   height: 100%;
 }
 
-.filter-panel {
+.panels {
   position: absolute;
-  width: 310px;
-  padding: 14px;
   left: 20px;
   top: 20px;
+}
+
+.panel {
+  width: 100%;
+  padding: 14px;
   border-radius: 4px;
   border: 1px solid #e7ebf0;
+  background-color: #fff;
+  z-index: 10;
+}
+
+.panel-name {
+  position: absolute;
+  left: 10px;
+  top: -8px;
+  font-size: 13px;
+  background-color: #fff;
 }
 
 .row {
