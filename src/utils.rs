@@ -4,10 +4,10 @@ use web_sys::console;
 
 #[wasm_bindgen]
 extern "C" {
-    #[wasm_bindgen(js_namespace = Service)]
+    #[wasm_bindgen(js_namespace = SnapshotService)]
     fn set_msg(msg: String);
 
-    #[wasm_bindgen(js_namespace = Service)]
+    #[wasm_bindgen(js_namespace = SnapshotService)]
     fn set_msg2(m1: String, m2: String);
 }
 

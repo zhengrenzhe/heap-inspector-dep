@@ -4,7 +4,7 @@ import { CgSoftwareUpload } from "react-icons/cg";
 import { IoRecordingOutline } from "react-icons/io5";
 
 import { i18n } from "@/i18n";
-import { Service } from "@/service";
+import { SnapshotService } from "@/service";
 
 function Logo() {
   return <span className="logo">Heap Visualization</span>;
@@ -33,7 +33,7 @@ class Button extends Component<IButtonProps> {
 @observer
 export class Header extends Component {
   private parseLocal = () => {
-    void Service.parseLocal();
+    void SnapshotService.parseLocal();
   };
 
   private startRecord = () => {};
@@ -55,7 +55,7 @@ export class Header extends Component {
           onClick={this.parseLocal}
         />
 
-        <div className="msg">{Service.viewModel.msg}</div>
+        <div className="msg">{SnapshotService.viewModel.msg}</div>
       </div>
     );
   }

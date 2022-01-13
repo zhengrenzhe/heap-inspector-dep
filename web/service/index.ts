@@ -6,7 +6,7 @@ import { i18n, I18n } from "@/i18n";
 import { ViewModel } from "./model";
 import { ISearchResult } from "./type";
 
-class Srv {
+class _SnapshotService {
   public viewModel = new ViewModel();
 
   private parser: SnapshotParser | undefined;
@@ -77,5 +77,5 @@ class Srv {
   }
 }
 
-export const Service = new Srv();
-(window as any).Service = Service;
+export const SnapshotService = new _SnapshotService();
+(window as any).SnapshotService = SnapshotService;
