@@ -47,9 +47,9 @@ impl SnapshotParser {
 
     #[wasm_bindgen]
     pub fn get_graph_with_condition(&self, cond: &JsValue) -> JsValue {
-        let cond = cond
-            .into_serde::<FilterCondition>()
-            .expect("failed to decode cond");
+        // let cond = cond
+        //     .into_serde::<FilterCondition>()
+        //     .expect("failed to decode cond");
 
         let nodes = self.graph.nodes[10000..20000]
             .iter()
