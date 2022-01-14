@@ -7,7 +7,6 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub struct SnapshotParser {
-    raw_bytes: Uint8Array,
     snapshot: SnapshotData,
     graph: Graph,
 }
@@ -44,11 +43,7 @@ impl SnapshotParser {
             format!("{} nodes {} edges", graph.nodes.len(), graph.edges.len()),
         );
 
-        Self {
-            raw_bytes,
-            graph,
-            snapshot,
-        }
+        Self { graph, snapshot }
     }
 
     #[wasm_bindgen]
