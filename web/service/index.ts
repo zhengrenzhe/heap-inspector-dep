@@ -1,2 +1,3 @@
 export * from "./SnapshotService";
-export { IFilter, CompareMode } from "./ViewModel";
+export * from "./type";
+export * from "./utils";

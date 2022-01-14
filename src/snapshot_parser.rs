@@ -15,6 +15,12 @@ pub struct SnapshotParser {
 #[derive(Serialize, Deserialize)]
 pub struct FilterCondition {
     pub constructor_name: String,
+    pub self_size: u8,
+    pub retain_size: u8,
+    pub reference_depth: u8,
+    pub self_size_compare_mode: u8,
+    pub retain_size_compare_mode: u8,
+    pub reference_depth_compare_mode: u8,
 }
 
 #[wasm_bindgen]
@@ -47,15 +53,15 @@ impl SnapshotParser {
 
     #[wasm_bindgen]
     pub fn get_graph_with_condition(&self, cond: &JsValue) -> JsValue {
-        // let cond = cond
-        //     .into_serde::<FilterCondition>()
-        //     .expect("failed to decode cond");
+        let cond = cond
+            .into_serde::<FilterCondition>()
+            .expect("failed to decode cond");
 
-        let nodes = self.graph.nodes[10000..20000]
+        let nodes = self.graph.nodes[4000..4010]
             .iter()
             .map(|x| x.get_graph_data())
             .collect();
-        let edges = self.graph.edges[10000..20000]
+        let edges = self.graph.edges[4000..4010]
             .iter()
             .map(|x| x.get_graph_data())
             .collect();

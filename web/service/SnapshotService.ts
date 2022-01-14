@@ -4,7 +4,7 @@ import { i18n, I18n } from "@/i18n";
 
 import { ViewModel } from "./ViewModel";
 import { RenderService } from "./RenderService";
-import { INodeDetailInfo, ISearchResult } from "./type";
+import { INodeDetailInfo } from "./type";
 
 class _SnapshotService {
   public viewModel = new ViewModel();
@@ -35,10 +35,13 @@ class _SnapshotService {
       const buffer = new Uint8Array(reader.result as ArrayBuffer);
       this.set_msg("load-done");
       this.parser = new SnapshotParser(buffer);
-      const result = this.parser.get_graph_with_condition({}) as ISearchResult;
-      RenderService.render(result);
     };
   }
+
+  public refreshGraph = () => {
+    const result = this.parser?.get_graph_with_condition(this.viewModel.filter);
+    RenderService.render(result);
+  };
 
   public getNodeInfo(id: string) {
     return this.parser?.get_node_info_by_id(id) as INodeDetailInfo;
