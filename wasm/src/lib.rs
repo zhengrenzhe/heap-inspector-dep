@@ -1,10 +1,9 @@
 use wasm_bindgen::prelude::*;
 
-pub use snapshot_parser::SnapshotParser;
-mod graph;
-mod snapshot;
-mod snapshot_parser;
-mod utils;
+pub mod analysis;
+pub mod filter;
+pub mod result;
+pub mod utils;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]

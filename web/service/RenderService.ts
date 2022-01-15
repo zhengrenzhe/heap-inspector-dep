@@ -1,5 +1,10 @@
 import { Graph, Tooltip, Minimap } from "@antv/g6";
 
+import { SnapshotService } from "@/service/SnapshotService";
+import { I18n, i18n } from "@/i18n";
+
+import { ISearchResult } from "./type";
+
 const minimap = new Minimap({
   size: [150, 100],
   type: "keyShape",
@@ -12,8 +17,7 @@ const tooltip = new Tooltip({
   trigger: "click",
   getContent(e) {
     const id: string = e!.item!.get("id");
-    const detailInfo = SnapshotService.getNodeInfo(id);
-    const info = Object.entries(detailInfo).map(
+    const info = Object.entries(SnapshotService.getNodeInfo(id)).map(
       ([key, value]) =>
         `<div class="node-info-row">
           <span>${i18n(key as keyof I18n)}:</span>
@@ -23,10 +27,6 @@ const tooltip = new Tooltip({
     return `<div class="node-info-panel">${info.join("")}</div>`;
   },
 });
-
-import { ISearchResult } from "./type";
-import { SnapshotService } from "@/service/SnapshotService";
-import { I18n, i18n } from "@/i18n";
 
 class _RenderService {
   private graph: Graph | undefined;

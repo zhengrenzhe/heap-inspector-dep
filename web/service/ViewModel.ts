@@ -22,6 +22,7 @@ export class ViewModel {
     retain_size_compare_mode: CompareMode.MoreThan,
     reference_depth: 0,
     reference_depth_compare_mode: CompareMode.MoreThan,
+    nodes_limit: 10000,
   };
 
   @action

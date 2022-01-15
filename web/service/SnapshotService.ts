@@ -1,4 +1,4 @@
-import { SnapshotParser } from "@wasm";
+import { SnapshotAnalysis } from "@wasm";
 
 import { i18n, I18n } from "@/i18n";
 
@@ -9,7 +9,7 @@ import { INodeDetailInfo } from "./type";
 class _SnapshotService {
   public viewModel = new ViewModel();
 
-  private parser: SnapshotParser | undefined;
+  private parser: SnapshotAnalysis | undefined;
 
   public init() {
     RenderService.init();
@@ -34,17 +34,17 @@ class _SnapshotService {
     reader.onload = () => {
       const buffer = new Uint8Array(reader.result as ArrayBuffer);
       this.set_msg("load-done");
-      this.parser = new SnapshotParser(buffer);
+      this.parser = new SnapshotAnalysis(buffer);
     };
   }
 
   public refreshGraph = () => {
-    const result = this.parser?.get_graph_with_condition(this.viewModel.filter);
+    const result = this.parser?.get_graph_info(this.viewModel.filter);
     RenderService.render(result);
   };
 
   public getNodeInfo(id: string) {
-    return this.parser?.get_node_info_by_id(id) as INodeDetailInfo;
+    return this.parser?.get_node_detail_info(id) as INodeDetailInfo;
   }
 }
 

@@ -1,5 +1,7 @@
-use crate::graph::{EdgeGraphData, Graph, NodeDetailData, NodeGraphData, SearchResult};
-use crate::snapshot::SnapshotData;
+// use crate::graph::{EdgeGraphData, Graph, NodeDetailData, NodeGraphData, SearchResult};
+// use crate::snapshot::SnapshotData;
+use crate::snapshot_parser::Reader;
+
 use crate::utils::Log;
 use js_sys::Uint8Array;
 use serde::{Deserialize, Serialize};
@@ -9,17 +11,6 @@ use wasm_bindgen::prelude::*;
 pub struct SnapshotParser {
     snapshot: SnapshotData,
     graph: Graph,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct FilterCondition {
-    pub constructor_name: String,
-    pub self_size: u8,
-    pub retain_size: u8,
-    pub reference_depth: u8,
-    pub self_size_compare_mode: u8,
-    pub retain_size_compare_mode: u8,
-    pub reference_depth_compare_mode: u8,
 }
 
 #[wasm_bindgen]

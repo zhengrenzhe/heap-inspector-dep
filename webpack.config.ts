@@ -36,7 +36,7 @@ const cfg: WebpackCfg & DevServeCfg = {
     extensions: [".tsx", ".ts", ".less", ".js", ".jsx"],
     alias: {
       "@": resolve(__dirname, "./web"),
-      "@wasm": resolve(__dirname, "./pkg"),
+      "@wasm": resolve(__dirname, "./wasm/pkg"),
     },
   },
   devServer: {
@@ -54,8 +54,11 @@ const cfg: WebpackCfg & DevServeCfg = {
       template: resolve(__dirname, "./web/web.html"),
     }),
     new WasmPackPlugin({
-      crateDirectory: resolve(__dirname),
-      watchDirectories: [resolve(__dirname, "./src")],
+      crateDirectory: resolve(__dirname, "./wasm"),
+      watchDirectories: [
+        resolve(__dirname, "./wasm/src"),
+        resolve(__dirname, "./wasm/snapshot_parser/src"),
+      ],
       extraArgs: "--target web --mode normal",
       forceMode: "production",
     }),

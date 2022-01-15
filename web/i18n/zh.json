@@ -22,10 +22,12 @@
   "eg-reference-depth": "0",
   "filter": "过滤",
   "info": "信息",
-  "node_id": "节点ID",
+  "id": "ID",
   "node_type": "节点类型",
   "node_name": "节点名称",
   "self_size": "自身大小",
   "edge_count": "关连节点数量",
-  "apply-filter": "应用过滤条件"
+  "apply-filter": "应用过滤条件",
+  "creating-graph": "正在创建图数据",
+  "create-graph-done": "创建图数据完成"
 }
