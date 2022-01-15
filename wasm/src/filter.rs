@@ -12,6 +12,7 @@ pub struct FilterCondition {
     retain_size_compare_mode: u32,
     reference_depth_compare_mode: u32,
     nodes_limit: u32,
+    ignore_system_node: bool,
 }
 
 #[wasm_bindgen]
@@ -54,5 +55,10 @@ impl FilterCondition {
     #[wasm_bindgen(getter)]
     pub fn nodes_limit(&self) -> u32 {
         self.nodes_limit
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn ignore_system_node(&self) -> bool {
+        self.ignore_system_node
     }
 }

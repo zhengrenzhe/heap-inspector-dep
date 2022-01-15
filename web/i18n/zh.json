@@ -29,5 +29,7 @@
   "edge_count": "关连节点数量",
   "apply-filter": "应用过滤条件",
   "creating-graph": "正在创建图数据",
-  "create-graph-done": "创建图数据完成"
+  "create-graph-done": "创建图数据完成",
+  "nodes_limit": "节点数量限制",
+  "ignore-system": "忽略系统对象"
 }

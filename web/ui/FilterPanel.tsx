@@ -14,19 +14,28 @@ import { Panel } from "./panel";
 interface IRowProps {
   inputField: keyof IFilterCondition;
   labelName: keyof I18n;
-  inputPlaceholder: keyof I18n;
+  inputPlaceholder?: keyof I18n;
   inputIsNumber?: boolean;
-  inputType?: "text" | "number";
+  inputType?: "text" | "number" | "checkbox";
   selectField?: keyof IFilterCondition;
   compareMode?: boolean;
+  inputIsCheckbox?: boolean;
 }
 
 @observer
 class FilterRow extends Component<IRowProps> {
+  private get value() {
+    return SnapshotService.viewModel.filter[this.props.inputField] as any;
+  }
+
   private onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     SnapshotService.viewModel.setFilter(
       this.props.inputField,
-      this.props.inputIsNumber ? toNumber(e.target.value) : e.target.value
+      this.props.inputIsNumber
+        ? toNumber(e.target.value)
+        : this.props.inputIsCheckbox
+        ? e.target.checked
+        : e.target.value
     );
   };
 
@@ -52,7 +61,7 @@ class FilterRow extends Component<IRowProps> {
           <select
             className="filter-select"
             defaultValue={
-              SnapshotService.viewModel.filter[this.props.selectField]
+              SnapshotService.viewModel.filter[this.props.selectField] as any
             }
             onChange={this.onSelectChange}
           >
@@ -71,9 +80,12 @@ class FilterRow extends Component<IRowProps> {
           id={this.props.inputField}
           min={0}
           className="filter-input"
-          placeholder={i18n(this.props.inputPlaceholder)}
-          value={SnapshotService.viewModel.filter[this.props.inputField]}
+          placeholder={
+            this.props.inputPlaceholder ? i18n(this.props.inputPlaceholder) : ""
+          }
+          value={this.value}
           onChange={this.onInputChange}
+          checked={this.value}
         />
       </div>
     );
@@ -118,6 +130,22 @@ export class FilterPanel extends Component {
           selectField="reference_depth_compare_mode"
           compareMode
           inputIsNumber
+        />
+
+        <FilterRow
+          labelName="nodes_limit"
+          inputPlaceholder="nodes_limit"
+          inputType="number"
+          inputField="nodes_limit"
+          inputIsNumber
+        />
+
+        <FilterRow
+          labelName="ignore-system"
+          inputPlaceholder="nodes_limit"
+          inputType="checkbox"
+          inputIsCheckbox
+          inputField="ignore_system_node"
         />
 
         <button
