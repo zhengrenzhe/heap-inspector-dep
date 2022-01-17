@@ -44,16 +44,19 @@ impl SnapshotAnalysis {
 
     #[wasm_bindgen]
     pub fn get_graph_info(&self, cond: &JsValue) -> JsValue {
-        // let cond = cond
-        //     .into_serde::<FilterCondition>()
-        //     .expect("failed to decode cond");
+        let cond = cond
+            .into_serde::<FilterCondition>()
+            .expect("failed to decode cond");
 
-        let mut nodes: Vec<SearchedNode> = vec![];
-        let mut edges: Vec<SearchedEdge> = vec![];
+        let nodes: Vec<SearchedNode> = self
+            .get_nodes_by_name(&cond.constructor_name())
+            .iter()
+            .map(|node| SearchedNode::from_node(node))
+            .collect();
 
-        for node in self.nodes[0..100].iter() {
-            nodes.push(SearchedNode::from_node(node));
-        }
+        Log::info(&format!("{}", nodes.len()));
+
+        let edges: Vec<SearchedEdge> = vec![];
 
         JsValue::from_serde(&SearchResult { nodes, edges })
             .expect_throw("Failed parse SearchResult")
@@ -67,5 +70,16 @@ impl SnapshotAnalysis {
                 .expect("failed convert NodeDetailInfo"),
             None => JsValue::null(),
         }
+    }
+
+    #[wasm_bindgen]
+    pub fn get_snapshot_info(&self) {}
+
+    fn get_nodes_by_name(&self, name: &str) -> Vec<&Node> {
+        Log::info(name);
+        self.nodes
+            .iter()
+            .filter(|node| node.name.contains(name))
+            .collect()
     }
 }

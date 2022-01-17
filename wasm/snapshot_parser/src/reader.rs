@@ -17,9 +17,10 @@ mod tests {
     #[test]
     fn test_parse_from_buffer() {
         use super::*;
-        let raw = include_bytes!("/Users/zheng/Downloads/Heap-20220104T133022.heapsnapshot");
+        let raw = include_bytes!("/Users/zheng/Downloads/Heap-20220116T183509.heapsnapshot");
         let snapshot = Reader::from_bytes(raw);
         let (nodes, edges) = snapshot.get_graph();
+
         assert_eq!(nodes.len(), snapshot.snapshot.node_count as usize);
         assert_eq!(edges.len(), snapshot.snapshot.edge_count as usize);
     }
