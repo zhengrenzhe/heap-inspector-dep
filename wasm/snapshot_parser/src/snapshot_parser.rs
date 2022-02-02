@@ -49,7 +49,7 @@ impl Snapshot {
             }
 
             // set from/to node
-            let edge_idx = edge_idx as u64;
+            let edge_idx = edge_idx as u32;
             nodes[edge_from_node_idx].to_edge_index.push(edge_idx);
             nodes[edge_to_node_idx].from_edge_index.push(edge_idx);
 
