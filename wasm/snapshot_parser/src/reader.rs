@@ -7,7 +7,7 @@ impl Reader {
     pub fn from_bytes(b: &[u8]) -> Snapshot {
         match from_slice(b) {
             Ok(snapshot) => snapshot,
-            Err(e) => panic!("{}", e),
+            Err(e) => panic!("parse snapshot error: {}", e),
         }
     }
 }
@@ -17,7 +17,7 @@ mod tests {
     #[test]
     fn test_parse_from_buffer() {
         use super::*;
-        let raw = include_bytes!("/Users/zheng/Downloads/Heap-20220116T183509.heapsnapshot");
+        let raw = include_bytes!("../test/test.heapsnapshot");
         let snapshot = Reader::from_bytes(raw);
         let (nodes, edges) = snapshot.get_graph();
 
