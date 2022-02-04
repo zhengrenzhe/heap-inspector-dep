@@ -4,6 +4,7 @@ pub mod analysis;
 pub mod filter;
 pub mod log;
 pub mod result;
+pub mod search;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]

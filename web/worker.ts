@@ -1,5 +1,12 @@
 import init, { SnapshotAnalysis } from "@wasm";
-import { BaseWorkerEvent, WorkerInitedEvent, WorkerLogEvent } from "@/types";
+import {
+  BaseWorkerEvent,
+  WorkerEventName,
+  WorkerGetGraphEvent,
+  WorkerInitedEvent,
+  WorkerLogEvent,
+  WorkerReturnGraphEvent,
+} from "@/types";
 
 let Analysis: SnapshotAnalysis;
 
@@ -22,5 +29,9 @@ self.addEventListener("message", (e: MessageEvent<BaseWorkerEvent>) => {
     Analysis = new SnapshotAnalysis(new Uint8Array(e.data));
     return;
   }
-  console.log(e);
+  if (e.data.name === WorkerEventName.GetGraph) {
+    const graph = Analysis.get_graph_info((e.data as WorkerGetGraphEvent).cond);
+    self.postMessage(new WorkerReturnGraphEvent(graph));
+    return;
+  }
 });

@@ -48,17 +48,21 @@ impl SnapshotAnalysis {
             .into_serde::<FilterCondition>()
             .expect("failed to decode condition");
 
-        let nodes: Vec<ResultNode> = self
-            .get_nodes_by_name(&cond.constructor_name)
+        Log::info("searching");
+
+        let nodes = self.get_nodes_by_cond(cond);
+
+        let nodes_result: Vec<ResultNode> = nodes
             .iter()
             .map(|node| ResultNode::from_node(node))
             .collect();
 
-        Log::info(&format!("{}", nodes.len()));
+        Log::info2("got-nodes", format!("{}", nodes.len()));
 
         let edges: Vec<ResultEdge> = vec![];
 
-        JsValue::from_serde(&Result::new(nodes, edges)).expect_throw("Failed parse SearchResult")
+        JsValue::from_serde(&Result::new(nodes_result, edges))
+            .expect_throw("Failed parse SearchResult")
     }
 
     #[wasm_bindgen]
@@ -71,14 +75,23 @@ impl SnapshotAnalysis {
         }
     }
 
-    #[wasm_bindgen]
-    pub fn get_snapshot_info(&self) {}
-
-    fn get_nodes_by_name(&self, name: &str) -> Vec<&Node> {
-        Log::info(name);
-        self.nodes
+    fn get_nodes_by_cond(&self, cond: FilterCondition) -> Vec<&Node> {
+        let result: Vec<&Node> = self
+            .nodes
             .iter()
-            .filter(|node| node.name.contains(name))
-            .collect()
+            .filter(|node| {
+                if !node.name.contains(&cond.constructor_name) {
+                    return false;
+                }
+
+                true
+            })
+            .collect();
+
+        if result.len() < cond.nodes_limit as usize {
+            return result;
+        }
+
+        result[0..(cond.nodes_limit as usize)].to_vec()
     }
 }

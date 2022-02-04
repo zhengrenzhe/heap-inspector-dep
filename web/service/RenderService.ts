@@ -54,7 +54,6 @@ export class RenderService {
   }
 
   public render(data: IResult) {
-    console.log(data);
     this.graph?.data(data);
     this.graph?.render();
   }
@@ -70,15 +69,16 @@ const tooltip = new Tooltip({
   offsetY: 0,
   itemTypes: ["node", "edge"],
   trigger: "click",
-  // getContent(e) {
-  // const id: string = e!.item!.get("id");
-  // const info = Object.entries(SnapshotService.getNodeInfo(id)).map(
-  //   ([key, value]) =>
-  //     `<div class="node-info-row">
-  //       <span>${i18n(key as keyof I18n)}:</span>
-  //       <span>${value}</span>
-  //     </div>`
-  // );
-  // return `<div class="node-info-panel">${info.join("")}</div>`;
-  // },
+  getContent(e) {
+    const id: string = e!.item!.get("id");
+    // getService(ParserService);
+    // const info = Object.entries(SnapshotService.getNodeInfo(id)).map(
+    //   ([key, value]) =>
+    //     `<div class="node-info-row">
+    //     <span>${i18n(key as keyof I18n)}:</span>
+    //     <span>${value}</span>
+    //   </div>`
+    // );
+    return `<div class="node-info-panel"></div>`;
+  },
 });

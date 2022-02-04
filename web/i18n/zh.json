@@ -11,14 +11,14 @@
   "get-graph-done": "节点计算完成",
   "parsing": "正在解析 snapshot 文件",
   "parsing-done": "解析 snapshot 完成",
-  "filter-constructor-name": "过滤构造器名称",
+  "constructor_name": "名称",
   "eg: LogService": "例如：LogService",
   "self-size": "自身大小",
   "more-than": "大于",
   "less-than": "小于",
   "bytes": "字节",
-  "retain-size": "持有大小",
-  "reference-depth": "引用深度",
+  "retain_size": "持有大小",
+  "reference_depth": "引用深度",
   "eg-reference-depth": "0",
   "filter": "过滤",
   "info": "信息",
@@ -31,6 +31,8 @@
   "creating-graph": "正在创建图数据",
   "create-graph-done": "创建图数据完成",
   "nodes_limit": "节点数量限制",
-  "ignore-system": "忽略系统对象",
-  "worker-loaded": "Worker 加载完成"
+  "ignore_system_node": "忽略系统对象",
+  "worker-loaded": "Worker 加载完成",
+  "searching": "正在搜索节点",
+  "got-nodes": "获取节点完成"
 }
