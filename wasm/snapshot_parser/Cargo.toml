@@ -14,5 +14,5 @@ keywords = ["v8", "snapshot", "heap"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde_json = "1.0.74"
-serde = { version = "1.0.133", features = ["derive"] }
+serde_json = "1.0.78"
+serde = { version = "1.0.136", features = ["derive"] }

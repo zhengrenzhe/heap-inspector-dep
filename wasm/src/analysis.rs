@@ -46,7 +46,7 @@ impl SnapshotAnalysis {
     pub fn get_graph_info(&self, cond: &JsValue) -> JsValue {
         let cond = cond
             .into_serde::<FilterCondition>()
-            .expect("failed to decode cond");
+            .expect("failed to decode condition");
 
         let nodes: Vec<ResultNode> = self
             .get_nodes_by_name(&cond.constructor_name)
