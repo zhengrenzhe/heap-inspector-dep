@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 
-import { Canvas } from "./canvas";
-import { Header } from "./header";
+import { Canvas } from "./Canvas";
+import { Header } from "./Header";
 
 import "./style.less";
 
-class UI extends Component {
+export class UI extends Component {
   public render() {
     return (
       <div className="app-root">
@@ -15,8 +14,4 @@ class UI extends Component {
       </div>
     );
   }
-}
-
-export function mountUI() {
-  render(<UI />, document.getElementById("root"));
 }

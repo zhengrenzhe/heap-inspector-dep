@@ -39,7 +39,7 @@ const base: WebpackCfg & DevServeCfg = {
 
 const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
   entry: {
-    web: resolve(__dirname, "./web/web.ts"),
+    web: resolve(__dirname, "./web/web.tsx"),
     background: resolve(__dirname, "./web/background.ts"),
   },
   devServer: {

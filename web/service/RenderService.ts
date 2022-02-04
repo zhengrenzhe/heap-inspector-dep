@@ -1,41 +1,15 @@
+import { singleton } from "tsyringe";
 import { Graph, Tooltip, Minimap } from "@antv/g6";
+import { ISearchResult } from "@/types";
 
-import { SnapshotService } from "@/service/SnapshotService";
-import { I18n, i18n } from "@/i18n";
-
-import { ISearchResult } from "./type";
-
-const minimap = new Minimap({
-  size: [150, 100],
-  type: "keyShape",
-});
-
-const tooltip = new Tooltip({
-  offsetX: 0,
-  offsetY: 0,
-  itemTypes: ["node", "edge"],
-  trigger: "click",
-  getContent(e) {
-    const id: string = e!.item!.get("id");
-    const info = Object.entries(SnapshotService.getNodeInfo(id)).map(
-      ([key, value]) =>
-        `<div class="node-info-row">
-          <span>${i18n(key as keyof I18n)}:</span>
-          <span>${value}</span>
-        </div>`
-    );
-    return `<div class="node-info-panel">${info.join("")}</div>`;
-  },
-});
-
-class _RenderService {
+@singleton()
+export class RenderService {
   private graph: Graph | undefined;
 
-  public init() {
-    const canvas = document.getElementById("canvas")!;
-    const rect = canvas.getBoundingClientRect();
+  public init(ele: HTMLDivElement) {
+    const rect = ele.getBoundingClientRect();
     this.graph = new Graph({
-      container: canvas,
+      container: ele,
       width: rect.width,
       height: rect.height,
       modes: {
@@ -86,4 +60,25 @@ class _RenderService {
   }
 }
 
-export const RenderService = new _RenderService();
+const minimap = new Minimap({
+  size: [150, 100],
+  type: "keyShape",
+});
+
+const tooltip = new Tooltip({
+  offsetX: 0,
+  offsetY: 0,
+  itemTypes: ["node", "edge"],
+  trigger: "click",
+  // getContent(e) {
+  // const id: string = e!.item!.get("id");
+  // const info = Object.entries(SnapshotService.getNodeInfo(id)).map(
+  //   ([key, value]) =>
+  //     `<div class="node-info-row">
+  //       <span>${i18n(key as keyof I18n)}:</span>
+  //       <span>${value}</span>
+  //     </div>`
+  // );
+  // return `<div class="node-info-panel">${info.join("")}</div>`;
+  // },
+});
