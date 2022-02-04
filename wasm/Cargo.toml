@@ -2,7 +2,13 @@
 name = "snapshot_analyse"
 version = "0.1.0"
 edition = "2021"
-categories = ["snapshot_parser"]
+description = "v8 snapshot_parser"
+license = "AGPL-3.0"
+authors = ["zhengrenzhe <zhengrenzhe0416@outlook.com>"]
+documentation = "https://github.com/zhengrenzhe/heap-visualization"
+homepage = "https://github.com/zhengrenzhe/heap-visualization"
+repository = "https://github.com/zhengrenzhe/heap-visualization"
+keywords = ["v8", "snapshot", "heap"]
 
 [lib]
 crate-type = ["cdylib"]
@@ -36,5 +42,5 @@ wasm-bindgen-futures = "0.4.29"
 
 [workspace]
 members = [
-    "snapshot_parser"
+    "snapshot_parser",
 ]

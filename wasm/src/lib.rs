@@ -2,7 +2,7 @@ use wasm_bindgen::prelude::*;
 
 pub mod analysis;
 pub mod filter;
-mod log;
+pub mod log;
 pub mod result;
 
 #[cfg(feature = "wee_alloc")]
