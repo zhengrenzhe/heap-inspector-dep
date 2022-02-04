@@ -2,8 +2,8 @@ use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
 
 use crate::filter::FilterCondition;
-use crate::result::{NodeDetailInfo, SearchResult, SearchedEdge, SearchedNode};
-use crate::utils::Log;
+use crate::log::Log;
+use crate::result::{NodeDetailInfo, Result, ResultEdge, ResultNode};
 use snapshot_parser::reader::Reader;
 use snapshot_parser::snapshot::{Edge, Node, Snapshot};
 
@@ -48,18 +48,17 @@ impl SnapshotAnalysis {
             .into_serde::<FilterCondition>()
             .expect("failed to decode cond");
 
-        let nodes: Vec<SearchedNode> = self
-            .get_nodes_by_name(&cond.constructor_name())
+        let nodes: Vec<ResultNode> = self
+            .get_nodes_by_name(&cond.constructor_name)
             .iter()
-            .map(|node| SearchedNode::from_node(node))
+            .map(|node| ResultNode::from_node(node))
             .collect();
 
         Log::info(&format!("{}", nodes.len()));
 
-        let edges: Vec<SearchedEdge> = vec![];
+        let edges: Vec<ResultEdge> = vec![];
 
-        JsValue::from_serde(&SearchResult { nodes, edges })
-            .expect_throw("Failed parse SearchResult")
+        JsValue::from_serde(&Result::new(nodes, edges)).expect_throw("Failed parse SearchResult")
     }
 
     #[wasm_bindgen]

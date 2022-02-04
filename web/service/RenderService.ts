@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
 import { Graph, Tooltip, Minimap } from "@antv/g6";
-import { ISearchResult } from "@/types";
+import { IResult } from "@wasm";
 
 @singleton()
 export class RenderService {
@@ -53,7 +53,7 @@ export class RenderService {
     });
   }
 
-  public render(data: ISearchResult) {
+  public render(data: IResult) {
     console.log(data);
     this.graph?.data(data);
     this.graph?.render();

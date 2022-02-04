@@ -2,8 +2,8 @@ use wasm_bindgen::prelude::*;
 
 pub mod analysis;
 pub mod filter;
+mod log;
 pub mod result;
-pub mod utils;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
