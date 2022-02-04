@@ -8,10 +8,10 @@
     "baseUrl": "./",
     "paths": {
       "@/*": [
-        "./web/*"
+        "web/*"
       ],
       "@wasm": [
-        "./wasm/pkg"
+        "wasm/pkg"
       ]
     },
     "resolveJsonModule": true,
@@ -22,5 +22,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["./wasm"]
+  "include": ["./wasm", "./web"]
 }
