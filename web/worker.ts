@@ -1,4 +1,4 @@
-import init, { SnapshotAnalysis } from "@wasm";
+import init, { SnapshotAnalysis } from "../wasm/pkg";
 import {
   BaseWorkerEvent,
   WorkerEventName,
