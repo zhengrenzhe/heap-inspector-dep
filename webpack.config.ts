@@ -10,7 +10,7 @@ console.log(`use ${env} mode`);
 
 const base: WebpackCfg & DevServeCfg = {
   mode: env,
-  devtool: "eval-source-map",
+  devtool: env === "development" ? "eval-source-map" : false,
   output: {
     path: resolve(__dirname, "./dist"),
     filename: "[name].js",
