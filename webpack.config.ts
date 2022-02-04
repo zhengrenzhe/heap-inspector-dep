@@ -8,13 +8,9 @@ const env = process.env.NODE_ENV as "production" | "development";
 
 console.log(`use ${env} mode`);
 
-const cfg: WebpackCfg & DevServeCfg = {
+const base: WebpackCfg & DevServeCfg = {
   mode: env,
   devtool: "eval-source-map",
-  entry: {
-    web: resolve(__dirname, "./web/web.ts"),
-    background: resolve(__dirname, "./web/background.ts"),
-  },
   output: {
     path: resolve(__dirname, "./dist"),
     filename: "[name].js",
@@ -38,6 +34,13 @@ const cfg: WebpackCfg & DevServeCfg = {
       "@": resolve(__dirname, "./web"),
       "@wasm": resolve(__dirname, "./wasm/pkg"),
     },
+  },
+};
+
+const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
+  entry: {
+    web: resolve(__dirname, "./web/web.ts"),
+    background: resolve(__dirname, "./web/background.ts"),
   },
   devServer: {
     port: 3000,
@@ -63,6 +66,13 @@ const cfg: WebpackCfg & DevServeCfg = {
       forceMode: "production",
     }),
   ],
-};
+});
 
-export default cfg;
+const worker: WebpackCfg & DevServeCfg = Object.assign({}, base, {
+  entry: {
+    worker: resolve(__dirname, "./web/worker.ts"),
+  },
+  target: "webworker",
+});
+
+export default [main, worker];

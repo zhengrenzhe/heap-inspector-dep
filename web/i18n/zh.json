@@ -31,5 +31,6 @@
   "creating-graph": "正在创建图数据",
   "create-graph-done": "创建图数据完成",
   "nodes_limit": "节点数量限制",
-  "ignore-system": "忽略系统对象"
+  "ignore-system": "忽略系统对象",
+  "worker-loaded": "Worker 加载完成"
 }
