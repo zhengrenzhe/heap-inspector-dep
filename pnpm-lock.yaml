@@ -16,7 +16,6 @@ specifiers:
   less-loader: ^10.2.0
   mobx: ^6.3.13
   mobx-react: ^7.2.1
-  power-di: ^2.4.15
   prettier: ^2.5.1
   react: ^17.0.2
   react-dom: ^17.0.2
@@ -36,7 +35,6 @@ dependencies:
   '@antv/g6': 4.5.3
   mobx: 6.3.13
   mobx-react: 7.2.1_96b0034b8b6bfac1b4cc60715db17f02
-  power-di: 2.4.15
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-icons: 4.3.1_react@17.0.2
@@ -2724,12 +2722,6 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
-
-  /power-di/2.4.15:
-    resolution: {integrity: sha512-5hwi7NZ/HdWnOd2PkcGRIx39/cmjh3JY1AvMQtG1RIWz0gU81H9nOYOLig0NBRJzYq0coaN3M+pwy6uRkPD1rw==}
-    dependencies:
-      reflect-metadata: 0.1.13
-    dev: false
 
   /prettier/2.5.1:
     resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
