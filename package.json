@@ -3,15 +3,11 @@
   "version": "0.1.0",
   "scripts": {
     "build": "npm run clean && npm run build-wasm && npm run build-web",
-    "build-on-vercel": "npm run clean && npm run build-wasm-on-vercel && build-web",
-    "dev": "npm run clean && npm run start-dev",
-    "build-web": "NODE_ENV=production webpack -c webpack.config.ts",
     "build-wasm": "cd wasm && wasm-pack build --target web --mode normal --release",
-    "build-wasm-on-vercel": "cd wasm && /vercel/.cargo/bin/wasm-pack build --target web --mode normal --release",
+    "build-web": "NODE_ENV=production webpack -c webpack.config.ts",
+    "dev": "npm run clean && NODE_ENV=development webpack-dev-server -c webpack.config.ts",
     "clean": "rimraf dist pkg",
-    "start-dev": "NODE_ENV=development webpack-dev-server -c webpack.config.ts",
-    "install-rust": "curl https://sh.rustup.rs -sSf | sh -s -- -y",
-    "install-vercel-env": "npm run install-rust && npm install && cargo install wasm-pack && rustup target add wasm32-unknown-unknown"
+    "install-env": "rustup toolchain install stable && cargo install wasm-pack && npm i"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.174",
