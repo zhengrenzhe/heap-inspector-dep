@@ -5,7 +5,7 @@
     "build": "rimraf dist pkg && npm run build-wasm && NODE_ENV=production webpack -c webpack.config.ts",
     "start": "rimraf dist pkg && NODE_ENV=development webpack-dev-server -c webpack.config.ts",
     "build-wasm": "cd wasm && wasm-pack build --target web --mode normal --release",
-    "install-vercel-env": "yum install wget && wget https://static.rust-lang.org/dist/rust-1.58.1-x86_64-unknown-linux-gnu.tar.gz && tar -zxvf rust-1.58.1-x86_64-unknown-linux-gnu.tar.gz && cd rust-1.58.1-x86_64-unknown-linux-gnu && ./install.sh && npm install && cargo install wasm-pack"
+    "install-vercel-env": "yum install wget && wget https://static.rust-lang.org/dist/rust-1.58.1-x86_64-unknown-linux-gnu.tar.gz && tar -zxvf rust-1.58.1-x86_64-unknown-linux-gnu.tar.gz && cd rust-1.58.1-x86_64-unknown-linux-gnu && ./install.sh && npm install && cargo install wasm-pack && export PATH=$PATH:/vercel/.cargo/bin"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.174",
