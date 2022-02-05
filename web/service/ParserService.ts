@@ -32,7 +32,7 @@ export class ParserService {
     return await this.currentThread.getGraph(toJSON(this.viewModel.filter));
   }
 
-  public async getNodeInfo(nodeId: string) {
+  public async getNodeInfo(nodeId: number) {
     return await this.currentThread.getNode(nodeId);
   }
 }

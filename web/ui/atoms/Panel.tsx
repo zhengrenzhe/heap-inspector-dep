@@ -9,7 +9,7 @@ interface IPanelProps {
 export class Panel extends Component<IPanelProps> {
   public render() {
     return (
-      <div className="panel">
+      <div className={`panel ${this.props.name}`}>
         <span className="panel-name">{i18n(this.props.name)}</span>
         {this.props.children}
       </div>

@@ -1,10 +1,23 @@
 import { singleton } from "tsyringe";
-import { Graph, Minimap } from "@antv/g6";
-import { IResult } from "@wasm";
+import { Graph, Minimap, IG6GraphEvent } from "@antv/g6";
+import { action, makeObservable, observable } from "mobx";
+
+import { INodeDetailInfo, IResult } from "@wasm";
+import { LogService, ParserService } from "@/service";
+import { inject } from "@/util";
+import { INodeInfoType } from "@/types";
 
 @singleton()
 export class RenderService {
   private graph: Graph | undefined;
+
+  @inject()
+  private parserService!: ParserService;
+
+  @inject()
+  private logService!: LogService;
+
+  public viewModel = new ViewModel();
 
   private minimap = new Minimap({
     size: [150, 100],
@@ -29,6 +42,7 @@ export class RenderService {
             enableOptimize: true,
           },
           "drag-node",
+          "click-select",
         ],
       },
       plugins: [this.minimap],
@@ -56,10 +70,49 @@ export class RenderService {
         workerEnabled: true,
       },
     });
+
+    this.graph.on("nodeselectchange", this.onSelect);
+
+    this.graph.on("mouseenter", this.onHover);
   }
 
+  private async fetchData(ids: number[]) {
+    return Promise.all(ids.map((id) => this.parserService.getNodeInfo(id)));
+  }
+
+  private onHover = async (e: IG6GraphEvent) => {
+    if (e.item) {
+      const data = await this.fetchData([parseInt(e.item._cfg?.id!)]);
+      this.viewModel.setInfo("hover", data);
+    }
+  };
+
+  private onSelect = async (e: IG6GraphEvent) => {
+    const ids: number[] = (e.selectedItems as any).nodes.map((n: any) =>
+      parseInt(n._cfg.id)
+    );
+    const data = await this.fetchData(ids);
+    this.viewModel.setInfo("select", data);
+  };
+
   public render(data: IResult) {
+    this.logService.setMsg("rendering");
     this.graph?.data(data);
     this.graph?.render();
+    this.logService.setMsg("rendering-done");
+  }
+}
+
+class ViewModel {
+  constructor() {
+    makeObservable(this);
+  }
+
+  @observable
+  public infos = new Map<INodeInfoType, INodeDetailInfo[]>();
+
+  @action
+  public setInfo(type: INodeInfoType, nodes: INodeDetailInfo[]) {
+    this.infos.set(type, nodes);
   }
 }

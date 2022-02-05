@@ -10,7 +10,7 @@ export interface IThreadAPI {
 
   getGraph(cond: IFilterCondition): Promise<IResult>;
 
-  getNode(id: string): Promise<INodeDetailInfo>;
+  getNode(id: number): Promise<INodeDetailInfo>;
 }
 
 export type IThread = Remote<IThreadAPI>;

@@ -66,8 +66,7 @@ impl SnapshotAnalysis {
     }
 
     #[wasm_bindgen]
-    pub fn get_node_detail_info(&self, id: &str) -> JsValue {
-        let id = id.parse::<u32>().unwrap();
+    pub fn get_node_detail_info(&self, id: u32) -> JsValue {
         match self.nodes.iter().find(|node| node.id == id) {
             Some(node) => JsValue::from_serde(&NodeDetailInfo::from_node(node))
                 .expect("failed convert NodeDetailInfo"),

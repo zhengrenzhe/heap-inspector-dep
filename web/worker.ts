@@ -29,7 +29,7 @@ class WorkerIns implements IThreadAPI {
     return this.analysis?.get_graph_info(cond) as IResult;
   }
 
-  public async getNode(id: string) {
+  public async getNode(id: number) {
     return this.analysis?.get_node_detail_info(id) as INodeDetailInfo;
   }
 }
