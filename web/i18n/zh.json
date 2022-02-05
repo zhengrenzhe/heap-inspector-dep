@@ -32,7 +32,8 @@
   "create-graph-done": "创建图数据完成",
   "nodes_limit": "节点数量限制",
   "ignore_system_node": "忽略系统对象",
-  "worker-loaded": "Worker 加载完成",
+  "creating-thread": "正在创建 thread",
+  "creating-thread-done": "创建 thread 成功",
   "searching": "正在搜索节点",
   "got-nodes": "获取节点完成"
 }

@@ -57,15 +57,21 @@ const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
       inject: "body",
       template: resolve(__dirname, "./web/web.html"),
     }),
-  ].concat(isProd ? [] :[new WasmPackPlugin({
-    crateDirectory: resolve(__dirname, "./wasm"),
-    watchDirectories: [
-      resolve(__dirname, "./wasm/src"),
-      resolve(__dirname, "./wasm/snapshot_parser/src"),
-    ],
-    extraArgs: "--target web --mode normal",
-    forceMode: "production",
-  })] as any),
+  ].concat(
+    isProd
+      ? []
+      : ([
+          new WasmPackPlugin({
+            crateDirectory: resolve(__dirname, "./wasm"),
+            watchDirectories: [
+              resolve(__dirname, "./wasm/src"),
+              resolve(__dirname, "./wasm/snapshot_parser/src"),
+            ],
+            extraArgs: "--target web --mode normal",
+            forceMode: "production",
+          }),
+        ] as any)
+  ),
 });
 
 const worker: WebpackCfg & DevServeCfg = Object.assign({}, base, {

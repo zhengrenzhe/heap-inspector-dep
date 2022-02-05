@@ -17,8 +17,9 @@ export class Canvas extends Component {
     this.renderService.init(this.rootRef.current!);
   }
 
-  public onFilter = () => {
-    this.parserService.getGraphByFilter();
+  public onFilter = async () => {
+    const graph = await this.parserService.getGraphByFilter();
+    this.renderService.render(graph);
   };
 
   public render() {

@@ -9,6 +9,7 @@ specifiers:
   '@types/webpack': ^5.28.0
   '@types/wicg-file-system-access': ^2020.9.5
   '@wasm-tool/wasm-pack-plugin': ^1.6.0
+  comlink: ^4.3.1
   copy-webpack-plugin: ^10.2.4
   css-loader: ^6.6.0
   html-webpack-plugin: ^5.5.0
@@ -33,6 +34,7 @@ specifiers:
 
 dependencies:
   '@antv/g6': 4.5.3
+  comlink: 4.3.1
   mobx: 6.3.13
   mobx-react: 7.2.1_96b0034b8b6bfac1b4cc60715db17f02
   react: 17.0.2
@@ -1077,6 +1079,10 @@ packages:
   /colorette/2.0.16:
     resolution: {integrity: sha512-hUewv7oMjCp+wkBv5Rm0v87eJhq4woh5rSR+42YSQJKecCqgIqNkZ6lAlQms/BwHPJA5NKMRlpxPRv0n8HQW6g==}
     dev: true
+
+  /comlink/4.3.1:
+    resolution: {integrity: sha512-+YbhUdNrpBZggBAHWcgQMLPLH1KDF3wJpeqrCKieWQ8RL7atmgsgTQko1XEBK6PsecfopWNntopJ+ByYG1lRaA==}
+    dev: false
 
   /command-exists/1.2.9:
     resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==}

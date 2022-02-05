@@ -1,3 +1,4 @@
 export * from "./LogService";
-export * from "./RenderService";
+export * from "./ThreadService";
 export * from "./ParserService";
+export * from "./RenderService";

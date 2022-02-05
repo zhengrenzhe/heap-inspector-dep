@@ -1,71 +1,39 @@
 import { singleton } from "tsyringe";
 
-import {
-  BaseWorkerEvent,
-  WorkerEventName,
-  WorkerLogEvent,
-  CompareMode,
-  IFilterCondition,
-  WorkerGetGraphEvent,
-  WorkerReturnGraphEvent,
-  WorkerGetNodeEvent,
-} from "@/types";
+import { CompareMode, IFilterCondition } from "@/types";
 import { inject, toJSON } from "@/util";
-import { LogService, RenderService } from "@/service";
+import { LogService, ThreadService } from "@/service";
 import { action, makeObservable, observable } from "mobx";
+import { transfer } from "comlink";
 
 @singleton()
 export class ParserService {
   constructor() {
-    this.worker = new Worker(new URL("./worker.js", location.href));
-    this.worker.addEventListener("message", this.onWorkerMessage);
+    void this.threadService.initThread();
   }
-
-  private worker: Worker;
 
   public viewModel = new ViewModel();
 
   @inject()
-  private renderService!: RenderService;
-
-  @inject()
   private logService!: LogService;
 
-  private onWorkerMessage = (e: MessageEvent<BaseWorkerEvent>) => {
-    switch (e.data.name) {
-      case WorkerEventName.Inited:
-        return this.onWorkerInited();
-      case WorkerEventName.Log:
-        return this.onWorkerLog(e.data as WorkerLogEvent);
-      case WorkerEventName.ReturnGraph:
-        return this.onWorkerGraphReturn(e.data as WorkerReturnGraphEvent);
-    }
-  };
+  @inject()
+  private threadService!: ThreadService;
 
-  private onWorkerInited() {
-    this.logService.setMsg("worker-loaded");
+  private get currentThread() {
+    return this.threadService.currentThread;
   }
 
-  private onWorkerLog(data: WorkerLogEvent) {
-    this.logService.setMsg(data.message, data.params);
+  public fromBuffer(buffer: ArrayBuffer) {
+    void this.currentThread.parseData(transfer(buffer, [buffer]));
   }
 
-  private onWorkerGraphReturn(data: WorkerReturnGraphEvent) {
-    this.renderService.render(data.graph);
+  public async getGraphByFilter() {
+    return await this.currentThread.getGraph(toJSON(this.viewModel.filter));
   }
 
-  public fromBuffer(buffer: Uint8Array) {
-    this.worker.postMessage(buffer.buffer, [buffer.buffer]);
-  }
-
-  public getGraphByFilter() {
-    this.worker.postMessage(
-      toJSON(new WorkerGetGraphEvent(this.viewModel.filter))
-    );
-  }
-
-  public getNodeInfo(nodeId: string) {
-    this.worker.postMessage(new WorkerGetNodeEvent(nodeId));
+  public async getNodeInfo(nodeId: string) {
+    return await this.currentThread.getNode(nodeId);
   }
 }
 

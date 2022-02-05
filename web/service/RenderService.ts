@@ -1,10 +1,15 @@
 import { singleton } from "tsyringe";
-import { Graph, Tooltip, Minimap } from "@antv/g6";
+import { Graph, Minimap } from "@antv/g6";
 import { IResult } from "@wasm";
 
 @singleton()
 export class RenderService {
   private graph: Graph | undefined;
+
+  private minimap = new Minimap({
+    size: [150, 100],
+    type: "keyShape",
+  });
 
   public init(ele: HTMLDivElement) {
     const rect = ele.getBoundingClientRect();
@@ -26,7 +31,7 @@ export class RenderService {
           "drag-node",
         ],
       },
-      plugins: [tooltip, minimap],
+      plugins: [this.minimap],
       defaultNode: {
         size: 10,
         style: {
@@ -58,27 +63,3 @@ export class RenderService {
     this.graph?.render();
   }
 }
-
-const minimap = new Minimap({
-  size: [150, 100],
-  type: "keyShape",
-});
-
-const tooltip = new Tooltip({
-  offsetX: 0,
-  offsetY: 0,
-  itemTypes: ["node", "edge"],
-  trigger: "click",
-  getContent(e) {
-    const id: string = e!.item!.get("id");
-    // getService(ParserService);
-    // const info = Object.entries(SnapshotService.getNodeInfo(id)).map(
-    //   ([key, value]) =>
-    //     `<div class="node-info-row">
-    //     <span>${i18n(key as keyof I18n)}:</span>
-    //     <span>${value}</span>
-    //   </div>`
-    // );
-    return `<div class="node-info-panel"></div>`;
-  },
-});

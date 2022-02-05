@@ -27,9 +27,8 @@ export class Header extends Component {
     reader.readAsArrayBuffer(file);
 
     reader.onload = () => {
-      const buffer = new Uint8Array(reader.result as ArrayBuffer);
       this.logService.setMsg("load-done");
-      this.parserService.fromBuffer(buffer);
+      this.parserService.fromBuffer(reader.result as ArrayBuffer);
     };
   };
 

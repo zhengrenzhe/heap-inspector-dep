@@ -1,20 +1,8 @@
-import init, { SnapshotAnalysis } from "@wasm";
-import {
-  BaseWorkerEvent,
-  WorkerEventName,
-  WorkerGetGraphEvent,
-  WorkerInitedEvent,
-  WorkerLogEvent,
-  WorkerReturnGraphEvent,
-} from "@/types";
+import { expose } from "comlink";
+
+import init, { INodeDetailInfo, IResult, SnapshotAnalysis } from "@wasm";
+import { IFilterCondition, IThreadAPI, WorkerLogEvent } from "@/types";
 import { I18n } from "@/i18n";
-
-let Analysis: SnapshotAnalysis;
-
-(async () => {
-  await init();
-  self.postMessage(new WorkerInitedEvent());
-})();
 
 (self as any).Log = {
   set_msg: (msg: keyof I18n, params?: string[]) => {
@@ -22,16 +10,28 @@ let Analysis: SnapshotAnalysis;
   },
 };
 
-self.addEventListener("message", (e: MessageEvent<BaseWorkerEvent>) => {
-  if ((e.data as any) instanceof ArrayBuffer) {
-    Analysis = new SnapshotAnalysis(
-      new Uint8Array(e.data as unknown as ArrayBuffer)
-    );
-    return;
+class WorkerIns implements IThreadAPI {
+  private analysis: SnapshotAnalysis | undefined;
+
+  public async init() {
+    await init();
   }
-  if (e.data.name === WorkerEventName.GetGraph) {
-    const graph = Analysis.get_graph_info((e.data as WorkerGetGraphEvent).cond);
-    self.postMessage(new WorkerReturnGraphEvent(graph));
-    return;
+
+  public async parseData(buffer: ArrayBuffer) {
+    if (this.analysis) {
+      this.analysis.free();
+    }
+
+    this.analysis = new SnapshotAnalysis(new Uint8Array(buffer));
   }
-});
+
+  public async getGraph(cond: IFilterCondition) {
+    return this.analysis?.get_graph_info(cond) as IResult;
+  }
+
+  public async getNode(id: string) {
+    return this.analysis?.get_node_detail_info(id) as INodeDetailInfo;
+  }
+}
+
+expose(new WorkerIns());
