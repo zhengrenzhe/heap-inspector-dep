@@ -10,7 +10,7 @@
     "build-wasm-on-vercel": "cd wasm && /vercel/.cargo/bin/wasm-pack build --target web --mode normal --release",
     "clean": "rimraf dist pkg",
     "start-dev": "NODE_ENV=development webpack-dev-server -c webpack.config.ts",
-    "install-vercel-env": "yum install wget && wget https://static.rust-lang.org/dist/rust-1.58.1-x86_64-unknown-linux-gnu.tar.gz && tar -zxvf rust-1.58.1-x86_64-unknown-linux-gnu.tar.gz && cd rust-1.58.1-x86_64-unknown-linux-gnu && ./install.sh && npm install && cargo install wasm-pack && rustup target add wasm32-unknown-unknown"
+    "install-vercel-env": "curl https://sh.rustup.rs -sSf | sh -s -- -y && npm install && cargo install wasm-pack && rustup target add wasm32-unknown-unknown"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.174",
