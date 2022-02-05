@@ -9,6 +9,6 @@ export function i18n(label: keyof I18n, params?: string[]) {
   const val = data[label];
   if (!val) return label;
 
-  if (params === undefined) return val;
+  if (!params) return val;
   return val.replace(/{(\d)}/g, (_, p) => params[parseInt(p)]);
 }

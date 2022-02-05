@@ -1,5 +1,6 @@
 import { IFilterCondition } from "./filter";
 import { IResult } from "@wasm";
+import { I18n } from "@/i18n";
 
 export enum WorkerEventName {
   Inited,
@@ -20,7 +21,10 @@ export class WorkerInitedEvent extends BaseWorkerEvent {
 export class WorkerLogEvent extends BaseWorkerEvent {
   public readonly name = WorkerEventName.Log;
 
-  constructor(public readonly message: [string] | [string, string]) {
+  constructor(
+    public readonly message: keyof I18n,
+    public readonly params?: string[]
+  ) {
     super();
   }
 }

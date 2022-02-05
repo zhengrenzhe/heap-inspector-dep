@@ -18,7 +18,7 @@ pub struct SnapshotAnalysis {
 impl SnapshotAnalysis {
     #[wasm_bindgen(constructor)]
     pub fn new(bytes: &[u8]) -> Self {
-        Log::info2("reading", format!("{} bytes", bytes.len()));
+        Log::info2("reading", vec![bytes.len().to_string()]);
         let raw_bytes = Uint8Array::from(bytes).to_vec();
         Log::info("read-done");
 
@@ -32,7 +32,7 @@ impl SnapshotAnalysis {
         assert_eq!(edges.len() as u32, snapshot.snapshot.edge_count);
         Log::info2(
             "parsing-done",
-            format!("{} nodes {} edges", nodes.len(), edges.len()),
+            vec![nodes.len().to_string(), edges.len().to_string()],
         );
 
         SnapshotAnalysis {
@@ -57,7 +57,7 @@ impl SnapshotAnalysis {
             .map(|node| ResultNode::from_node(node))
             .collect();
 
-        Log::info2("got-nodes", format!("{}", nodes.len()));
+        Log::info2("got-nodes", vec![nodes.len().to_string()]);
 
         let edges: Vec<ResultEdge> = vec![];
 

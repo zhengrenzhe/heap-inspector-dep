@@ -7,12 +7,8 @@ import { I18n, i18n } from "@/i18n";
 export class LogService {
   public viewModel = new ViewModel();
 
-  public setMsg(msg: keyof I18n) {
-    this.viewModel.setMsg(i18n(msg));
-  }
-
-  public setMsg2(m1: keyof I18n, m2: string) {
-    this.viewModel.setMsg(`${i18n(m1)} ${m2}`);
+  public setMsg(msg: keyof I18n, params?: string[]) {
+    this.viewModel.setMsg(i18n(msg, params));
   }
 }
 

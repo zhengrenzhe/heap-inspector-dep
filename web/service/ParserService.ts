@@ -47,12 +47,7 @@ export class ParserService {
   }
 
   private onWorkerLog(data: WorkerLogEvent) {
-    if (data.message.length === 1) {
-      return this.logService.setMsg(data.message[0] as any);
-    }
-    if (data.message.length === 2) {
-      return this.logService.setMsg2(data.message[0] as any, data.message[1]);
-    }
+    this.logService.setMsg(data.message, data.params);
   }
 
   private onWorkerGraphReturn(data: WorkerReturnGraphEvent) {
