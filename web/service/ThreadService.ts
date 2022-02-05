@@ -16,7 +16,7 @@ export class ThreadService {
   public async initThread() {
     this.logService.setMsg("creating-thread");
 
-    this.worker = new Worker(new URL("./worker2.js", location.href));
+    this.worker = new Worker(new URL("./worker.js", location.href));
     this.thread = wrap<IThreadAPI>(this.worker);
 
     this.worker.addEventListener("message", (e) => {

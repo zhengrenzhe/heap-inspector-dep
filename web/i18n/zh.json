@@ -35,5 +35,5 @@
   "creating-thread": "正在创建 thread",
   "creating-thread-done": "创建 thread 成功",
   "searching": "正在搜索节点",
-  "got-nodes": "获取节点完成"
+  "got-nodes": "搜索节点完成，共计 {0} 个节点"
 }
