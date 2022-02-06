@@ -14,7 +14,6 @@ export class InfoPanel extends Component {
   private renderService!: RenderService;
 
   private renderType(type: INodeInfoType, infos?: INodeDetailInfo[]) {
-    console.log(type, infos);
     if (!infos || infos.length === 0) return null;
     return (
       <div className="type-area">
