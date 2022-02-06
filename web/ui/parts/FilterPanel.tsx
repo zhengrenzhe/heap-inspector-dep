@@ -6,10 +6,10 @@ import {
   MultiSelect,
   SegmentedControl,
   InputWrapper,
-  SimpleGrid,
   NumberInput,
   Checkbox,
   Button,
+  Grid,
 } from "@mantine/core";
 
 import { I18n, i18n } from "@/i18n";
@@ -48,22 +48,27 @@ export class FilterPanel extends Component<IFilterPanelProps> {
   ) {
     return (
       <InputWrapper label={i18n(label)} description={i18n(description)}>
-        <SimpleGrid cols={2}>
-          <SegmentedControl
-            data={compare_data}
-            size="xs"
-            transitionDuration={300}
-            transitionTimingFunction="linear"
-            value={this.vm.filter[compare_field] as string}
-            onChange={(e) => this.vm.setFilter(compare_field, parseInt(e))}
-          />
-          <NumberInput
-            size="xs"
-            value={this.vm.filter[value_field] as number}
-            min={0}
-            onChange={(val) => val && this.vm.setFilter(value_field, val)}
-          />
-        </SimpleGrid>
+        <Grid columns={24}>
+          <Grid.Col span={8}>
+            <SegmentedControl
+              data={compare_data}
+              size="xs"
+              transitionDuration={300}
+              transitionTimingFunction="linear"
+              value={this.vm.filter[compare_field] as string}
+              onChange={(e) => this.vm.setFilter(compare_field, parseInt(e))}
+              style={{ width: "100%" }}
+            />
+          </Grid.Col>
+          <Grid.Col span={16}>
+            <NumberInput
+              size="xs"
+              value={this.vm.filter[value_field] as number}
+              min={0}
+              onChange={(val) => val && this.vm.setFilter(value_field, val)}
+            />
+          </Grid.Col>
+        </Grid>
       </InputWrapper>
     );
   }
@@ -75,22 +80,28 @@ export class FilterPanel extends Component<IFilterPanelProps> {
           label={i18n("filter_source")}
           description={i18n("filter_source_desc")}
         >
-          <SimpleGrid cols={2}>
-            <MultiSelect
-              data={filter_from_data}
-              value={this.vm.filter.filter_from}
-              size="xs"
-              clearable
-              onChange={(val) => this.vm.setFilter("filter_from", val)}
-              style={{ width: 150 }}
-            />
+          <Grid columns={24}>
+            <Grid.Col span={12}>
+              <MultiSelect
+                data={filter_from_data}
+                value={this.vm.filter.filter_from}
+                size="xs"
+                clearable
+                onChange={(val) => this.vm.setFilter("filter_from", val)}
+                style={{ width: 150 }}
+              />
+            </Grid.Col>
 
-            <TextInput
-              size="xs"
-              value={this.vm.filter.filter_name}
-              onChange={(e) => this.vm.setFilter("filter_name", e.target.value)}
-            />
-          </SimpleGrid>
+            <Grid.Col span={12}>
+              <TextInput
+                size="xs"
+                value={this.vm.filter.filter_name}
+                onChange={(e) =>
+                  this.vm.setFilter("filter_name", e.target.value)
+                }
+              />
+            </Grid.Col>
+          </Grid>
         </InputWrapper>
 
         {this.renderCompare(
