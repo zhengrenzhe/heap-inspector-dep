@@ -29,6 +29,7 @@ export class ParserService {
   }
 
   public async getGraphByFilter() {
+    console.log(toJSON(this.viewModel.filter));
     return await this.currentThread.getGraph(toJSON(this.viewModel.filter));
   }
 

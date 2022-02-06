@@ -20,7 +20,7 @@ export class RenderService {
   public viewModel = new ViewModel();
 
   private minimap = new Minimap({
-    size: [150, 100],
+    size: [180, 120],
     type: "keyShape",
   });
 
@@ -96,10 +96,12 @@ export class RenderService {
   };
 
   public render(data: IResult) {
-    this.logService.setMsg("rendering");
+    this.logService.setMsg("rendering", [
+      data.nodes.length.toString(),
+      data.edges.length.toString(),
+    ]);
     this.graph?.data(data);
     this.graph?.render();
-    this.logService.setMsg("rendering-done");
   }
 }
 

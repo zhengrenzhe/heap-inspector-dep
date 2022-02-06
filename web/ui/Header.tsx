@@ -34,7 +34,7 @@ export class Header extends Component {
 
   public render() {
     return (
-      <Paper padding="sm" shadow="xs" radius={0}>
+      <Paper padding="sm" shadow="xs" radius={0} withBorder>
         <Group>
           <Text size="md" variant="gradient" weight={700}>
             Heap Visualization

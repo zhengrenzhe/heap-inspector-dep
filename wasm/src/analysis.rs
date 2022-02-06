@@ -79,7 +79,7 @@ impl SnapshotAnalysis {
             .nodes
             .iter()
             .filter(|node| {
-                if !node.name.contains(&cond.constructor_name) {
+                if !node.name.contains(&cond.filter_name) {
                     return false;
                 }
 

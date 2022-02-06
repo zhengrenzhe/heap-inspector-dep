@@ -2,7 +2,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct FilterCondition {
-    pub constructor_name: String,
+    pub filter_from: Vec<String>,
+    pub filter_name: String,
     pub self_size: u32,
     pub retain_size: u32,
     pub reference_depth: u32,
