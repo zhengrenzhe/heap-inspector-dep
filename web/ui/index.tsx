@@ -8,10 +8,10 @@ import "./style.less";
 export class UI extends Component {
   public render() {
     return (
-      <div className="app-root">
+      <>
         <Header />
         <Canvas />
-      </div>
+      </>
     );
   }
 }

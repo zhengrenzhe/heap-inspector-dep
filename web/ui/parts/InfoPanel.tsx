@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
+import { Paper } from "@mantine/core";
 
-import { Panel } from "@/ui/atoms";
 import { RenderService } from "@/service";
 import { inject } from "@/util";
 import { INodeInfoType, NodeInfoTypeSort } from "@/types";
@@ -35,11 +35,11 @@ export class InfoPanel extends Component {
 
   public render() {
     return (
-      <Panel name="node-info">
+      <Paper padding="md" shadow="sm" radius="md">
         {NodeInfoTypeSort.map((type) =>
           this.renderType(type, this.renderService.viewModel.infos.get(type))
         )}
-      </Panel>
+      </Paper>
     );
   }
 }

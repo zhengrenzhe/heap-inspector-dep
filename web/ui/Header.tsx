@@ -6,7 +6,7 @@ import { IoRecordingOutline } from "react-icons/io5";
 import { i18n } from "@/i18n";
 import { LogService, ParserService } from "@/service";
 import { inject } from "@/util";
-import { Button } from "@/ui/atoms";
+import { Button, Text, Paper, Group, Badge } from "@mantine/core";
 
 @observer
 export class Header extends Component {
@@ -34,23 +34,35 @@ export class Header extends Component {
 
   public render() {
     return (
-      <div className="header">
-        <span className="logo">Heap Visualization</span>
+      <Paper padding="sm" shadow="xs" radius={0}>
+        <Group>
+          <Text size="md" variant="gradient" weight={700}>
+            Heap Visualization
+          </Text>
 
-        <Button
-          title={i18n("start-record")}
-          content={<IoRecordingOutline />}
-          onClick={this.onStartRecordClick}
-        />
+          <Button
+            compact
+            onClick={this.onStartRecordClick}
+            leftIcon={<IoRecordingOutline />}
+            variant="white"
+          >
+            {i18n("record")}
+          </Button>
 
-        <Button
-          title={i18n("upload")}
-          content={<CgSoftwareUpload />}
-          onClick={this.onUploadClick}
-        />
+          <Button
+            compact
+            onClick={this.onUploadClick}
+            leftIcon={<CgSoftwareUpload />}
+            variant="white"
+          >
+            {i18n("upload")}
+          </Button>
 
-        <div className="msg">{this.logService.viewModel.msg}</div>
-      </div>
+          <Badge radius="sm" size="md" variant="dot" color="teal">
+            {this.logService.viewModel.msg}
+          </Badge>
+        </Group>
+      </Paper>
     );
   }
 }

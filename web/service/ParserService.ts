@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
 
-import { CompareMode, IFilterCondition } from "@/types";
+import { CompareMode, filter_from, IFilterCondition } from "@/types";
 import { inject, toJSON } from "@/util";
 import { LogService, ThreadService } from "@/service";
 import { action, makeObservable, observable } from "mobx";
@@ -44,14 +44,15 @@ class ViewModel {
 
   @observable
   public filter: IFilterCondition = {
-    constructor_name: "",
+    filter_from,
+    filter_name: "",
     self_size: 0,
     self_size_compare_mode: CompareMode.MoreThan,
     retain_size: 0,
     retain_size_compare_mode: CompareMode.MoreThan,
     reference_depth: 0,
     reference_depth_compare_mode: CompareMode.MoreThan,
-    nodes_limit: 10000,
+    nodes_limit: 1000,
     ignore_system_node: true,
   };
 

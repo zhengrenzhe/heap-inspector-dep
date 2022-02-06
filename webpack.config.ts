@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { Configuration as WebpackCfg } from "webpack";
 import { Configuration as DevServeCfg } from "webpack-dev-server";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
 
 const env = process.env.NODE_ENV as "production" | "development";
@@ -59,7 +60,9 @@ const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
     }),
   ].concat(
     isProd
-      ? []
+      ? [
+          // new BundleAnalyzerPlugin()
+        ]
       : ([
           new WasmPackPlugin({
             crateDirectory: resolve(__dirname, "./wasm"),
