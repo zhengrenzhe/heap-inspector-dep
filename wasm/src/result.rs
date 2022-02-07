@@ -90,9 +90,9 @@ export interface INodeDetailInfo {
 impl NodeDetailInfo {
     pub fn from_node(
         node: &Node,
-        strings: &Vec<String>,
+        strings: &[String],
         strings_len: usize,
-        node_types: &Vec<String>,
+        node_types: &[String],
         node_types_len: usize,
     ) -> Self {
         Self {

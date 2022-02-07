@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn count_same_string(data: &Vec<(&str, usize)>, more_than_times: usize) -> Vec<usize> {
+pub fn count_same_string(data: &[(&str, usize)], more_than_times: usize) -> Vec<usize> {
     // string value, [string id]
     let mut string_result: HashMap<&str, Vec<&usize>> = HashMap::new();
 
@@ -52,15 +52,15 @@ mod tests {
         ];
 
         let mut a = count_same_string(&data, 1);
-        a.sort();
+        a.sort_unstable();
         assert_eq!(a, vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
         let mut b = count_same_string(&data, 2);
-        b.sort();
+        b.sort_unstable();
         assert_eq!(b, vec![1, 2, 3, 4, 5, 6, 7]);
 
         let mut c = count_same_string(&data, 3);
-        c.sort();
+        c.sort_unstable();
         assert_eq!(c, vec![1, 2, 3, 4]);
 
         assert_eq!(count_same_string(&data, 4), vec![] as Vec<usize>);
@@ -69,13 +69,9 @@ mod tests {
     #[test]
     fn test2() {
         let data = vec![String::from("bar")];
-
         let s = "foo a bar";
 
-        assert_eq!(data.iter().any(|ss| s.contains(ss)), true);
-        assert_eq!(
-            (vec![] as Vec<String>).iter().any(|ss| ss.contains(s)),
-            false
-        );
+        assert!(data.iter().any(|ss| s.contains(ss)));
+        assert!(!(vec![] as Vec<String>).iter().any(|ss| ss.contains(s)),);
     }
 }

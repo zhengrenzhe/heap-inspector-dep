@@ -44,7 +44,7 @@ impl SnapshotAnalysis {
 
         Log::info1_usize("got-nodes", nodes.len());
 
-        SnapshotAnalysis::get_result_graph(&nodes, &vec![])
+        SnapshotAnalysis::get_result_graph(&nodes, &[])
     }
 
     #[wasm_bindgen]
@@ -76,8 +76,8 @@ impl SnapshotAnalysis {
         let (node_types, node_types_len) = self.provider.get_node_types();
         let (strings, strings_len) = self.provider.get_strings();
 
-        let use_excludes = cond.excludes.len() > 0;
-        let use_includes = cond.includes.len() > 0;
+        let use_excludes = !cond.excludes.is_empty();
+        let use_includes = !cond.includes.is_empty();
 
         // node name, node index
         let string_nodes: Vec<(&str, usize)> = self
@@ -115,10 +115,10 @@ impl SnapshotAnalysis {
 
         Log::info1_usize("got-nodes", nodes.len());
 
-        SnapshotAnalysis::get_result_graph(&nodes, &vec![])
+        SnapshotAnalysis::get_result_graph(&nodes, &[])
     }
 
-    fn get_result_graph(nodes: &Vec<&Node>, edges: &Vec<&Edge>) -> JsValue {
+    fn get_result_graph(nodes: &[&Node], edges: &[&Edge]) -> JsValue {
         JsValue::from_serde(&Result::new(
             SnapshotAnalysis::nodes_to_result_node(nodes),
             SnapshotAnalysis::edges_to_result_edge(edges),
@@ -126,14 +126,14 @@ impl SnapshotAnalysis {
         .expect_throw("Failed parse SearchResult")
     }
 
-    fn nodes_to_result_node(nodes: &Vec<&Node>) -> Vec<ResultNode> {
+    fn nodes_to_result_node(nodes: &[&Node]) -> Vec<ResultNode> {
         nodes
             .iter()
             .map(|node| ResultNode::from_node(node))
             .collect()
     }
 
-    fn edges_to_result_edge(edges: &Vec<&Edge>) -> Vec<ResultEdge> {
+    fn edges_to_result_edge(edges: &[&Edge]) -> Vec<ResultEdge> {
         edges
             .iter()
             .map(|edge| ResultEdge::from_edge(edge))
