@@ -1,11 +1,15 @@
 use js_sys::Uint8Array;
+use snapshot_parser::consts::{
+    NODE_TYPE_CONCATENATED_STRING, NODE_TYPE_SLICED_STRING, NODE_TYPE_STRING,
+};
 use wasm_bindgen::prelude::*;
 
-use crate::filter::FilterCondition;
+use crate::filter::{FilterCondition, SameStringCondition};
 use crate::log::Log;
 use crate::result::{NodeDetailInfo, Result, ResultEdge, ResultNode};
+use crate::search::count_same_string;
 use snapshot_parser::reader::Reader;
-use snapshot_parser::snapshot::Node;
+use snapshot_parser::snapshot::{Edge, Node};
 use snapshot_parser::snapshot_provider::SnapshotProvider;
 
 #[wasm_bindgen]
@@ -38,37 +42,106 @@ impl SnapshotAnalysis {
 
         let nodes = self.get_nodes_by_cond(cond);
 
-        let nodes_result: Vec<ResultNode> = nodes
-            .iter()
-            .map(|node| ResultNode::from_node(node))
-            .collect();
-
         Log::info1_usize("got-nodes", nodes.len());
 
-        let edges: Vec<ResultEdge> = vec![];
-
-        JsValue::from_serde(&Result::new(nodes_result, edges))
-            .expect_throw("Failed parse SearchResult")
+        SnapshotAnalysis::get_result_graph(&nodes, &vec![])
     }
 
     #[wasm_bindgen]
     pub fn get_node_detail_info(&self, id: u32) -> JsValue {
+        let (strings, strings_len) = self.provider.get_strings();
+        let (node_types, node_types_len) = self.provider.get_node_types();
+
         match self.provider.nodes.iter().find(|node| node.id == id) {
             Some(node) => JsValue::from_serde(&NodeDetailInfo::from_node(
                 node,
-                &self.provider.strings,
-                self.provider.strings.len(),
-                &self.provider.node_types,
-                self.provider.node_types.len(),
+                strings,
+                strings_len,
+                node_types,
+                node_types_len,
             ))
             .expect("failed convert NodeDetailInfo"),
             None => JsValue::null(),
         }
     }
 
+    #[wasm_bindgen]
+    pub fn get_same_string_value_nodes(&self, cond: &JsValue) -> JsValue {
+        let cond = cond
+            .into_serde::<SameStringCondition>()
+            .expect("failed to decode condition");
+
+        Log::info("searching");
+
+        let (node_types, node_types_len) = self.provider.get_node_types();
+        let (strings, strings_len) = self.provider.get_strings();
+
+        let use_excludes = cond.excludes.len() > 0;
+        let use_includes = cond.includes.len() > 0;
+
+        // node name, node index
+        let string_nodes: Vec<(&str, usize)> = self
+            .provider
+            .nodes
+            .iter()
+            .enumerate()
+            .filter_map(|(node_index, node)| {
+                let node_type = node.get_node_type(node_types, node_types_len);
+                if node_type == NODE_TYPE_STRING
+                    || node_type == NODE_TYPE_CONCATENATED_STRING
+                    || node_type == NODE_TYPE_SLICED_STRING
+                {
+                    let node_name = node.get_node_name(strings, strings_len);
+                    if node_name.chars().count() < cond.minimum_string_len {
+                        return None;
+                    }
+                    if use_excludes && cond.excludes.iter().any(|ex| node_name.contains(ex)) {
+                        return None;
+                    }
+                    if use_includes && !cond.includes.iter().any(|inc| node_name.contains(inc)) {
+                        return None;
+                    }
+                    Some((node_name, node_index))
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        let nodes: Vec<&Node> = count_same_string(&string_nodes, cond.more_than_same_times)
+            .iter()
+            .map(|node_index| &self.provider.nodes[*node_index])
+            .collect();
+
+        Log::info1_usize("got-nodes", nodes.len());
+
+        SnapshotAnalysis::get_result_graph(&nodes, &vec![])
+    }
+
+    fn get_result_graph(nodes: &Vec<&Node>, edges: &Vec<&Edge>) -> JsValue {
+        JsValue::from_serde(&Result::new(
+            SnapshotAnalysis::nodes_to_result_node(nodes),
+            SnapshotAnalysis::edges_to_result_edge(edges),
+        ))
+        .expect_throw("Failed parse SearchResult")
+    }
+
+    fn nodes_to_result_node(nodes: &Vec<&Node>) -> Vec<ResultNode> {
+        nodes
+            .iter()
+            .map(|node| ResultNode::from_node(node))
+            .collect()
+    }
+
+    fn edges_to_result_edge(edges: &Vec<&Edge>) -> Vec<ResultEdge> {
+        edges
+            .iter()
+            .map(|edge| ResultEdge::from_edge(edge))
+            .collect()
+    }
+
     fn get_nodes_by_cond(&self, cond: FilterCondition) -> Vec<&Node> {
-        let strings = &self.provider.strings;
-        let strings_len = strings.len();
+        let (strings, strings_len) = self.provider.get_strings();
 
         let result: Vec<&Node> = self
             .provider

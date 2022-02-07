@@ -17,8 +17,13 @@ export class Canvas extends Component {
     this.renderService.init(this.rootRef.current!);
   }
 
-  public onFilter = async () => {
+  private onFilterCondSubmit = async () => {
     const graph = await this.parserService.getGraphByFilter();
+    this.renderService.render(graph);
+  };
+
+  private onSearchSameStringSubmit = async () => {
+    const graph = await this.parserService.getSameStringValueNodes();
     this.renderService.render(graph);
   };
 
@@ -26,7 +31,10 @@ export class Canvas extends Component {
     return (
       <div className="canvas-root">
         <div className="panels-left">
-          <FilterPanel onSubmit={this.onFilter} />
+          <FilterPanel
+            onFilterCondSubmit={this.onFilterCondSubmit}
+            onSearchSameStringSubmit={this.onSearchSameStringSubmit}
+          />
         </div>
         <div className="panels-right">
           <InfoPanel />

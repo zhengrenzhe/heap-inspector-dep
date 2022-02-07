@@ -22,6 +22,7 @@ class ViewModel {
 
   @action
   public setMsg(msg: string) {
+    console.log(msg);
     this.msg = msg;
   }
 }

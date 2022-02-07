@@ -21,7 +21,7 @@
   "retain_size": "持有大小",
   "reference_depth": "引用深度",
   "eg-reference-depth": "0",
-  "filter": "过滤",
+  "filter_by_cond": "[WIP] 根据条件过滤",
   "info": "信息",
   "id": "ID",
   "node_type": "节点类型",
@@ -51,5 +51,16 @@
   "nodes_limit_desc": "只显示指定数量的搜索结果",
   "ignore_system_node_desc": "隐藏非用户 JavaScript 代码创建的对象",
   "hidden": "隐藏",
-  "display": "显示"
+  "display": "显示",
+  "repeat-times": "重复次数",
+  "search-same-strings": "搜索多次出现的相同字符串",
+  "search-same-strings-desc": "相同字符串在堆中重复出现指定次数以上才会出现在结果中",
+  "minimum_string_len": "最小字符串长度",
+  "minimum_string_len_desc": "大于指定长度的字符串在会出现在结果中",
+  "include_strings": "需要包含的字符串",
+  "include_strings_desc": "显示的结果必须包含下列字符串",
+  "search": "搜索",
+  "enter_add": "按下 enter 键添加",
+  "exclude_strings": "需要排除的字符串",
+  "exclude_strings_desc": "显示的结果不能包含下列字符串"
 }

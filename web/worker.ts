@@ -1,12 +1,18 @@
 import { expose } from "comlink";
 
-import init, { INodeDetailInfo, IResult, SnapshotAnalysis } from "@wasm";
-import { IFilterCondition, IThreadAPI, WorkerLogEvent } from "@/types";
+import init, {
+  IFilterCondition,
+  INodeDetailInfo,
+  IResult,
+  ISameStringCondition,
+  SnapshotAnalysis,
+} from "@wasm";
+import { IThreadAPI, WorkerLogEvent } from "@/types";
 import { I18n } from "@/i18n";
 
 (self as any).Log = {
-  set_msg: (msg: keyof I18n, params?: string[]) => {
-    self.postMessage(new WorkerLogEvent(msg, params));
+  set_msg: (msg: keyof I18n) => {
+    self.postMessage(new WorkerLogEvent(msg));
   },
   set_msg_1_number: (msg: keyof I18n, num1: number) => {
     self.postMessage(new WorkerLogEvent(msg, [num1.toString()]));
@@ -18,7 +24,7 @@ import { I18n } from "@/i18n";
   },
 };
 
-class WorkerIns implements IThreadAPI {
+class Thread implements IThreadAPI {
   private analysis: SnapshotAnalysis | undefined;
 
   public async init() {
@@ -40,6 +46,10 @@ class WorkerIns implements IThreadAPI {
   public async getNode(id: number) {
     return this.analysis?.get_node_detail_info(id) as INodeDetailInfo;
   }
+
+  public async getSameStringValueNodes(cond: ISameStringCondition) {
+    return this.analysis?.get_same_string_value_nodes(cond) as IResult;
+  }
 }
 
-expose(new WorkerIns());
+expose(new Thread());

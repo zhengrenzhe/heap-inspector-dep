@@ -1,7 +1,11 @@
 import { Remote } from "comlink";
 
-import { IFilterCondition } from "@/types";
-import { INodeDetailInfo, IResult } from "@wasm";
+import {
+  INodeDetailInfo,
+  IResult,
+  IFilterCondition,
+  ISameStringCondition,
+} from "@wasm";
 
 export interface IThreadAPI {
   init(): Promise<void>;
@@ -11,6 +15,8 @@ export interface IThreadAPI {
   getGraph(cond: IFilterCondition): Promise<IResult>;
 
   getNode(id: number): Promise<INodeDetailInfo>;
+
+  getSameStringValueNodes(cond: ISameStringCondition): Promise<IResult>;
 }
 
 export type IThread = Remote<IThreadAPI>;

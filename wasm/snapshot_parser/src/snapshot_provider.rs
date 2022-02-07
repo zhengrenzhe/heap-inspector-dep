@@ -12,3 +12,17 @@ pub struct SnapshotProvider {
     pub edge_types: Vec<String>,
     pub node_types: Vec<String>,
 }
+
+impl SnapshotProvider {
+    pub fn get_strings(&self) -> (&Vec<String>, usize) {
+        return (&self.strings, self.strings.len());
+    }
+
+    pub fn get_node_types(&self) -> (&Vec<String>, usize) {
+        return (&self.node_types, self.node_types.len());
+    }
+
+    pub fn get_edge_types(&self) -> (&Vec<String>, usize) {
+        return (&self.edge_types, self.edge_types.len());
+    }
+}

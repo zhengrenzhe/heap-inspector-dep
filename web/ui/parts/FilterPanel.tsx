@@ -10,15 +10,18 @@ import {
   Checkbox,
   Button,
   Grid,
+  Accordion,
 } from "@mantine/core";
 
 import { I18n, i18n } from "@/i18n";
-import { CompareMode, filter_from, IFilterCondition } from "@/types";
+import { CompareMode, filter_from } from "@/types";
 import { ParserService } from "@/service";
 import { inject } from "@/util";
+import { IFilterCondition } from "@wasm";
 
 interface IFilterPanelProps {
-  onSubmit: () => void;
+  onFilterCondSubmit: () => void;
+  onSearchSameStringSubmit: () => void;
 }
 
 const filter_from_data = filter_from.map((f) => ({
@@ -65,7 +68,9 @@ export class FilterPanel extends Component<IFilterPanelProps> {
               size="xs"
               value={this.vm.filter[value_field] as number}
               min={0}
-              onChange={(val) => val && this.vm.setFilter(value_field, val)}
+              onChange={(val) =>
+                val !== undefined && this.vm.setFilter(value_field, val)
+              }
             />
           </Grid.Col>
         </Grid>
@@ -73,9 +78,9 @@ export class FilterPanel extends Component<IFilterPanelProps> {
     );
   }
 
-  public render() {
+  private renderFilters() {
     return (
-      <Paper padding="md" shadow="sm" radius="md">
+      <>
         <InputWrapper
           label={i18n("filter_source")}
           description={i18n("filter_source_desc")}
@@ -133,7 +138,9 @@ export class FilterPanel extends Component<IFilterPanelProps> {
             size="xs"
             value={this.vm.filter.nodes_limit}
             min={0}
-            onChange={(val) => val && this.vm.setFilter("nodes_limit", val)}
+            onChange={(val) =>
+              val !== undefined && this.vm.setFilter("nodes_limit", val)
+            }
             style={{ width: 200 }}
           />
         </InputWrapper>
@@ -154,9 +161,97 @@ export class FilterPanel extends Component<IFilterPanelProps> {
           />
         </InputWrapper>
 
-        <Button variant="light" onClick={this.props.onSubmit}>
+        <Button variant="light" onClick={this.props.onFilterCondSubmit}>
           {i18n("apply-filter")}
         </Button>
+      </>
+    );
+  }
+
+  private renderSearchSameStringNodes() {
+    return (
+      <>
+        <InputWrapper
+          label={i18n("repeat-times")}
+          description={i18n("search-same-strings-desc")}
+        >
+          <NumberInput
+            size="xs"
+            value={this.vm.sameStringCond.more_than_same_times}
+            min={0}
+            onChange={(val) =>
+              val !== undefined &&
+              this.vm.setSameStringCond("more_than_same_times", val)
+            }
+          />
+        </InputWrapper>
+
+        <InputWrapper
+          label={i18n("minimum_string_len")}
+          description={i18n("minimum_string_len_desc")}
+        >
+          <NumberInput
+            size="xs"
+            value={this.vm.sameStringCond.minimum_string_len}
+            min={0}
+            onChange={(val) =>
+              val !== undefined &&
+              this.vm.setSameStringCond("minimum_string_len", val)
+            }
+          />
+        </InputWrapper>
+
+        <InputWrapper
+          label={i18n("include_strings")}
+          description={i18n("include_strings_desc")}
+        >
+          <MultiSelect
+            data={[]}
+            value={this.vm.sameStringCond.includes}
+            searchable
+            clearable
+            creatable
+            size="xs"
+            getCreateLabel={(query) => `${i18n("enter_add")} ${query}`}
+            onChange={(val) => this.vm.setSameStringCond("includes", val)}
+          />
+        </InputWrapper>
+
+        <InputWrapper
+          label={i18n("exclude_strings")}
+          description={i18n("exclude_strings_desc")}
+        >
+          <MultiSelect
+            data={[]}
+            value={this.vm.sameStringCond.excludes}
+            searchable
+            clearable
+            creatable
+            size="xs"
+            getCreateLabel={(query) => `${i18n("enter_add")} ${query}`}
+            onChange={(val) => this.vm.setSameStringCond("excludes", val)}
+          />
+        </InputWrapper>
+
+        <Button variant="light" onClick={this.props.onSearchSameStringSubmit}>
+          {i18n("search")}
+        </Button>
+      </>
+    );
+  }
+
+  public render() {
+    return (
+      <Paper padding="md" shadow="sm" radius="md" style={{ width: 380 }}>
+        <Accordion offsetIcon={false} initialItem={0}>
+          <Accordion.Item label={i18n("filter_by_cond")}>
+            {this.renderFilters()}
+          </Accordion.Item>
+
+          <Accordion.Item label={i18n("search-same-strings")}>
+            {this.renderSearchSameStringNodes()}
+          </Accordion.Item>
+        </Accordion>
       </Paper>
     );
   }

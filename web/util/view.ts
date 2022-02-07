@@ -1,9 +1,3 @@
-export function toNumber(val: string) {
-  const num = parseInt(val);
-  if (isNaN(num)) return 0;
-  return num;
-}
-
-export function toJSON(data: any) {
+export function toJSON<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
 }

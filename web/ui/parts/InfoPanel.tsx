@@ -16,12 +16,12 @@ export class InfoPanel extends Component {
   private renderType(type: INodeInfoType, infos?: INodeDetailInfo[]) {
     if (!infos || infos.length === 0) return null;
     return (
-      <div className="type-area">
+      <div className="type-area" key={type}>
         <div className="type-name">{type}</div>
         {infos.map((info) => (
-          <ul className="fields">
+          <ul className="fields" key={info.id}>
             {Object.entries(info).map(([key, value]) => (
-              <li className="fields-row">
+              <li className="fields-row" key={key}>
                 <span className="field-key">{i18n(key as keyof I18n)}</span>
                 <span className="field-value">{value}</span>
               </li>

@@ -1,10 +1,11 @@
 import { singleton } from "tsyringe";
-
-import { CompareMode, filter_from, IFilterCondition } from "@/types";
-import { inject, toJSON } from "@/util";
-import { LogService, ThreadService } from "@/service";
 import { action, makeObservable, observable } from "mobx";
 import { transfer } from "comlink";
+
+import { filter_from, CompareMode } from "@/types";
+import { inject, toJSON } from "@/util";
+import { LogService, ThreadService } from "@/service";
+import { IFilterCondition, ISameStringCondition } from "@wasm";
 
 @singleton()
 export class ParserService {
@@ -29,12 +30,18 @@ export class ParserService {
   }
 
   public async getGraphByFilter() {
-    console.log(toJSON(this.viewModel.filter));
     return await this.currentThread.getGraph(toJSON(this.viewModel.filter));
   }
 
   public async getNodeInfo(nodeId: number) {
     return await this.currentThread.getNode(nodeId);
+  }
+
+  public async getSameStringValueNodes() {
+    console.log(toJSON(this.viewModel.sameStringCond));
+    return await this.currentThread.getSameStringValueNodes(
+      toJSON(this.viewModel.sameStringCond)
+    );
   }
 }
 
@@ -57,11 +64,27 @@ class ViewModel {
     ignore_system_node: true,
   };
 
+  @observable
+  public sameStringCond: ISameStringCondition = {
+    more_than_same_times: 2,
+    minimum_string_len: 5,
+    includes: [],
+    excludes: [],
+  };
+
   @action
   public setFilter<T extends keyof IFilterCondition>(
     key: T,
     value: IFilterCondition[T]
   ) {
     this.filter[key] = value;
+  }
+
+  @action
+  public setSameStringCond<T extends keyof ISameStringCondition>(
+    key: T,
+    value: ISameStringCondition[T]
+  ) {
+    this.sameStringCond[key] = value;
   }
 }
