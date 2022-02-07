@@ -62,5 +62,7 @@
   "search": "搜索",
   "enter_add": "按下 enter 键添加",
   "exclude_strings": "需要排除的字符串",
-  "exclude_strings_desc": "显示的结果不能包含下列字符串"
+  "exclude_strings_desc": "显示的结果不能包含下列字符串",
+  "select": "选择的节点",
+  "hover": "hover 的节点"
 }

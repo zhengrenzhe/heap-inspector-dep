@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { Paper } from "@mantine/core";
+import { Table, Text, Card, Tooltip, Badge, Box } from "@mantine/core";
 
 import { RenderService } from "@/service";
 import { inject } from "@/util";
@@ -16,29 +16,65 @@ export class InfoPanel extends Component {
   private renderType(type: INodeInfoType, infos?: INodeDetailInfo[]) {
     if (!infos || infos.length === 0) return null;
     return (
-      <div className="type-area" key={type}>
-        <div className="type-name">{type}</div>
+      <Card
+        shadow="sm"
+        radius="md"
+        padding="md"
+        style={{ marginBottom: 20, width: 320 }}
+      >
+        <Box style={{ marginBottom: 4 }}>
+          <Text weight={500}>{i18n(type)}</Text>
+        </Box>
         {infos.map((info) => (
-          <ul className="fields" key={info.id}>
-            {Object.entries(info).map(([key, value]) => (
-              <li className="fields-row" key={key}>
-                <span className="field-key">{i18n(key as keyof I18n)}</span>
-                <span className="field-value">{value}</span>
-              </li>
-            ))}
-          </ul>
+          <Table
+            striped
+            highlightOnHover
+            style={{ display: "flex", overflow: "hidden" }}
+          >
+            <tbody style={{ overflow: "hidden", width: "100%" }}>
+              {Object.entries(info).map(([key, value]) => (
+                <tr key={key} style={{ width: "100%" }}>
+                  <td>
+                    <Badge
+                      color="pink"
+                      variant="light"
+                      style={{ flexShrink: 0 }}
+                    >
+                      {i18n(key as keyof I18n)}
+                    </Badge>
+                  </td>
+                  <td style={{ width: "100%" }}>
+                    <Tooltip
+                      label={value}
+                      transition="fade"
+                      transitionDuration={200}
+                      wrapLines
+                      width={220}
+                      delay={100}
+                      withArrow
+                      allowPointerEvents
+                    >
+                      <Text size="sm" lineClamp={2}>
+                        {value}
+                      </Text>
+                    </Tooltip>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         ))}
-      </div>
+      </Card>
     );
   }
 
   public render() {
     return (
-      <Paper padding="md" shadow="sm" radius="md">
+      <>
         {NodeInfoTypeSort.map((type) =>
           this.renderType(type, this.renderService.viewModel.infos.get(type))
         )}
-      </Paper>
+      </>
     );
   }
 }
