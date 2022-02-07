@@ -19,4 +19,4 @@ jobs:
     - name: Run test
       run: cd wasm/snapshot_parser && cargo test --verbose
     - name: Run test2
-      run: cargo test --verbose
+      run: cd wasm && cargo test --verbose
