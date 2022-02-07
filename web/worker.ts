@@ -8,6 +8,14 @@ import { I18n } from "@/i18n";
   set_msg: (msg: keyof I18n, params?: string[]) => {
     self.postMessage(new WorkerLogEvent(msg, params));
   },
+  set_msg_1_number: (msg: keyof I18n, num1: number) => {
+    self.postMessage(new WorkerLogEvent(msg, [num1.toString()]));
+  },
+  set_msg_2_number: (msg: keyof I18n, num1: number, num2: number) => {
+    self.postMessage(
+      new WorkerLogEvent(msg, [num1.toString(), num2.toString()])
+    );
+  },
 };
 
 class WorkerIns implements IThreadAPI {

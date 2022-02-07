@@ -88,11 +88,17 @@ export interface INodeDetailInfo {
 "#;
 
 impl NodeDetailInfo {
-    pub fn from_node(node: &Node) -> Self {
+    pub fn from_node(
+        node: &Node,
+        strings: &Vec<String>,
+        strings_len: usize,
+        node_types: &Vec<String>,
+        node_types_len: usize,
+    ) -> Self {
         Self {
             id: node.id.to_string(),
-            node_type: node.node_type.clone(),
-            node_name: node.name.clone(),
+            node_type: String::from(node.get_node_type(node_types, node_types_len)),
+            node_name: String::from(node.get_node_name(strings, strings_len)),
             self_size: node.self_size,
             edge_count: node.edge_count,
         }

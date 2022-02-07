@@ -5,41 +5,27 @@ use crate::filter::FilterCondition;
 use crate::log::Log;
 use crate::result::{NodeDetailInfo, Result, ResultEdge, ResultNode};
 use snapshot_parser::reader::Reader;
-use snapshot_parser::snapshot::{Edge, Node, Snapshot};
+use snapshot_parser::snapshot::Node;
+use snapshot_parser::snapshot_provider::SnapshotProvider;
 
 #[wasm_bindgen]
 pub struct SnapshotAnalysis {
-    snapshot: Snapshot,
-    nodes: Vec<Node>,
-    edges: Vec<Edge>,
+    provider: SnapshotProvider,
 }
 
 #[wasm_bindgen]
 impl SnapshotAnalysis {
     #[wasm_bindgen(constructor)]
     pub fn new(bytes: &[u8]) -> Self {
-        Log::info2("reading", vec![bytes.len().to_string()]);
+        Log::info1_usize("reading", bytes.len());
         let raw_bytes = Uint8Array::from(bytes).to_vec();
         Log::info("read-done");
 
-        Log::info("decoding");
-        let snapshot = Reader::from_bytes(&raw_bytes);
-        Log::info("decode-done");
-
         Log::info("parsing");
-        let (nodes, edges) = snapshot.get_graph();
-        assert_eq!(nodes.len() as u32, snapshot.snapshot.node_count);
-        assert_eq!(edges.len() as u32, snapshot.snapshot.edge_count);
-        Log::info2(
-            "parsing-done",
-            vec![nodes.len().to_string(), edges.len().to_string()],
-        );
+        let provider = Reader::from_bytes(&raw_bytes);
+        Log::info2_usize("parsing-done", provider.nodes.len(), provider.edges.len());
 
-        SnapshotAnalysis {
-            snapshot,
-            nodes,
-            edges,
-        }
+        SnapshotAnalysis { provider }
     }
 
     #[wasm_bindgen]
@@ -57,7 +43,7 @@ impl SnapshotAnalysis {
             .map(|node| ResultNode::from_node(node))
             .collect();
 
-        Log::info2("got-nodes", vec![nodes.len().to_string()]);
+        Log::info1_usize("got-nodes", nodes.len());
 
         let edges: Vec<ResultEdge> = vec![];
 
@@ -67,22 +53,34 @@ impl SnapshotAnalysis {
 
     #[wasm_bindgen]
     pub fn get_node_detail_info(&self, id: u32) -> JsValue {
-        match self.nodes.iter().find(|node| node.id == id) {
-            Some(node) => JsValue::from_serde(&NodeDetailInfo::from_node(node))
-                .expect("failed convert NodeDetailInfo"),
+        match self.provider.nodes.iter().find(|node| node.id == id) {
+            Some(node) => JsValue::from_serde(&NodeDetailInfo::from_node(
+                node,
+                &self.provider.strings,
+                self.provider.strings.len(),
+                &self.provider.node_types,
+                self.provider.node_types.len(),
+            ))
+            .expect("failed convert NodeDetailInfo"),
             None => JsValue::null(),
         }
     }
 
     fn get_nodes_by_cond(&self, cond: FilterCondition) -> Vec<&Node> {
+        let strings = &self.provider.strings;
+        let strings_len = strings.len();
+
         let result: Vec<&Node> = self
+            .provider
             .nodes
             .iter()
             .filter(|node| {
-                if !node.name.contains(&cond.filter_name) {
+                if !node
+                    .get_node_name(strings, strings_len)
+                    .contains(&cond.filter_name)
+                {
                     return false;
                 }
-
                 true
             })
             .collect();
