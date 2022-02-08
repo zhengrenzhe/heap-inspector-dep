@@ -1,13 +1,12 @@
 use js_sys::Uint8Array;
-use snapshot_parser::consts::{
-    NODE_TYPE_CONCATENATED_STRING, NODE_TYPE_SLICED_STRING, NODE_TYPE_STRING,
-};
+use snapshot_parser::consts::STRING_NODE_TYPE;
 use wasm_bindgen::prelude::*;
 
 use crate::filter::{FilterCondition, SameStringCondition};
 use crate::log::Log;
 use crate::result::NodeDetailInfo;
 use crate::search::count_same_string;
+use crate::utils::decode_js_value;
 use snapshot_parser::reader::Reader;
 use snapshot_parser::snapshot::Node;
 use snapshot_parser::snapshot_provider::SnapshotProvider;
@@ -34,13 +33,11 @@ impl SnapshotAnalysis {
 
     #[wasm_bindgen]
     pub fn get_graph(&self, cond: &JsValue) -> JsValue {
-        let cond = cond
-            .into_serde::<FilterCondition>()
-            .expect("failed to decode condition");
+        let cond: FilterCondition = decode_js_value(cond);
 
         Log::info("searching");
 
-        let nodes = self.get_nodes_by_cond(cond);
+        let nodes = SnapshotAnalysis::filter_nodes(&self.provider, cond);
 
         Log::info1_usize("got-nodes", nodes.len());
 
@@ -67,9 +64,7 @@ impl SnapshotAnalysis {
 
     #[wasm_bindgen]
     pub fn get_same_string_value_nodes(&self, cond: &JsValue) -> JsValue {
-        let cond = cond
-            .into_serde::<SameStringCondition>()
-            .expect("failed to decode condition");
+        let cond: SameStringCondition = decode_js_value(cond);
 
         Log::info("searching");
 
@@ -87,10 +82,7 @@ impl SnapshotAnalysis {
             .enumerate()
             .filter_map(|(node_index, node)| {
                 let node_type = node.get_node_type(node_types, node_types_len);
-                if node_type == NODE_TYPE_STRING
-                    || node_type == NODE_TYPE_CONCATENATED_STRING
-                    || node_type == NODE_TYPE_SLICED_STRING
-                {
+                if STRING_NODE_TYPE.contains(&node_type) {
                     let node_name = node.get_node_name(strings, strings_len);
                     if node_name.chars().count() < cond.minimum_string_len {
                         return None;
@@ -116,30 +108,5 @@ impl SnapshotAnalysis {
         Log::info1_usize("got-nodes", nodes.len());
 
         SnapshotAnalysis::convert_graph_to_js(&nodes, &[])
-    }
-
-    fn get_nodes_by_cond(&self, cond: FilterCondition) -> Vec<&Node> {
-        let (strings, strings_len) = self.provider.get_strings();
-
-        let result: Vec<&Node> = self
-            .provider
-            .nodes
-            .iter()
-            .filter(|node| {
-                if !node
-                    .get_node_name(strings, strings_len)
-                    .contains(&cond.filter_name)
-                {
-                    return false;
-                }
-                true
-            })
-            .collect();
-
-        if result.len() < cond.nodes_limit as usize {
-            return result;
-        }
-
-        result[0..(cond.nodes_limit as usize)].to_vec()
     }
 }

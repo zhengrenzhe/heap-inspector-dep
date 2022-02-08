@@ -6,6 +6,7 @@ pub mod filter;
 pub mod log;
 pub mod result;
 pub mod search;
+pub mod utils;
 
 #[wasm_bindgen(start)]
 pub fn main_js() -> Result<(), JsValue> {

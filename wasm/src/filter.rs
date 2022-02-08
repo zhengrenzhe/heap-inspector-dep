@@ -17,7 +17,7 @@ pub struct FilterCondition {
     pub self_size: u32,
     pub retain_size: u32,
     pub reference_depth: u32,
-    pub nodes_limit: u32,
+    pub nodes_limit: usize,
     pub self_size_compare_mode: u32,
     pub retain_size_compare_mode: u32,
     pub reference_depth_compare_mode: u32,

@@ -12,3 +12,9 @@ pub const NODE_TYPE_CONCATENATED_STRING: &str = "concatenated_string";
 pub const NODE_TYPE_SLICED_STRING: &str = "sliced_string";
 pub const NODE_TYPE_SYMBOL: &str = "symbol";
 pub const NODE_TYPE_BIGINT: &str = "bigint";
+
+pub const STRING_NODE_TYPE: [&str; 3] = [
+    NODE_TYPE_STRING,
+    NODE_TYPE_SLICED_STRING,
+    NODE_TYPE_CONCATENATED_STRING,
+];
