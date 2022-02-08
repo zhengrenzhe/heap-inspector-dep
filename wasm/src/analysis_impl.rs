@@ -5,7 +5,7 @@ use crate::filter::{
 };
 use crate::result::{Result, ResultEdge, ResultNode};
 use snapshot_parser::consts::{
-    NODE_TYPE_CLOSURE, NODE_TYPE_NATIVE, NODE_TYPE_OBJECT, STRING_NODE_TYPE,
+    NODE_TYPE_CLOSURE, NODE_TYPE_NATIVE, NODE_TYPE_OBJECT, STRING_NODE_TYPE, USER_NODE_TYPE,
 };
 use snapshot_parser::snapshot::{Edge, Node};
 use snapshot_parser::snapshot_provider::SnapshotProvider;
@@ -64,6 +64,10 @@ impl SnapshotAnalysis {
                 if cond.filter_from.contains(&filter_string)
                     && (!STRING_NODE_TYPE.contains(&node_type))
                 {
+                    return false;
+                }
+
+                if cond.ignore_system_node && !USER_NODE_TYPE.contains(&node_type) {
                     return false;
                 }
 
