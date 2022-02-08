@@ -38,8 +38,8 @@ export class InfoPanel extends Component {
                 <tr key={key} style={{ width: "100%" }}>
                   <td>
                     <Badge
-                      color="pink"
-                      variant="light"
+                      color="blue"
+                      variant="outline"
                       style={{ flexShrink: 0 }}
                     >
                       {i18n(key as keyof I18n)}
