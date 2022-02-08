@@ -3,6 +3,7 @@ use crate::filter::{
     FilterCondition, FILTER_FROM_CLOSURE_NAME, FILTER_FROM_CONSTRUCTOR_NAME,
     FILTER_FROM_STRING_VALUE,
 };
+use crate::log::Log;
 use crate::result::{Result, ResultEdge, ResultNode};
 use snapshot_parser::consts::{
     NODE_TYPE_CLOSURE, NODE_TYPE_NATIVE, NODE_TYPE_OBJECT, STRING_NODE_TYPE, USER_NODE_TYPE,
@@ -85,5 +86,40 @@ impl SnapshotAnalysis {
         }
 
         result[0..(cond.nodes_limit)].to_vec()
+    }
+
+    pub(crate) fn get_child_graph<'a, 'b: 'a>(
+        provider: &'b SnapshotProvider,
+        source_node: &'b Node,
+    ) -> (Vec<&'a Node>, Vec<&'a Edge>) {
+        let mut result_nodes: Vec<&'a Node> = Vec::new();
+        let mut result_edges: Vec<&'a Edge> = Vec::new();
+
+        source_node.to_edge_index.iter().for_each(|edge_index| {
+            let edge = &provider.edges[*edge_index];
+            result_edges.push(edge);
+
+            let to_node = &provider.nodes[edge.to_node_index];
+            result_nodes.push(to_node);
+        });
+
+        (result_nodes, result_edges)
+    }
+
+    pub(crate) fn get_children_graph<'a, 'b: 'a>(
+        provider: &'b SnapshotProvider,
+        source_nodes: &'b [&Node],
+    ) -> (Vec<&'a Node>, Vec<&'a Edge>) {
+        let mut result_node: Vec<&Node> = Vec::new();
+        let mut result_edge: Vec<&Edge> = Vec::new();
+
+        source_nodes.iter().for_each(|node| {
+            result_node.push(node);
+            let (mut r_nodes, mut r_edges) = SnapshotAnalysis::get_child_graph(provider, node);
+            result_node.append(&mut r_nodes);
+            result_edge.append(&mut r_edges);
+        });
+
+        (result_node, result_edge)
     }
 }

@@ -5,6 +5,7 @@ import {
   IResult,
   IFilterCondition,
   ISameStringCondition,
+  IEdgeDetailInfo,
 } from "@wasm";
 
 export interface IThreadAPI {
@@ -15,6 +16,8 @@ export interface IThreadAPI {
   getGraph(cond: IFilterCondition): Promise<IResult>;
 
   getNodeDetail(id: number): Promise<INodeDetailInfo>;
+
+  getEdgeDetail(edge_index: number): Promise<IEdgeDetailInfo>;
 
   getSameStringValueNodes(cond: ISameStringCondition): Promise<IResult>;
 }

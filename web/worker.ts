@@ -1,6 +1,7 @@
 import { expose } from "comlink";
 
 import init, {
+  IEdgeDetailInfo,
   IFilterCondition,
   INodeDetailInfo,
   IResult,
@@ -45,6 +46,10 @@ class Thread implements IThreadAPI {
 
   public async getNodeDetail(id: number) {
     return this.analysis?.get_node_detail(id) as INodeDetailInfo;
+  }
+
+  public async getEdgeDetail(edge_index: number) {
+    return this.analysis?.get_edge_detail(edge_index) as IEdgeDetailInfo;
   }
 
   public async getSameStringValueNodes(cond: ISameStringCondition) {

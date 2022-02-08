@@ -27,6 +27,7 @@ impl ResultNode {
 pub struct ResultEdge {
     source: String,
     target: String,
+    edge_index: usize,
 }
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -35,6 +36,7 @@ export interface IResultEdge {
     [key: string]: any;
     source: string;
     target: string;
+    edge_index: number;
 }
 "#;
 
@@ -43,6 +45,7 @@ impl ResultEdge {
         Self {
             source: edge.from_node_id.to_string(),
             target: edge.to_node_id.to_string(),
+            edge_index: edge.edge_index,
         }
     }
 }
@@ -101,6 +104,38 @@ impl NodeDetailInfo {
             node_name: String::from(node.get_node_name(strings, strings_len)),
             self_size: node.self_size,
             edge_count: node.edge_count,
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct EdgeDetailInfo {
+    edge_index: usize,
+    edge_type: String,
+    edge_name: String,
+}
+
+#[wasm_bindgen(typescript_custom_section)]
+const ITEXT_STYLE5: &'static str = r#"
+export interface IEdgeDetailInfo {
+    edge_index: number;
+    edge_type: string;
+    edge_name: string;
+}
+"#;
+
+impl EdgeDetailInfo {
+    pub fn from_edge(
+        edge: &Edge,
+        strings: &[String],
+        strings_len: usize,
+        edge_types: &[String],
+        edge_types_len: usize,
+    ) -> Self {
+        Self {
+            edge_index: edge.edge_index,
+            edge_type: String::from(edge.get_edge_type(edge_types, edge_types_len)),
+            edge_name: String::from(edge.get_edge_name(strings, strings_len)),
         }
     }
 }

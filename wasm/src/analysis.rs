@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use crate::filter::{FilterCondition, SameStringCondition};
 use crate::log::Log;
-use crate::result::NodeDetailInfo;
+use crate::result::{EdgeDetailInfo, NodeDetailInfo};
 use crate::search::count_same_string;
 use crate::utils::decode_js_value;
 use snapshot_parser::reader::Reader;
@@ -39,9 +39,12 @@ impl SnapshotAnalysis {
 
         let nodes = SnapshotAnalysis::filter_nodes(&self.provider, cond);
 
-        Log::info1_usize("got-nodes", nodes.len());
+        let (result_node, result_edge) =
+            SnapshotAnalysis::get_children_graph(&self.provider, &nodes);
 
-        SnapshotAnalysis::convert_graph_to_js(&nodes, &[])
+        Log::info2_usize("got-nodes", result_node.len(), result_node.len());
+
+        SnapshotAnalysis::convert_graph_to_js(&result_node, &result_edge)
     }
 
     #[wasm_bindgen]
@@ -59,6 +62,29 @@ impl SnapshotAnalysis {
             ))
             .expect("failed convert NodeDetailInfo"),
             None => JsValue::null(),
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn get_edge_detail(&self, edge_index: usize) -> JsValue {
+        let (strings, strings_len) = self.provider.get_strings();
+        let (edge_types, edge_types_len) = self.provider.get_edge_types();
+
+        match self
+            .provider
+            .edges
+            .iter()
+            .find(|edge| edge.edge_index == edge_index)
+        {
+            None => JsValue::null(),
+            Some(edge) => JsValue::from_serde(&EdgeDetailInfo::from_edge(
+                edge,
+                strings,
+                strings_len,
+                edge_types,
+                edge_types_len,
+            ))
+            .expect("failed convert EdgeDetailInfo"),
         }
     }
 
@@ -105,8 +131,11 @@ impl SnapshotAnalysis {
             .map(|node_index| &self.provider.nodes[*node_index])
             .collect();
 
-        Log::info1_usize("got-nodes", nodes.len());
+        let (result_node, result_edge) =
+            SnapshotAnalysis::get_children_graph(&self.provider, &nodes);
 
-        SnapshotAnalysis::convert_graph_to_js(&nodes, &[])
+        Log::info2_usize("got-nodes", result_node.len(), result_edge.len());
+
+        SnapshotAnalysis::convert_graph_to_js(&result_node, &result_edge)
     }
 }

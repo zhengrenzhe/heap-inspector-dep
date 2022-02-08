@@ -5,7 +5,7 @@ import { Table, Text, Card, Tooltip, Badge, Box } from "@mantine/core";
 import { RenderService } from "@/service";
 import { inject } from "@/util";
 import { INodeInfoType, NodeInfoTypeSort } from "@/types";
-import { INodeDetailInfo } from "@wasm";
+import { IEdgeDetailInfo, INodeDetailInfo } from "@wasm";
 import { I18n, i18n } from "@/i18n";
 
 @observer
@@ -13,8 +13,12 @@ export class InfoPanel extends Component {
   @inject()
   private renderService!: RenderService;
 
-  private renderType(type: INodeInfoType, infos?: INodeDetailInfo[]) {
+  private renderType(
+    type: INodeInfoType,
+    infos?: (INodeDetailInfo | IEdgeDetailInfo)[]
+  ) {
     if (!infos || infos.length === 0) return null;
+
     return (
       <Card
         shadow="sm"
@@ -26,12 +30,12 @@ export class InfoPanel extends Component {
         <Box style={{ marginBottom: 4 }}>
           <Text weight={500}>{i18n(type)}</Text>
         </Box>
-        {infos.map((info) => (
+        {infos.map((info, index) => (
           <Table
             striped
             highlightOnHover
             style={{ display: "flex", overflow: "hidden", marginBottom: 10 }}
-            key={info.id}
+            key={index}
           >
             <tbody style={{ overflow: "hidden", width: "100%" }}>
               {Object.entries(info).map(([key, value]) => (

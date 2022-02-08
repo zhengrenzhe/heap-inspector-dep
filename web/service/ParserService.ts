@@ -37,8 +37,11 @@ export class ParserService {
     return await this.currentThread.getNodeDetail(nodeId);
   }
 
+  public async getEdgeInfo(edgeIndex: number) {
+    return await this.currentThread.getEdgeDetail(edgeIndex);
+  }
+
   public async getSameStringValueNodes() {
-    console.log(toJSON(this.viewModel.sameStringCond));
     return await this.currentThread.getSameStringValueNodes(
       toJSON(this.viewModel.sameStringCond)
     );

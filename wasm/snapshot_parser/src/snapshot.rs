@@ -70,6 +70,7 @@ impl Node {
 }
 
 pub struct Edge {
+    pub edge_index: usize,
     pub edge_type_index: usize,
     pub name_or_index_raw: usize,
     pub to_node_index: usize,
@@ -148,6 +149,7 @@ impl Snapshot {
             nodes[edge_to_node_idx].from_edge_index.push(edge_idx);
 
             edges.push(Edge {
+                edge_index: edge_idx,
                 edge_type_index: all_edges[edge_base_idx] as usize,
                 name_or_index_raw: all_edges[edge_base_idx + 1] as usize,
                 to_node_index: edge_to_node_idx,

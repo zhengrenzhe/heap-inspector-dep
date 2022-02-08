@@ -2,10 +2,15 @@ import { singleton } from "tsyringe";
 import { Graph, Minimap, IG6GraphEvent } from "@antv/g6";
 import { action, makeObservable, observable } from "mobx";
 
-import { INodeDetailInfo, IResult } from "@wasm";
+import { IEdgeDetailInfo, INodeDetailInfo, IResult } from "@wasm";
 import { LogService, ParserService } from "@/service";
 import { inject } from "@/util";
 import { INodeInfoType } from "@/types";
+
+export interface ITargets {
+  id: number;
+  type: "node" | "edge";
+}
 
 @singleton()
 export class RenderService {
@@ -76,21 +81,52 @@ export class RenderService {
     this.graph.on("mouseenter", this.onHover);
   }
 
-  private async fetchData(ids: number[]) {
-    return Promise.all(ids.map((id) => this.parserService.getNodeInfo(id)));
+  private async fetchData(targets: ITargets[]) {
+    return Promise.all(
+      targets.map((target) =>
+        target.type === "node"
+          ? this.parserService.getNodeInfo(target.id)
+          : this.parserService.getEdgeInfo(target.id)
+      )
+    );
   }
 
   private onHover = async (e: IG6GraphEvent) => {
     if (e.item) {
-      const data = await this.fetchData([parseInt(e.item._cfg?.id!)]);
+      const type = e.item._cfg?.type as "edge" | "node";
+
+      const targets = (() => {
+        if (type === "edge") {
+          if ("edge_index" in (e.item?._cfg?.model ?? ({} as any))) {
+            return {
+              id: parseInt((e.item?._cfg?.model as any).edge_index),
+              type,
+            };
+          }
+          return null;
+        }
+        if (type === "node") {
+          if (e.item._cfg?.id) {
+            return {
+              id: parseInt(e.item._cfg.id),
+              type,
+            };
+          }
+          return null;
+        }
+      })();
+
+      if (!targets) return;
+      const data = await this.fetchData([targets]);
       this.viewModel.setInfo("hover", data);
     }
   };
 
   private onSelect = async (e: IG6GraphEvent) => {
-    const ids: number[] = (e.selectedItems as any).nodes.map((n: any) =>
-      parseInt(n._cfg.id)
-    );
+    const ids: ITargets[] = (e.selectedItems as any).nodes.map((n: any) => ({
+      id: parseInt(n._cfg.id),
+      type: "node" as const,
+    }));
     const data = await this.fetchData(ids);
     this.viewModel.setInfo("select", data);
   };
@@ -111,10 +147,19 @@ class ViewModel {
   }
 
   @observable
-  public infos = new Map<INodeInfoType, INodeDetailInfo[]>();
+  public infos = new Map<
+    INodeInfoType,
+    (INodeDetailInfo | IEdgeDetailInfo)[]
+  >();
 
   @action
-  public setInfo(type: INodeInfoType, nodes: INodeDetailInfo[]) {
-    this.infos.set(type, nodes);
+  public setInfo(
+    type: INodeInfoType,
+    nodes: (INodeDetailInfo | IEdgeDetailInfo)[]
+  ) {
+    this.infos.set(
+      type,
+      nodes.filter((n) => !!n)
+    );
   }
 }
