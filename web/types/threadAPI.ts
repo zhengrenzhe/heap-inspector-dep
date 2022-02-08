@@ -14,7 +14,7 @@ export interface IThreadAPI {
 
   getGraph(cond: IFilterCondition): Promise<IResult>;
 
-  getNode(id: number): Promise<INodeDetailInfo>;
+  getNodeDetail(id: number): Promise<INodeDetailInfo>;
 
   getSameStringValueNodes(cond: ISameStringCondition): Promise<IResult>;
 }

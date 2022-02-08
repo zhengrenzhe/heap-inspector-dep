@@ -40,11 +40,11 @@ class Thread implements IThreadAPI {
   }
 
   public async getGraph(cond: IFilterCondition) {
-    return this.analysis?.get_graph_info(cond) as IResult;
+    return this.analysis?.get_graph(cond) as IResult;
   }
 
-  public async getNode(id: number) {
-    return this.analysis?.get_node_detail_info(id) as INodeDetailInfo;
+  public async getNodeDetail(id: number) {
+    return this.analysis?.get_node_detail(id) as INodeDetailInfo;
   }
 
   public async getSameStringValueNodes(cond: ISameStringCondition) {

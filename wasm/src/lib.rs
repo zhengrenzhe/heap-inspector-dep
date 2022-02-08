@@ -1,6 +1,7 @@
 use wasm_bindgen::prelude::*;
 
 pub mod analysis;
+pub mod analysis_impl;
 pub mod filter;
 pub mod log;
 pub mod result;

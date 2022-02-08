@@ -21,6 +21,7 @@ export class InfoPanel extends Component {
         radius="md"
         padding="md"
         style={{ marginBottom: 20, width: 320 }}
+        key={type}
       >
         <Box style={{ marginBottom: 4 }}>
           <Text weight={500}>{i18n(type)}</Text>
@@ -29,7 +30,8 @@ export class InfoPanel extends Component {
           <Table
             striped
             highlightOnHover
-            style={{ display: "flex", overflow: "hidden" }}
+            style={{ display: "flex", overflow: "hidden", marginBottom: 10 }}
+            key={info.id}
           >
             <tbody style={{ overflow: "hidden", width: "100%" }}>
               {Object.entries(info).map(([key, value]) => (

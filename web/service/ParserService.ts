@@ -2,7 +2,7 @@ import { singleton } from "tsyringe";
 import { action, makeObservable, observable } from "mobx";
 import { transfer } from "comlink";
 
-import { filter_from, CompareMode } from "@/types";
+import { CompareMode } from "@/types";
 import { inject, toJSON } from "@/util";
 import { LogService, ThreadService } from "@/service";
 import { IFilterCondition, ISameStringCondition } from "@wasm";
@@ -34,7 +34,7 @@ export class ParserService {
   }
 
   public async getNodeInfo(nodeId: number) {
-    return await this.currentThread.getNode(nodeId);
+    return await this.currentThread.getNodeDetail(nodeId);
   }
 
   public async getSameStringValueNodes() {
@@ -52,7 +52,7 @@ class ViewModel {
 
   @observable
   public filter: IFilterCondition = {
-    filter_from,
+    filter_from: ["constructor_name"],
     filter_name: "",
     self_size: 0,
     self_size_compare_mode: CompareMode.MoreThan,

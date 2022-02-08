@@ -6,10 +6,10 @@ use wasm_bindgen::prelude::*;
 
 use crate::filter::{FilterCondition, SameStringCondition};
 use crate::log::Log;
-use crate::result::{NodeDetailInfo, Result, ResultEdge, ResultNode};
+use crate::result::NodeDetailInfo;
 use crate::search::count_same_string;
 use snapshot_parser::reader::Reader;
-use snapshot_parser::snapshot::{Edge, Node};
+use snapshot_parser::snapshot::Node;
 use snapshot_parser::snapshot_provider::SnapshotProvider;
 
 #[wasm_bindgen]
@@ -33,7 +33,7 @@ impl SnapshotAnalysis {
     }
 
     #[wasm_bindgen]
-    pub fn get_graph_info(&self, cond: &JsValue) -> JsValue {
+    pub fn get_graph(&self, cond: &JsValue) -> JsValue {
         let cond = cond
             .into_serde::<FilterCondition>()
             .expect("failed to decode condition");
@@ -44,11 +44,11 @@ impl SnapshotAnalysis {
 
         Log::info1_usize("got-nodes", nodes.len());
 
-        SnapshotAnalysis::get_result_graph(&nodes, &[])
+        SnapshotAnalysis::convert_graph_to_js(&nodes, &[])
     }
 
     #[wasm_bindgen]
-    pub fn get_node_detail_info(&self, id: u32) -> JsValue {
+    pub fn get_node_detail(&self, id: u32) -> JsValue {
         let (strings, strings_len) = self.provider.get_strings();
         let (node_types, node_types_len) = self.provider.get_node_types();
 
@@ -115,29 +115,7 @@ impl SnapshotAnalysis {
 
         Log::info1_usize("got-nodes", nodes.len());
 
-        SnapshotAnalysis::get_result_graph(&nodes, &[])
-    }
-
-    fn get_result_graph(nodes: &[&Node], edges: &[&Edge]) -> JsValue {
-        JsValue::from_serde(&Result::new(
-            SnapshotAnalysis::nodes_to_result_node(nodes),
-            SnapshotAnalysis::edges_to_result_edge(edges),
-        ))
-        .expect_throw("Failed parse SearchResult")
-    }
-
-    fn nodes_to_result_node(nodes: &[&Node]) -> Vec<ResultNode> {
-        nodes
-            .iter()
-            .map(|node| ResultNode::from_node(node))
-            .collect()
-    }
-
-    fn edges_to_result_edge(edges: &[&Edge]) -> Vec<ResultEdge> {
-        edges
-            .iter()
-            .map(|edge| ResultEdge::from_edge(edge))
-            .collect()
+        SnapshotAnalysis::convert_graph_to_js(&nodes, &[])
     }
 
     fn get_nodes_by_cond(&self, cond: FilterCondition) -> Vec<&Node> {

@@ -17,7 +17,7 @@ import { I18n, i18n } from "@/i18n";
 import { CompareMode, filter_from } from "@/types";
 import { ParserService } from "@/service";
 import { inject } from "@/util";
-import { IFilterCondition } from "@wasm";
+import { IFilterCondition, IFilterFrom } from "@wasm";
 
 interface IFilterPanelProps {
   onFilterCondSubmit: () => void;
@@ -92,7 +92,9 @@ export class FilterPanel extends Component<IFilterPanelProps> {
                 value={this.vm.filter.filter_from}
                 size="xs"
                 clearable
-                onChange={(val) => this.vm.setFilter("filter_from", val)}
+                onChange={(val) =>
+                  this.vm.setFilter("filter_from", val as IFilterFrom[])
+                }
                 style={{ width: 150 }}
               />
             </Grid.Col>

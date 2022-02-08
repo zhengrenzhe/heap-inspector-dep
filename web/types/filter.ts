@@ -1,6 +1,6 @@
-import { I18n } from "@/i18n";
+import { IFilterFrom } from "@wasm";
 
-export const filter_from: (keyof I18n)[] = [
+export const filter_from: IFilterFrom[] = [
   "constructor_name",
   "closure_name",
   "string_value",

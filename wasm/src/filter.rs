@@ -1,6 +1,15 @@
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
+pub const FILTER_FROM_CONSTRUCTOR_NAME: &str = "constructor_name";
+pub const FILTER_FROM_CLOSURE_NAME: &str = "closure_name";
+pub const FILTER_FROM_STRING_VALUE: &str = "string_value";
+
+#[wasm_bindgen(typescript_custom_section)]
+const ITEXT_STYLE4: &'static str = r#"
+export type IFilterFrom = "constructor_name" | "closure_name" | "string_value";
+"#;
+
 #[derive(Serialize, Deserialize)]
 pub struct FilterCondition {
     pub filter_from: Vec<String>,
@@ -18,7 +27,7 @@ pub struct FilterCondition {
 #[wasm_bindgen(typescript_custom_section)]
 const ITEXT_STYLE: &'static str = r#"
 export interface IFilterCondition {
-  filter_from: string[];
+  filter_from: IFilterFrom[];
   filter_name: string;
   self_size: number;
   retain_size: number;
