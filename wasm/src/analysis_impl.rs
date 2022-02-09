@@ -3,7 +3,6 @@ use crate::filter::{
     FilterCondition, FILTER_FROM_CLOSURE_NAME, FILTER_FROM_CONSTRUCTOR_NAME,
     FILTER_FROM_STRING_VALUE,
 };
-use crate::log::Log;
 use crate::result::{Result, ResultEdge, ResultNode};
 use snapshot_parser::consts::{
     NODE_TYPE_CLOSURE, NODE_TYPE_NATIVE, NODE_TYPE_OBJECT, STRING_NODE_TYPE, USER_NODE_TYPE,
