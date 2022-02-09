@@ -25,3 +25,17 @@ impl Reader {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::reader::Reader;
+
+    #[test]
+    fn test_reader() {
+        let raw = include_bytes!("../tests/test.heapsnapshot.txt");
+        let snapshot = Reader::from_bytes(raw);
+
+        assert_eq!(snapshot.nodes.len(), snapshot.node_count as usize);
+        assert_eq!(snapshot.edges.len(), snapshot.edge_count as usize);
+    }
+}

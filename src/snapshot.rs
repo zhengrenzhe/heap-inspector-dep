@@ -1,3 +1,4 @@
+use crate::log::Log;
 use serde::{Deserialize, Serialize};
 
 const EMPTY_STR: &str = "";
@@ -126,6 +127,8 @@ impl Snapshot {
             })
         }
 
+        Log::info("parse-node-done");
+
         let mut edge_from_node_idx = 0;
         let mut edge_from_node_acc = 0;
 
@@ -166,6 +169,8 @@ impl Snapshot {
                 edge_from_node_acc = 0;
             }
         }
+
+        Log::info("parse-edge-done");
 
         let node_types = dump0(&self.snapshot.meta.node_types);
         let edges_types = dump0(&self.snapshot.meta.edge_types);
