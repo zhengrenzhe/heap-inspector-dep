@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "npm run clean && npm run build-wasm && npm run build-web",
-    "build-wasm": "cd wasm && wasm-pack build --target web --mode normal --release",
+    "build-wasm": "wasm-pack build --target web --mode normal --release",
     "build-web": "NODE_ENV=production webpack -c webpack.config.ts",
     "dev": "npm run clean && NODE_ENV=development webpack-dev-server -c webpack.config.ts",
     "clean": "rimraf dist pkg",

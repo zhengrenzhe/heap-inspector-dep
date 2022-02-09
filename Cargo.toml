@@ -1,0 +1,33 @@
+[package]
+name = "snapshot_parser"
+version = "0.2.0"
+edition = "2021"
+description = "v8 heap snapshot parser"
+license = "AGPL-3.0"
+authors = ["zhengrenzhe <zhengrenzhe0416@outlook.com>"]
+documentation = "https://github.com/zhengrenzhe/heap-visualization"
+homepage = "https://github.com/zhengrenzhe/heap-visualization"
+repository = "https://github.com/zhengrenzhe/heap-visualization"
+keywords = ["v8", "snapshot", "heap"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = true
+debug = true
+
+[dependencies]
+serde_json = "1.0.78"
+serde = { version = "1.0.136", features = ["derive"] }
+js-sys = "0.3.56"
+wasm-bindgen = { version = "0.2.79", features = ["serde-serialize"] }
+web-sys = { version = "0.3.56", features = ["console"] }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.29"
+wasm-bindgen-futures = "0.4.29"
+futures = "0.3.19"
+
+[target."cfg(debug_assertions)".dependencies]
+console_error_panic_hook = "0.1.7"
