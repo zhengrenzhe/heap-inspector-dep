@@ -17,6 +17,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run test
-      run: cd wasm/snapshot_parser && cargo test --verbose
-    - name: Run test2
-      run: cd wasm && cargo test --verbose
+      run: cargo test --verbose
