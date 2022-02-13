@@ -1,4 +1,3 @@
-use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
 
 use crate::consts::STRING_NODE_TYPE;
@@ -20,12 +19,8 @@ pub struct SnapshotAnalysis {
 impl SnapshotAnalysis {
     #[wasm_bindgen(constructor)]
     pub fn new(bytes: &[u8]) -> Self {
-        Log::info1_usize("reading", bytes.len());
-        let raw_bytes = Uint8Array::from(bytes).to_vec();
-        Log::info("read-done");
-
         Log::info("parsing");
-        let provider = Reader::from_bytes(&raw_bytes);
+        let provider = Reader::from_bytes(bytes);
         Log::info2_usize("parsing-done", provider.nodes.len(), provider.edges.len());
 
         SnapshotAnalysis { provider }
