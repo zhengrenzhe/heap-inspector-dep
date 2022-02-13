@@ -37,7 +37,13 @@ class Thread implements IThreadAPI {
       this.analysis.free();
     }
 
-    this.analysis = new SnapshotAnalysis(new Uint8Array(buffer));
+    this.analysis = new SnapshotAnalysis(buffer.byteLength);
+    const u8Buffer = new Uint8Array(buffer);
+    const length = u8Buffer.length;
+    for (let i = 0; i < length; i++) {
+      this.analysis.set_buffer(i, u8Buffer[i]);
+    }
+    this.analysis.start_parse();
   }
 
   public async getGraph(cond: IFilterCondition) {

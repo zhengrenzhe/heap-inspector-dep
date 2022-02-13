@@ -12,18 +12,41 @@ use crate::utils::decode_js_value;
 
 #[wasm_bindgen]
 pub struct SnapshotAnalysis {
+    buffer: Vec<u8>,
     provider: SnapshotProvider,
 }
 
 #[wasm_bindgen]
 impl SnapshotAnalysis {
     #[wasm_bindgen(constructor)]
-    pub fn new(bytes: &[u8]) -> Self {
+    pub fn new(byte_length: usize) -> Self {
+        SnapshotAnalysis {
+            buffer: vec![0; byte_length as usize],
+            provider: SnapshotProvider {
+                nodes: vec![],
+                edges: vec![],
+                strings: vec![],
+                edge_count: 0,
+                node_count: 0,
+                edge_types: vec![],
+                node_types: vec![],
+            },
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn set_buffer(&mut self, index: usize, value: u8) {
+        self.buffer[index] = value;
+    }
+
+    #[wasm_bindgen]
+    pub fn start_parse(&mut self) {
         Log::info("parsing");
-        let provider = Reader::from_bytes(bytes);
+        let provider = Reader::from_bytes(&self.buffer);
         Log::info2_usize("parsing-done", provider.nodes.len(), provider.edges.len());
 
-        SnapshotAnalysis { provider }
+        self.provider = provider;
+        self.buffer.clear();
     }
 
     #[wasm_bindgen]
