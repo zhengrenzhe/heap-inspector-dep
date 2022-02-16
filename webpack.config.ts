@@ -47,6 +47,10 @@ const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
   devServer: {
     port: 3000,
     host: "0.0.0.0",
+    headers: {
+      "Cross-Origin-Embedder-Policy": "require-corp",
+      "Cross-Origin-Opener-Policy": "same-origin",
+    },
   },
   experiments: {
     asyncWebAssembly: true,
