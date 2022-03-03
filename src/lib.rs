@@ -1,15 +1,8 @@
 use wasm_bindgen::prelude::*;
 
 pub mod analysis;
-pub mod analysis_impl;
-pub mod consts;
-pub mod filter;
-pub mod log;
-pub mod reader;
-pub mod result;
-pub mod search;
-pub mod snapshot;
-pub mod snapshot_provider;
+pub mod decode_snapshot;
+pub mod deserialization_snapshot;
 pub mod utils;
 
 #[wasm_bindgen(start)]

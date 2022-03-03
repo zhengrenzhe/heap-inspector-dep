@@ -23,6 +23,7 @@ serde = { version = "1.0.136", features = ["derive"] }
 js-sys = "0.3.56"
 wasm-bindgen = { version = "0.2.79", features = ["serde-serialize"] }
 web-sys = { version = "0.3.56", features = ["console"] }
+nom = "7.1.0"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.29"
