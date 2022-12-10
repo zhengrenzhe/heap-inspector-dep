@@ -34,7 +34,7 @@ const base: WebpackCfg & DevServeCfg = {
 
 const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
   entry: {
-    web: resolve(__dirname, "./web/web.ts"),
+    web: resolve(__dirname, "./web/page/index.tsx"),
   },
   devServer: {
     port: 3000,
@@ -65,14 +65,14 @@ const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
       chunks: ["web"],
       filename: "index.html",
       inject: "body",
-      template: resolve(__dirname, "./web/web.html"),
+      template: resolve(__dirname, "./web/page/page.html"),
     }),
   ].concat([]),
 });
 
 const worker: WebpackCfg & DevServeCfg = Object.assign({}, base, {
   entry: {
-    worker: resolve(__dirname, "./web/worker.ts"),
+    worker: resolve(__dirname, "./web/worker/index.ts"),
   },
   target: "webworker",
 });
