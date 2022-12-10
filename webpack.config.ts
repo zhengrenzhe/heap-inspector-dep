@@ -1,9 +1,10 @@
-const { resolve } = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-
+import { resolve } from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 import { Configuration as WebpackCfg } from "webpack";
 import { Configuration as DevServeCfg } from "webpack-dev-server";
+
+import pkg from "./package.json";
 
 const base: WebpackCfg & DevServeCfg = {
   mode: "development",
@@ -65,7 +66,7 @@ const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
       chunks: ["web"],
       filename: "index.html",
       inject: "body",
-      template: resolve(__dirname, "./web/page/page.html"),
+      title: pkg.displayName,
     }),
   ].concat([]),
 });

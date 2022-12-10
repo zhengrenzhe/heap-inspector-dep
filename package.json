@@ -1,9 +1,12 @@
 {
   "name": "heap-inspector",
+  "displayName": "Heap Inspector",
   "version": "1.0.0",
   "description": "heap inspector",
   "scripts": {
-    "dev-web": "webpack-dev-server -c webpack.config.ts"
+    "dev-web": "webpack-dev-server -c webpack.config.ts",
+    "build-web": "webpack -c webpack.config.ts",
+    "watch-web": "webpack -c webpack.config.ts --watch"
   },
   "keywords": [],
   "author": "Zhengrenzhe <zhengrenzhe0416@outlook.com>",

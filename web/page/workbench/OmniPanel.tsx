@@ -7,7 +7,7 @@ export class OmniPanel extends Component {
       <Paper shadow="md" radius="lg" p="md" withBorder id="omni-panel">
         <Text>
           Use it to create cards, dropdowns, modals and other components that
-          require background with shadow
+          require background with shadow.
         </Text>
       </Paper>
     );
