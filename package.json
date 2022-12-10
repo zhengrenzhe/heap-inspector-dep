@@ -1,0 +1,10 @@
+{
+  "name": "heap-inspector",
+  "version": "1.0.0",
+  "description": "heap inspector",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "Zhengrenzhe <zhengrenzhe0416@outlook.com>",
+  "license": "AGPL-3.0"
+}
