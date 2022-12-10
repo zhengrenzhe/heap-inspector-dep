@@ -7,7 +7,7 @@ enum Commands {
     /// analyse local snapshot
     Local {
         /// lists test values
-        #[arg(short, long)]
+        #[arg(short)]
         file: PathBuf,
     },
 
@@ -27,6 +27,4 @@ struct Cli {
 
 fn main() {
     let cli = Cli::parse();
-
-    println!("Hello, world!");
 }
