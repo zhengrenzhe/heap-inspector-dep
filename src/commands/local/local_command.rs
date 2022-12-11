@@ -5,7 +5,7 @@ use warp::Filter;
 
 use crate::utils::browser::open_workbench;
 
-static PROJECT_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/dist");
+static PROJECT_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/dist/");
 
 pub fn host_webpage<'a>(path: String) -> &'a [u8] {
     match PROJECT_DIR.get_file(path) {
