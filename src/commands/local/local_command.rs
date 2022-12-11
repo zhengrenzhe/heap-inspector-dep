@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use include_dir::{include_dir, Dir};
 use warp::Filter;
 
-use crate::utils::browser::open_workbench;
+use crate::utils::browser::open_url;
 
 static PROJECT_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/dist/");
 
@@ -15,8 +15,6 @@ pub fn host_webpage<'a>(path: String) -> &'a [u8] {
 }
 
 pub async fn local_command(file: &PathBuf) {
-    open_workbench();
-
     let api = warp::path("api")
         .and(warp::path::param())
         .map(|name: String| format!("api, {}!", name));
@@ -27,5 +25,6 @@ pub async fn local_command(file: &PathBuf) {
 
     let routes = warp::get().and(api.or(static_files).or(index));
 
+    open_url("http://localhost:3000");
     warp::serve(routes).run(([127, 0, 0, 1], 3000)).await;
 }
