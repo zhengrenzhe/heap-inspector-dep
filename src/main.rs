@@ -7,6 +7,7 @@ use crate::commands::realtime::realtime_command::realtime_command;
 use crate::commands::workbench::workbench_command;
 
 mod commands;
+pub mod utils;
 
 #[derive(Subcommand)]
 enum Commands {
