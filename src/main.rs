@@ -2,11 +2,17 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
+use crate::commands::local::local;
+use crate::commands::realtime::realtime;
+use crate::commands::workbench::workbench;
+
+mod commands;
+
 #[derive(Subcommand)]
 enum Commands {
     /// analyse local snapshot
     Local {
-        /// lists test values
+        /// snapshot file path
         #[arg(short)]
         file: PathBuf,
     },
@@ -25,6 +31,14 @@ struct Cli {
     command: Option<Commands>,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let cli = Cli::parse();
+
+    match &cli.command {
+        Some(Commands::Local { file }) => local(file).await,
+        Some(Commands::Workbench) => workbench(),
+        Some(Commands::Realtime) => realtime().await,
+        _ => {}
+    }
 }
