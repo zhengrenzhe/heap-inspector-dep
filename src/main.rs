@@ -32,14 +32,13 @@ struct Cli {
     command: Option<Commands>,
 }
 
-#[tokio::main]
-async fn main() {
+fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Some(Commands::Local { file }) => local_command(file).await,
+        Some(Commands::Local { file }) => local_command(file),
         Some(Commands::Workbench) => workbench_command(),
-        Some(Commands::Realtime) => realtime_command().await,
+        Some(Commands::Realtime) => realtime_command(),
         _ => {}
     }
 }

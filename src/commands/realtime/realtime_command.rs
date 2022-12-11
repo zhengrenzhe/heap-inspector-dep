@@ -1,1 +1,1 @@
-pub async fn realtime_command() {}
+pub fn realtime_command() {}
