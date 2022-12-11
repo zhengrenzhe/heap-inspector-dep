@@ -2,9 +2,9 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
-use crate::commands::local::local;
-use crate::commands::realtime::realtime;
-use crate::commands::workbench::workbench;
+use crate::commands::local::local_command::local_command;
+use crate::commands::realtime::realtime_command::realtime_command;
+use crate::commands::workbench::workbench_command;
 
 mod commands;
 
@@ -36,9 +36,9 @@ async fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Some(Commands::Local { file }) => local(file).await,
-        Some(Commands::Workbench) => workbench(),
-        Some(Commands::Realtime) => realtime().await,
+        Some(Commands::Local { file }) => local_command(file).await,
+        Some(Commands::Workbench) => workbench_command(),
+        Some(Commands::Realtime) => realtime_command().await,
         _ => {}
     }
 }
