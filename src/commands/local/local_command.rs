@@ -13,8 +13,10 @@ pub async fn local_command(file: &PathBuf) {
     let index = warp::path::end().map(|| host_webpage("index.html"));
     let static_files = warp::path!(String).map(|path: String| host_webpage(&path));
 
-    let routes = warp::get().and(api.or(static_files).or(index));
+    let routes = api.or(index).or(static_files);
 
-    open_url("http://localhost:3000");
-    warp::serve(routes).run(([127, 0, 0, 1], 3000)).await;
+    let port = portpicker::pick_unused_port().expect("No ports free");
+
+    open_url(&format!("http://localhost:{}", port));
+    warp::serve(routes).run(([127, 0, 0, 1], port)).await;
 }
