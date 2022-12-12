@@ -2,9 +2,15 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "reflect-metadata";
 import { MantineProvider } from "@mantine/core";
-import { Workbench } from "@web/page/workbench";
+import { configure } from "mobx";
 
-import "./style.less";
+import { Workbench } from "@web/page/workbench";
+import "./progress";
+
+configure({
+  useProxies: "always",
+  enforceActions: "always",
+});
 
 const rootDom = document.createElement("div");
 rootDom.id = "app-root";
