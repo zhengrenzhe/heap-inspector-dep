@@ -1,3 +1,5 @@
+#![feature(in_band_lifetimes)]
+
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
@@ -5,8 +7,9 @@ use clap::{Parser, Subcommand};
 use crate::commands::local::local_command::local_command;
 use crate::commands::realtime::realtime_command::realtime_command;
 
+mod analyzer;
 mod commands;
-pub mod utils;
+mod utils;
 
 #[derive(Subcommand)]
 enum Commands {
