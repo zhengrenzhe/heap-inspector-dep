@@ -1,5 +1,3 @@
-#![feature(in_band_lifetimes)]
-
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};

@@ -1,20 +1,21 @@
 use serde_json::{from_slice, from_str};
 
-use crate::analyzer::snapshot::{Snapshot, SnapshotDataProvider};
+use crate::analyzer::snapshot::{parse_snapshot, Snapshot, SnapshotDataProvider};
 
-pub struct Analyzer<'a> {
-    data_provider: SnapshotDataProvider<'a>,
+pub struct Analyzer {
+    data_provider: SnapshotDataProvider,
 }
 
-impl<'a> Analyzer<'a> {
+impl Analyzer {
     pub fn from_bytes(bytes: &[u8]) -> Analyzer {
         let snapshot: Snapshot = match from_slice(bytes) {
             Ok(snapshot) => snapshot,
             Err(e) => panic!("parse snapshot error: {}", e),
         };
 
-        let data_provider = snapshot.parse();
-        Analyzer { data_provider }
+        Analyzer {
+            data_provider: parse_snapshot(snapshot),
+        }
     }
 
     pub fn from_str(str: &str) -> Analyzer {
@@ -22,7 +23,8 @@ impl<'a> Analyzer<'a> {
             Ok(snapshot) => snapshot,
             Err(e) => panic!("parse snapshot error: {}", e),
         };
-        let data_provider = snapshot.parse();
-        Analyzer { data_provider }
+        Analyzer {
+            data_provider: parse_snapshot(snapshot),
+        }
     }
 }
