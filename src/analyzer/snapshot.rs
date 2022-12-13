@@ -143,13 +143,13 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
         }
     }
 
-    let edge_types = dump0(&meta.edge_types).clone();
-    let node_types = dump0(&meta.node_types).clone();
+    let edge_types = dump0(&meta.edge_types);
+    let node_types = dump0(&meta.node_types);
 
     return SnapshotDataProvider {
         nodes,
         edges,
-        strings: s.strings.clone(),
+        strings: s.strings,
         edge_count: s.snapshot.edge_count,
         node_count: s.snapshot.node_count,
         edge_types,
