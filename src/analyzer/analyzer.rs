@@ -3,7 +3,7 @@ use serde_json::{from_slice, from_str};
 use crate::analyzer::snapshot::{parse_snapshot, Snapshot, SnapshotDataProvider};
 
 pub struct Analyzer {
-    data_provider: SnapshotDataProvider,
+    pub data_provider: SnapshotDataProvider,
 }
 
 impl Analyzer {
@@ -26,5 +26,17 @@ impl Analyzer {
         Analyzer {
             data_provider: parse_snapshot(snapshot),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::analyzer::analyzer::Analyzer;
+
+    #[test]
+    fn it_works() {
+        let bytes = include_bytes!("/Users/zheng/Downloads/Heap-20221215T222109.heapsnapshot");
+        let a = Analyzer::from_bytes(bytes);
+        println!("{:?}", a.data_provider.edge_types);
     }
 }

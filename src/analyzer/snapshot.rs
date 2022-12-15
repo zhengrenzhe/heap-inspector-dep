@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
 pub enum EdgeOrNodeType {
     MultiType(Vec<String>),
     SingleType(String),
