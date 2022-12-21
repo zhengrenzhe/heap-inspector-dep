@@ -1,43 +1,48 @@
+use std::cell::RefCell;
+use std::convert::Infallible;
 use std::path::PathBuf;
 
+use warp::http::StatusCode;
+use warp::{Filter, Reply};
+
+use crate::commands::local::thread::AnalyseThread;
 use crate::utils::browser::open_url;
+use crate::utils::webpage::webpage_routes;
 
-pub async fn local_command(file: &PathBuf) {
-    let port = portpicker::pick_unused_port().expect("No ports free");
+thread_local!(static FOO: RefCell<AnalyseThread> = RefCell::new(
+    AnalyseThread {
+        lock: false
+    }
+));
 
-    let r = api_routes::routes();
-
-    open_url(&format!("http://localhost:{}", port));
-    warp::serve(r).run(([127, 0, 0, 1], port)).await;
+pub struct LC {
+    pub(crate) file_path: PathBuf,
 }
 
-mod api_routes {
-    use warp::{Filter, Rejection, Reply};
+impl LC {
+    pub async fn start(&self) {
+        let port = portpicker::pick_unused_port().expect("No ports free");
 
-    use crate::commands::local::local_command::api_handlers;
-    use crate::utils::webpage::host_webpage;
+        let routes = webpage_routes()
+            .or(warp::path!("api" / "lock_status").and_then(|| LC::lock_status()))
+            .or(warp::path!("api" / "toggle_lock").and_then(LC::toggle_lock));
 
-    pub fn routes() -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Clone {
-        webpage().or(load_progress())
+        open_url(&format!("http://localhost:{}", port));
+        warp::serve(routes).run(([127, 0, 0, 1], port)).await;
     }
 
-    fn webpage() -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Clone {
-        let index = warp::path::end().map(|| host_webpage("index.html"));
-        let static_files = warp::path!(String).map(|path: String| host_webpage(&path));
-        index.or(static_files)
+    pub async fn lock_status() -> Result<impl Reply, Infallible> {
+        FOO.with(|f| {
+            println!("is lock {:?}", f.borrow().lock);
+        });
+        Ok(warp::reply::with_status("", StatusCode::OK))
     }
 
-    fn load_progress() -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Clone {
-        warp::path!("api" / "load_progress").and_then(api_handlers::load_progress)
-    }
-}
-
-mod api_handlers {
-    use std::convert::Infallible;
-
-    use warp::Reply;
-
-    pub async fn load_progress() -> Result<impl Reply, Infallible> {
-        Ok(warp::reply::html("0"))
+    pub async fn toggle_lock() -> Result<impl Reply, Infallible> {
+        FOO.with(|f| {
+            let s = { f.borrow().lock };
+            f.borrow_mut().lock = !s;
+        });
+        Ok(warp::reply::with_status("", StatusCode::OK))
     }
 }

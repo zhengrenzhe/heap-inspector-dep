@@ -28,15 +28,3 @@ impl Analyzer {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::analyzer::analyzer::Analyzer;
-
-    #[test]
-    fn it_works() {
-        let bytes = include_bytes!("/Users/zheng/Downloads/Heap-20221215T222109.heapsnapshot");
-        let a = Analyzer::from_bytes(bytes);
-        println!("{:?}", a.data_provider.edge_types);
-    }
-}
