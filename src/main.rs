@@ -1,8 +1,8 @@
-use std::path::PathBuf;
+use std::env;
 
 use clap::{Parser, Subcommand};
 
-use crate::commands::local::local_command::LC;
+use crate::commands::local::Local;
 use crate::commands::realtime::realtime_command::realtime_command;
 
 mod analyzer;
@@ -15,7 +15,7 @@ enum Commands {
     Local {
         /// snapshot file path
         #[arg(short)]
-        file_path: PathBuf,
+        file_path: String,
     },
 
     /// realtime analyse Chromium based browser tab v8 heap memory
@@ -27,20 +27,24 @@ enum Commands {
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
+
+    /// Verbose log
+    #[arg(long, short)]
+    verbose: bool,
 }
 
 #[tokio::main]
 async fn main() {
     let cli = Cli::parse();
 
+    if cli.verbose {
+        env::set_var("RUST_LOG", "none,heap_inspector=debug");
+    }
+
+    pretty_env_logger::init();
+
     match &cli.command {
-        Some(Commands::Local { file_path }) => {
-            (LC {
-                file_path: file_path.clone(),
-            })
-            .start()
-            .await
-        }
+        Some(Commands::Local { file_path, .. }) => Local::new(file_path).start().await,
         Some(Commands::Realtime) => realtime_command(),
         _ => {}
     }

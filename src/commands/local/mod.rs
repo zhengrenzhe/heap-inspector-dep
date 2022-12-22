@@ -1,2 +1,3 @@
-pub mod local_command;
-mod thread;
+pub use local::Local;
+
+mod local;
