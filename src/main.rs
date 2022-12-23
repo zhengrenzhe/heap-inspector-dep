@@ -39,6 +39,8 @@ async fn main() {
 
     if cli.verbose {
         env::set_var("RUST_LOG", "none,heap_inspector=debug");
+    } else {
+        env::set_var("RUST_LOG", "none,heap_inspector=info");
     }
 
     pretty_env_logger::init();

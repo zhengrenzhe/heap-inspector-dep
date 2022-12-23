@@ -3,13 +3,15 @@ use std::fs;
 use std::sync::Mutex;
 use std::thread;
 
-use log::{debug, error};
+use log::{debug, error, info};
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use warp::http::StatusCode;
 use warp::{Filter, Reply};
 
 use crate::analyzer::analyzer::Analyzer;
 use crate::utils::browser::open_url;
+use crate::utils::http::json_res;
 use crate::utils::webpage::webpage_routes;
 
 #[derive(Deserialize, Serialize)]
@@ -57,16 +59,18 @@ impl Local {
         let port = portpicker::pick_unused_port().expect("No ports free");
 
         let routes = webpage_routes()
-            .or(warp::path!("api" / "is_ready").and_then(|| Local::is_ready()))
+            .or(warp::path!("api" / "is_ready").and_then(Local::is_ready))
             .or(warp::path!("api" / "toggle_lock").and_then(Local::toggle_lock));
 
-        open_url(&format!("http://localhost:{}", port));
+        let url = format!("http://localhost:{}", port);
+        info!("open {}", url);
+        open_url(&url);
         warp::serve(routes).run(([127, 0, 0, 1], port)).await;
     }
 
     pub async fn is_ready() -> Result<impl Reply, Infallible> {
         let is_ready = STATE.lock().unwrap().is_ready;
-        Ok(warp::reply::json(&IsReady { is_ready }))
+        json_res(json!({ "is_ready": is_ready }))
     }
 
     pub async fn toggle_lock() -> Result<impl Reply, Infallible> {
