@@ -11,7 +11,7 @@ export class Progress extends Component {
       <div className="progress">
         <Loader color="teal" size="xl" />
         <span className="label">
-          <Text c="teal.4" fz="md">
+          <Text c="teal" fz="md">
             {__("loading")}
           </Text>
         </span>
