@@ -4,6 +4,7 @@ use std::sync::Mutex;
 use std::thread;
 
 use log::{debug, error};
+use serde::{Deserialize, Serialize};
 use warp::http::StatusCode;
 use warp::{Filter, Reply};
 
@@ -11,13 +12,18 @@ use crate::analyzer::analyzer::Analyzer;
 use crate::utils::browser::open_url;
 use crate::utils::webpage::webpage_routes;
 
+#[derive(Deserialize, Serialize)]
+struct IsReady {
+    is_ready: bool,
+}
+
 struct State {
     analyzer: Option<Analyzer>,
-    reading_done: bool,
+    is_ready: bool,
 }
 static STATE: Mutex<State> = Mutex::new(State {
     analyzer: None,
-    reading_done: false,
+    is_ready: false,
 });
 
 pub struct Local {}
@@ -36,7 +42,7 @@ impl Local {
                 let analyzer = Analyzer::from_bytes(&bytes);
                 let mut lock = STATE.lock().expect("get state lock error");
                 lock.analyzer = Some(analyzer);
-                lock.reading_done = true;
+                lock.is_ready = true;
                 debug!("analyse finished");
                 return;
             }
@@ -51,16 +57,16 @@ impl Local {
         let port = portpicker::pick_unused_port().expect("No ports free");
 
         let routes = webpage_routes()
-            .or(warp::path!("api" / "load_progress").and_then(|| Local::load_progress()))
+            .or(warp::path!("api" / "is_ready").and_then(|| Local::is_ready()))
             .or(warp::path!("api" / "toggle_lock").and_then(Local::toggle_lock));
 
         open_url(&format!("http://localhost:{}", port));
         warp::serve(routes).run(([127, 0, 0, 1], port)).await;
     }
 
-    pub async fn load_progress() -> Result<impl Reply, Infallible> {
-        let msg = format!("{}", STATE.lock().unwrap().reading_done);
-        Ok(warp::reply::with_status(msg, StatusCode::OK))
+    pub async fn is_ready() -> Result<impl Reply, Infallible> {
+        let is_ready = STATE.lock().unwrap().is_ready;
+        Ok(warp::reply::json(&IsReady { is_ready }))
     }
 
     pub async fn toggle_lock() -> Result<impl Reply, Infallible> {

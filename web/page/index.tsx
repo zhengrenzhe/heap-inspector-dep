@@ -5,7 +5,6 @@ import { MantineProvider } from "@mantine/core";
 import { configure } from "mobx";
 
 import { Workbench } from "@web/page/workbench";
-import "./progress";
 
 configure({
   useProxies: "always",

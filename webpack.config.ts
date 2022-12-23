@@ -35,7 +35,7 @@ const base: WebpackCfg & DevServeCfg = {
 
 const main: WebpackCfg & DevServeCfg = Object.assign({}, base, {
   entry: {
-    web: resolve(__dirname, "./web/page/bootstrap.tsx"),
+    web: resolve(__dirname, "./web/page/index.tsx"),
   },
   devServer: {
     port: 3000,
