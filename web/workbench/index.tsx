@@ -4,7 +4,7 @@ import "reflect-metadata";
 import { ColorScheme, MantineProvider } from "@mantine/core";
 import { configure } from "mobx";
 
-import { Workbench } from "@web/page/workbench";
+import { Workbench } from "@web/workbench/workbench";
 
 configure({
   useProxies: "always",
@@ -26,7 +26,7 @@ function App() {
   };
 
   return (
-    <MantineProvider theme={{ colorScheme }}>
+    <MantineProvider theme={{ colorScheme, primaryColor: "teal" }}>
       <Workbench cs={colorScheme} toggleColorScheme={toggleColorScheme} />
     </MantineProvider>
   );

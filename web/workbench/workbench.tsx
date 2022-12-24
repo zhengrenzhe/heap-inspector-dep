@@ -3,12 +3,13 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
-import { WorkbenchService } from "@web/page/workbench.service";
 import { __, inject } from "@web/common";
-import { Progress } from "@web/page/progress";
-import { Canvas } from "@web/page/canvas";
+import { WorkbenchService } from "@web/workbench/workbench.service";
+import { Progress } from "@web/workbench/progress";
+import { Omnibox } from "@web/workbench/omnibox";
 
 import "./workbench.less";
+import { Canvas } from "@web/workbench/canvas/canvas";
 
 interface IWorkbenchProps {
   cs: ColorScheme;
@@ -34,8 +35,15 @@ export class Workbench extends Component<IWorkbenchProps> {
         className="workbench"
         style={{ background: this.isDark ? "#101113" : "#F8F9FA" }}
       >
-        {this.wbService.viewModel.isReady ? <Canvas /> : <Progress />}
         {this.renderTheme()}
+        {this.wbService.viewModel.isReady ? (
+          <>
+            <Omnibox />
+            <Canvas />
+          </>
+        ) : (
+          <Progress />
+        )}
       </div>
     );
   }

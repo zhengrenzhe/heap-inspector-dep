@@ -46,26 +46,30 @@ fn dump0(data: &Vec<EdgeOrNodeType>) -> Vec<String> {
     }
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Node {
     pub node_type_index: usize,
     pub name_index: usize,
-    pub id: u32,
+    pub id: String,
     pub self_size: u32,
     pub edge_count: u32,
-    pub trace_node_id: u32,
+    pub trace_node_id: String,
     pub detachedness: u32,
     pub from_edge_index: Vec<usize>,
     pub to_edge_index: Vec<usize>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Edge {
     pub edge_index: usize,
     pub edge_type_index: usize,
     pub name_or_index_raw: usize,
     pub to_node_index: usize,
-    pub to_node_id: u32,
+    pub to_node_id: String,
     pub from_node_index: usize,
-    pub from_node_id: u32,
+    pub from_node_id: String,
+    pub source: String,
+    pub target: String,
 }
 
 pub struct SnapshotDataProvider {
@@ -94,10 +98,10 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
         nodes.push(Node {
             node_type_index: all_nodes[node_base_idx] as usize,
             name_index: all_nodes[node_base_idx + 1] as usize,
-            id: all_nodes[node_base_idx + 2],
+            id: all_nodes[node_base_idx + 2].to_string(),
             self_size: all_nodes[node_base_idx + 3],
             edge_count: all_nodes[node_base_idx + 4],
-            trace_node_id: all_nodes[node_base_idx + 5],
+            trace_node_id: all_nodes[node_base_idx + 5].to_string(),
             detachedness: all_nodes[node_base_idx + 6],
             from_edge_index: vec![],
             to_edge_index: vec![],
@@ -130,9 +134,11 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
             edge_type_index: all_edges[edge_base_idx] as usize,
             name_or_index_raw: all_edges[edge_base_idx + 1] as usize,
             to_node_index: edge_to_node_idx,
-            to_node_id: nodes[edge_to_node_idx].id,
+            to_node_id: nodes[edge_to_node_idx].id.to_string(),
+            target: nodes[edge_to_node_idx].id.to_string(),
             from_node_index: edge_from_node_idx,
-            from_node_id: nodes[edge_from_node_idx].id,
+            from_node_id: nodes[edge_from_node_idx].id.to_string(),
+            source: nodes[edge_from_node_idx].id.to_string(),
         });
 
         edge_from_node_acc += 1;

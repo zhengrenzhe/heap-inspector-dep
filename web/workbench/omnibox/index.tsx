@@ -3,9 +3,11 @@ import { Paper, Tabs } from "@mantine/core";
 import { observer } from "mobx-react";
 
 import { __ } from "@web/common";
-import { FilterPanel } from "@web/page/canvas/omnibox/filter";
-import { RepeatedString } from "@web/page/canvas/omnibox/repeated_string";
-import { Meta } from "@web/page/canvas/omnibox/meta";
+import { Meta } from "@web/workbench/omnibox/meta";
+import { FilterPanel } from "@web/workbench/omnibox/filter";
+import { RepeatedString } from "@web/workbench/omnibox/repeated_string";
+
+import "./omnibox.less";
 
 @observer
 export class Omnibox extends Component {

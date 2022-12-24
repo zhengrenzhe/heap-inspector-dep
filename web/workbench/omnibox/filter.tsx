@@ -10,8 +10,8 @@ import { observer } from "mobx-react";
 import { BsSearch } from "react-icons/bs";
 
 import { __, inject } from "@web/common";
-import { OmniService } from "@web/page/canvas/omnibox/omniService";
-import { Block } from "@web/page/canvas/omnibox/block";
+import { Block } from "@web/workbench/omnibox/block";
+import { OmniService } from "@web/workbench/omnibox/omniService";
 
 @observer
 export class FilterPanel extends Component {

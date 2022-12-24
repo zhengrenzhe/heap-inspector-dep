@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Badge, List, Text } from "@mantine/core";
 
 import { __, inject } from "@web/common";
-import { OmniService } from "@web/page/canvas/omnibox/omniService";
+import { OmniService } from "@web/workbench/omnibox/omniService";
 
 export class Meta extends Component {
   @inject()

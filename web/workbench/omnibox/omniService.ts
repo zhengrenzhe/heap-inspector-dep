@@ -1,7 +1,8 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 
-import { API, injectable } from "@web/common";
+import { API, inject, injectable } from "@web/common";
+import { CanvasService } from "@web/workbench/canvas/canvas.service";
 
 interface IFilter {
   filter_from: string[];
@@ -54,10 +55,20 @@ class ViewModel {
 export class OmniService {
   public viewModel = new ViewModel();
 
+  @inject()
+  private canvasService: CanvasService;
+
   public async search() {
     this.viewModel.setSearching(true);
-    await axios.get(API.search, {
-      params: this.viewModel.filter,
+    const data = (
+      await axios.get(API.search, {
+        params: this.viewModel.filter,
+      })
+    ).data;
+    console.log(data);
+    this.canvasService.render({
+      nodes: data.nodes,
+      edges: [],
     });
     this.viewModel.setSearching(false);
   }

@@ -16,6 +16,8 @@ pub struct SearchQuery {
 
 impl Analyzer {
     pub fn search(&self, query: &SearchQuery) -> Value {
-        json!({"":""})
+        let nodes = &self.data_provider.nodes[0..1000];
+        let edges = &self.data_provider.edges[0..1000];
+        json!({"nodes":nodes, "edges": edges})
     }
 }
