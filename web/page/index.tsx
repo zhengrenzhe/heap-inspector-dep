@@ -16,7 +16,7 @@ rootDom.id = "app-root";
 document.body.append(rootDom);
 
 const App = (
-  <MantineProvider theme={{ colorScheme: "light" }}>
+  <MantineProvider theme={{ colorScheme: "dark" }}>
     <Workbench />
   </MantineProvider>
 );
