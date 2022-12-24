@@ -2,14 +2,22 @@ use std::convert::Infallible;
 
 use serde_json::Value;
 use warp::http::response::Builder;
-use warp::Reply;
+use warp::http::{Response, StatusCode};
 
-pub fn json_res(val: Value) -> Result<impl Reply, Infallible> {
-    return Ok(Builder::new()
+fn json_res(val: Value, status: StatusCode) -> Result<Response<String>, Infallible> {
+    Ok(Builder::new()
         .header("content-type", "application/json")
         .header("Access-Control-Allow-Origin", "*")
         .header("Access-Control-Allow-Headers", "*")
-        .status(200)
+        .status(status)
         .body(val.to_string())
-        .unwrap());
+        .expect("build json_res error"))
+}
+
+pub fn json_ok_res(val: Value) -> Result<Response<String>, Infallible> {
+    json_res(val, StatusCode::OK)
+}
+
+pub fn json_err_res(val: Value) -> Result<Response<String>, Infallible> {
+    json_res(val, StatusCode::INTERNAL_SERVER_ERROR)
 }

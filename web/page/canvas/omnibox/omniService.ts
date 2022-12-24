@@ -19,8 +19,8 @@ class ViewModel {
     filter_name: "",
     self_size_mode: "more_than",
     self_size: 0,
-    retained_size: 0,
     retained_size_mode: "more_than",
+    retained_size: 0,
     depth: 0,
   };
 

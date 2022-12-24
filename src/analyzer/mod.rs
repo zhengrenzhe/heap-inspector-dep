@@ -1,2 +1,2 @@
 pub mod analyzer;
-mod snapshot;
+pub mod snapshot;
