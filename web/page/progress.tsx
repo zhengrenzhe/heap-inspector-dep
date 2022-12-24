@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Progress as ProgressBar, Text } from "@mantine/core";
+import { Progress as ProgressBar } from "@mantine/core";
 import { useInterval } from "@mantine/hooks";
-
-import { __ } from "@web/common";
 
 import "./progress.less";
 
@@ -23,11 +21,6 @@ export function Progress() {
         value={count}
         className="progress-bar"
       />
-      <span className="label">
-        <Text c="teal" fz="xs">
-          {__("loading")}
-        </Text>
-      </span>
     </div>
   );
 }
