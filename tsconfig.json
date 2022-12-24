@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": false,
-    "module": "CommonJS",
+    "module": "esnext",
     "rootDir": "./",
     "moduleResolution": "node",
     "baseUrl": "./",
