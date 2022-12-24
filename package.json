@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "description": "heap inspector",
   "scripts": {
-    "watch-web": "NODE_ENV=development vite build  --config vite.config.ts --watch ",
-    "dev-web": "vite --port=3000 --config vite.config.ts",
-    "build-web": "vite build --config vite.config.ts"
+    "watch": "NODE_ENV=development vite build  --config vite.config.ts --watch ",
+    "dev": "vite --port=3000 --config vite.config.ts",
+    "build": "vite build --config vite.config.ts"
   },
   "keywords": [],
   "author": "Zhengrenzhe <zhengrenzhe0416@outlook.com>",
