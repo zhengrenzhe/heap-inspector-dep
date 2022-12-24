@@ -27,29 +27,31 @@ export class Omnibox extends Component {
 
   public override render() {
     return (
-      <Paper shadow="md" radius="md" p="md" className="omnibox">
-        <Tabs
-          radius="md"
-          defaultValue={this.panels[0]?.key ?? ""}
-          onTabChange={(mode) =>
-            this.omniService.viewModel.setMode(mode as string)
-          }
-        >
-          <Tabs.List>
-            {this.panels.map((p) => (
-              <Tabs.Tab value={p.key} key={p.key} color="teal">
-                {p.title}
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
+      <div className="omnibox">
+        <Paper shadow="md" radius="md" p="md">
+          <Tabs
+            radius="md"
+            defaultValue={this.panels[0]?.key ?? ""}
+            onTabChange={(mode) =>
+              this.omniService.viewModel.setMode(mode as string)
+            }
+          >
+            <Tabs.List>
+              {this.panels.map((p) => (
+                <Tabs.Tab value={p.key} key={p.key} color="teal">
+                  {p.title}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
 
-          {this.panels.map((p) => (
-            <Tabs.Panel value={p.key} pt="xs" key={p.key}>
-              {p.comp}
-            </Tabs.Panel>
-          ))}
-        </Tabs>
-      </Paper>
+            {this.panels.map((p) => (
+              <Tabs.Panel value={p.key} pt="xs" key={p.key}>
+                {p.comp}
+              </Tabs.Panel>
+            ))}
+          </Tabs>
+        </Paper>
+      </div>
     );
   }
 }
