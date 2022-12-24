@@ -48,7 +48,7 @@ export class Workbench extends Component<IWorkbenchProps> {
           fz={22}
           onClick={this.props.toggleColorScheme}
         >
-          {this.isDark ? <MdDarkMode /> : <MdLightMode />}
+          {this.isDark ? <MdLightMode /> : <MdDarkMode />}
         </UnstyledButton>
       </div>
     );

@@ -16,9 +16,14 @@ rootDom.id = "app-root";
 document.body.append(rootDom);
 
 function App() {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
-  const toggleColorScheme = () =>
-    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(
+    (localStorage.getItem("colorScheme") as ColorScheme) ?? "dark"
+  );
+  const toggleColorScheme = () => {
+    const newVal = colorScheme === "dark" ? "light" : "dark";
+    localStorage.setItem("colorScheme", newVal);
+    setColorScheme(newVal);
+  };
 
   return (
     <MantineProvider theme={{ colorScheme }}>
