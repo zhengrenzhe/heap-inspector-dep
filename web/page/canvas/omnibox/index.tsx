@@ -14,8 +14,8 @@ export class Omnibox extends Component {
 
   private panels = [
     {
-      key: "filter",
-      title: __("filter"),
+      key: "search",
+      title: __("search"),
       comp: <FilterPanel />,
     },
     {
@@ -27,7 +27,7 @@ export class Omnibox extends Component {
 
   public override render() {
     return (
-      <Paper shadow="sm" radius="md" p="md" className="omnibox">
+      <Paper shadow="md" radius="md" p="md" className="omnibox">
         <Tabs
           radius="md"
           defaultValue={this.panels[0]?.key ?? ""}

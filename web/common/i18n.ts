@@ -3,9 +3,9 @@ const config = {
     "zh-CN": "加载中",
     en: "loading",
   },
-  filter: {
-    "zh-CN": "过滤",
-    en: "Filter",
+  search: {
+    "zh-CN": "搜索",
+    en: "Search",
   },
   repeated_string: {
     "zh-CN": "重复字符串",
@@ -30,6 +30,42 @@ const config = {
   string_value: {
     "zh-CN": "字符串值",
     en: "string_value",
+  },
+  self_size: {
+    "zh-CN": "自身尺寸",
+    en: "Self Size",
+  },
+  self_size_desc: {
+    "zh-CN": "节点自身大小满足条件才出现在结果中，单位为 bytes",
+    en: "Only when the size of the node itself meets the conditions will it appear in the result, the unit is bytes",
+  },
+  less_than: {
+    "zh-CN": "小于",
+    en: "Less Than",
+  },
+  more_than: {
+    "zh-CN": "大于",
+    en: "More Than",
+  },
+  retained_size: {
+    "zh-CN": "持有尺寸",
+    en: "Retained Size",
+  },
+  retained_size_desc: {
+    "zh-CN": "节点持有的对象大小满足条件才出现在结果中，单位为 bytes",
+    en: "The size of the object held by the node will only appear in the result if the condition is met, and the unit is bytes",
+  },
+  depth: {
+    "zh-CN": "引用深度",
+    en: "Depth",
+  },
+  depth_desc: {
+    "zh-CN": "不满足引用深度条件的对象将不会显示",
+    en: "Objects that do not meet the reference depth criteria will not be displayed",
+  },
+  apply_filter: {
+    "zh-CN": "应用过滤条件",
+    en: "Apply Filter",
   },
 };
 const lang = navigator.language as "zh-CN" | "en";
