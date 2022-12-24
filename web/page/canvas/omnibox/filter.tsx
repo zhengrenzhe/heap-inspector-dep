@@ -18,6 +18,10 @@ export class FilterPanel extends Component {
   @inject()
   private omniService: OmniService;
 
+  private get vm() {
+    return this.omniService.viewModel;
+  }
+
   public override render() {
     return (
       <div>
@@ -32,24 +36,17 @@ export class FilterPanel extends Component {
                 { label: __("closure_name"), value: "closure_name" },
                 { label: __("string_value"), value: "string_value" },
               ]}
-              value={this.omniService.viewModel.filter.filter_from}
+              value={this.vm.filter.filter_from}
               size="xs"
               clearable
-              onChange={(val) =>
-                this.omniService.viewModel.setFilter("filter_from", val)
-              }
+              onChange={(val) => this.vm.setFilter("filter_from", val)}
             />
           }
           right={
             <TextInput
               size="xs"
-              value={this.omniService.viewModel.filter.filter_name}
-              onChange={(e) =>
-                this.omniService.viewModel.setFilter(
-                  "filter_name",
-                  e.target.value
-                )
-              }
+              value={this.vm.filter.filter_name}
+              onChange={(e) => this.vm.setFilter("filter_name", e.target.value)}
             />
           }
           rightSpan="auto"
@@ -62,24 +59,21 @@ export class FilterPanel extends Component {
           left={
             <SegmentedControl
               size={"xs"}
-              value={this.omniService.viewModel.filter.self_size_mode}
+              value={this.vm.filter.self_size_mode}
+              color="teal"
               data={[
                 { label: __("less_than"), value: "less_than" },
                 { label: __("more_than"), value: "more_than" },
               ]}
-              onChange={(val) =>
-                this.omniService.viewModel.setFilter("self_size_mode", val)
-              }
+              onChange={(val) => this.vm.setFilter("self_size_mode", val)}
             />
           }
           leftSpan="content"
           right={
             <NumberInput
               size="xs"
-              value={this.omniService.viewModel.filter.self_size}
-              onChange={(val) =>
-                this.omniService.viewModel.setFilter("self_size", val ?? 0)
-              }
+              value={this.vm.filter.self_size}
+              onChange={(val) => this.vm.setFilter("self_size", val ?? 0)}
             />
           }
           rightSpan="auto"
@@ -92,24 +86,21 @@ export class FilterPanel extends Component {
           left={
             <SegmentedControl
               size={"xs"}
-              value={this.omniService.viewModel.filter.retained_size_mode}
+              value={this.vm.filter.retained_size_mode}
+              color="teal"
               data={[
                 { label: __("less_than"), value: "less_than" },
                 { label: __("more_than"), value: "more_than" },
               ]}
-              onChange={(val) =>
-                this.omniService.viewModel.setFilter("retained_size_mode", val)
-              }
+              onChange={(val) => this.vm.setFilter("retained_size_mode", val)}
             />
           }
           leftSpan="content"
           right={
             <NumberInput
               size="xs"
-              value={this.omniService.viewModel.filter.retained_size}
-              onChange={(val) =>
-                this.omniService.viewModel.setFilter("retained_size", val ?? 0)
-              }
+              value={this.vm.filter.retained_size}
+              onChange={(val) => this.vm.setFilter("retained_size", val ?? 0)}
             />
           }
           rightSpan="auto"
@@ -122,10 +113,8 @@ export class FilterPanel extends Component {
           left={
             <NumberInput
               size="xs"
-              value={this.omniService.viewModel.filter.depth}
-              onChange={(val) =>
-                this.omniService.viewModel.setFilter("depth", val ?? 0)
-              }
+              value={this.vm.filter.depth}
+              onChange={(val) => this.vm.setFilter("depth", val ?? 0)}
             />
           }
           leftSpan={"auto"}
@@ -138,6 +127,8 @@ export class FilterPanel extends Component {
           color="teal"
           w={140}
           size="xs"
+          loading={this.vm.searching}
+          onClick={() => this.omniService.search()}
         >
           {__("apply_filter")}
         </Button>

@@ -1,10 +1,10 @@
-import { ColorScheme, UnstyledButton } from "@mantine/core";
+import { ActionIcon, ColorScheme } from "@mantine/core";
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 import { WorkbenchService } from "@web/page/workbench.service";
-import { inject } from "@web/common";
+import { __, inject } from "@web/common";
 import { Progress } from "@web/page/progress";
 import { Canvas } from "@web/page/canvas";
 
@@ -43,13 +43,19 @@ export class Workbench extends Component<IWorkbenchProps> {
   private renderTheme() {
     return (
       <div className="theme-toggle">
-        <UnstyledButton
+        <ActionIcon
           c={this.isDark ? "#F8F9FA" : "#101113"}
-          fz={22}
+          radius="md"
+          size="md"
+          color="teal"
+          variant="filled"
+          fz={18}
+          style={{ cursor: "pointer" }}
           onClick={this.props.toggleColorScheme}
+          title={this.isDark ? __("light_mode") : __("dark_mode")}
         >
           {this.isDark ? <MdLightMode /> : <MdDarkMode />}
-        </UnstyledButton>
+        </ActionIcon>
       </div>
     );
   }

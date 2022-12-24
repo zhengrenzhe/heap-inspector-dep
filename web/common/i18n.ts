@@ -67,6 +67,26 @@ const config = {
     "zh-CN": "应用过滤条件",
     en: "Apply Filter",
   },
+  dark_mode: {
+    "zh-CN": "深色模式",
+    en: "Dark Mode",
+  },
+  light_mode: {
+    "zh-CN": "浅色模式",
+    en: "Light Mode",
+  },
+  node_count: {
+    "zh-CN": "节点数量",
+    en: "Node Count",
+  },
+  edge_count: {
+    "zh-CN": "边数量",
+    en: "Edge Count",
+  },
+  file_size: {
+    "zh-CN": "文件大小",
+    en: "File Size",
+  },
 };
 const lang = navigator.language as "zh-CN" | "en";
 

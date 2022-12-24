@@ -1,21 +1,10 @@
-use serde::{Deserialize, Serialize};
 use serde_json::from_slice;
 
 use crate::analyzer::snapshot::{parse_snapshot, Snapshot, SnapshotDataProvider};
 
-#[derive(Deserialize, Serialize, Debug)]
-pub struct SearchQuery {
-    filter_from: Vec<String>,
-    filter_name: String,
-    self_size_mode: String,
-    self_size: usize,
-    retained_size_mode: String,
-    retained_size: usize,
-    depth: usize,
-}
-
 pub struct Analyzer {
     pub data_provider: SnapshotDataProvider,
+    pub file_size: usize,
 }
 
 impl Analyzer {
@@ -27,8 +16,7 @@ impl Analyzer {
 
         Analyzer {
             data_provider: parse_snapshot(snapshot),
+            file_size: bytes.len(),
         }
     }
-
-    pub fn search(&self, query: &SearchQuery) {}
 }

@@ -7,7 +7,8 @@ use log::{debug, error};
 use serde_json::json;
 use warp::{Filter, Reply};
 
-use crate::analyzer::analyzer::{Analyzer, SearchQuery};
+use crate::analyzer::analyzer::Analyzer;
+use crate::analyzer::search::SearchQuery;
 use crate::utils::browser::open_url;
 use crate::utils::http::{json_err_res, json_ok_res};
 use crate::utils::webpage::webpage_routes;
@@ -53,6 +54,7 @@ impl Local {
 
         let routes = webpage_routes()
             .or(warp::path!("api" / "is_ready").and_then(Local::is_ready))
+            .or(warp::path!("api" / "meta").and_then(Local::meta))
             .or(warp::path!("api" / "search")
                 .and(warp::query::raw())
                 .and_then(Local::search));
@@ -63,18 +65,31 @@ impl Local {
         warp::serve(routes).run(([127, 0, 0, 1], port)).await;
     }
 
+    pub async fn meta() -> Result<impl Reply, Infallible> {
+        match &(STATE.lock()) {
+            Ok(lock) => match &lock.analyzer {
+                Some(analyzer) => json_ok_res(analyzer.meta()),
+                None => json_err_res(json!({ "msg": "analyzer not found" })),
+            },
+            Err(_) => json_err_res(json!({ "msg": "get lock error" })),
+        }
+    }
+
     pub async fn is_ready() -> Result<impl Reply, Infallible> {
-        let is_ready = STATE.lock().unwrap().is_ready;
-        json_ok_res(json!({ "is_ready": is_ready }))
+        match &(STATE.lock()) {
+            Ok(lock) => json_ok_res(json!({"is_ready": lock.is_ready})),
+            Err(_) => json_err_res(json!({ "msg": "analyzer not found" })),
+        }
     }
 
     pub async fn search(q: String) -> Result<impl Reply, Infallible> {
         let query = serde_qs::from_str::<SearchQuery>(&q).unwrap();
-        let lock = STATE.lock().expect("get state lock error");
-        if let Some(analyzer) = &lock.analyzer {
-            analyzer.search(&query);
-            return json_ok_res(json!({ "X":"X" }));
+        match &(STATE.lock()) {
+            Ok(lock) => match &lock.analyzer {
+                Some(analyzer) => json_ok_res(analyzer.search(&query)),
+                None => json_err_res(json!({ "msg": "analyzer not found" })),
+            },
+            Err(_) => json_err_res(json!({ "msg": "get lock error" })),
         }
-        json_err_res(json!({ "error":true }))
     }
 }

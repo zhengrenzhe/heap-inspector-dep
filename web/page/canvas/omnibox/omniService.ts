@@ -1,6 +1,7 @@
+import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 
-import { injectable } from "@web/common";
+import { API, injectable } from "@web/common";
 
 interface IFilter {
   filter_from: string[];
@@ -10,6 +11,13 @@ interface IFilter {
   retained_size_mode: string;
   retained_size: number;
   depth: number;
+}
+
+interface IMeta {
+  edge_count: number;
+  node_count: number;
+  file_size: number;
+  file_name: string;
 }
 
 class ViewModel {
@@ -25,24 +33,36 @@ class ViewModel {
   };
 
   @observable
-  public mode = "filter";
+  public searching = false;
 
   constructor() {
     makeObservable(this);
   }
 
   @action
-  public setFilter<T extends keyof IFilter>(key: T, value: IFilter[T]) {
-    this.filter[key] = value;
+  public setSearching(s: boolean) {
+    this.searching = s;
   }
 
-  @observable
-  public setMode(mode: string) {
-    this.mode = mode;
+  @action
+  public setFilter<T extends keyof IFilter>(key: T, value: IFilter[T]) {
+    this.filter[key] = value;
   }
 }
 
 @injectable()
 export class OmniService {
   public viewModel = new ViewModel();
+
+  public async search() {
+    this.viewModel.setSearching(true);
+    await axios.get(API.search, {
+      params: this.viewModel.filter,
+    });
+    this.viewModel.setSearching(false);
+  }
+
+  public async getMeta() {
+    return (await axios.get<IMeta>(API.meta)).data;
+  }
 }

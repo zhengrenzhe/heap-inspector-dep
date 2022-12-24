@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import { Paper, Tabs } from "@mantine/core";
 import { observer } from "mobx-react";
 
-import { __, inject } from "@web/common";
+import { __ } from "@web/common";
 import { FilterPanel } from "@web/page/canvas/omnibox/filter";
 import { RepeatedString } from "@web/page/canvas/omnibox/repeated_string";
-import { OmniService } from "@web/page/canvas/omnibox/omniService";
+import { Meta } from "@web/page/canvas/omnibox/meta";
 
 @observer
 export class Omnibox extends Component {
-  @inject()
-  private omniService: OmniService;
-
   private panels = [
     {
       key: "search",
@@ -29,13 +26,7 @@ export class Omnibox extends Component {
     return (
       <div className="omnibox">
         <Paper shadow="md" radius="md" p="md">
-          <Tabs
-            radius="md"
-            defaultValue={this.panels[0]?.key ?? ""}
-            onTabChange={(mode) =>
-              this.omniService.viewModel.setMode(mode as string)
-            }
-          >
+          <Tabs radius="md" defaultValue={this.panels[0]?.key ?? ""}>
             <Tabs.List>
               {this.panels.map((p) => (
                 <Tabs.Tab value={p.key} key={p.key} color="teal">
@@ -50,6 +41,10 @@ export class Omnibox extends Component {
               </Tabs.Panel>
             ))}
           </Tabs>
+        </Paper>
+
+        <Paper shadow="md" radius="md" p="md" mt={20}>
+          <Meta />
         </Paper>
       </div>
     );
