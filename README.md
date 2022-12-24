@@ -1,1 +1,1 @@
-# heap-inspector
+# Heap Inspector
