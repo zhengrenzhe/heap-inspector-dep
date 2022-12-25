@@ -18,7 +18,7 @@ interface IMeta {
   edge_count: number;
   node_count: number;
   file_size: number;
-  file_name: string;
+  file_path: string;
 }
 
 class ViewModel {

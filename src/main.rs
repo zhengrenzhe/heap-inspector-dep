@@ -16,6 +16,10 @@ enum Commands {
         /// snapshot file path
         #[arg(short)]
         file_path: String,
+
+        /// serve port, default port is 9999
+        #[arg(short)]
+        port: Option<u16>,
     },
 
     /// realtime analyse Chromium based browser tab v8 heap memory
@@ -46,7 +50,7 @@ async fn main() {
     pretty_env_logger::init();
 
     match &cli.command {
-        Some(Commands::Local { file_path, .. }) => Local::new(file_path).start().await,
+        Some(Commands::Local { file_path, port }) => Local::new(file_path, port).start().await,
         Some(Commands::Realtime) => realtime_command(),
         _ => {}
     }

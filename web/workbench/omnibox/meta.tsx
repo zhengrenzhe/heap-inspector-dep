@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Badge, List, Text } from "@mantine/core";
+import { Card, Table, Text } from "@mantine/core";
 
 import { __, inject } from "@web/common";
 import { OmniService } from "@web/workbench/omnibox/omniService";
@@ -14,33 +14,51 @@ export class Meta extends Component {
   }
 
   public override render() {
+    const data = [
+      {
+        label: __("node_count"),
+        value: this.state.node_count,
+      },
+      {
+        label: __("edge_count"),
+        value: this.state.edge_count,
+      },
+      {
+        label: __("file_size"),
+        value: `${Math.ceil(this.state.file_size / 1024 / 1024)} MB`,
+      },
+      {
+        label: __("file_path"),
+        value: this.state.file_path,
+      },
+    ];
+
     return (
-      <List spacing="xs" size="sm" listStyleType="none">
-        <List.Item>
-          <Text fz="sm" c="teal">
-            <Badge color="teal" radius="sm" variant="outline" mr={6}>
-              {__("node_count")}
-            </Badge>
-            {this.state.node_count}
-          </Text>
-        </List.Item>
-        <List.Item>
-          <Text fz="sm" c="teal">
-            <Badge color="teal" radius="sm" variant="outline" mr={6}>
-              {__("edge_count")}
-            </Badge>
-            {this.state.edge_count}
-          </Text>
-        </List.Item>
-        <List.Item>
-          <Text fz="sm" c="teal">
-            <Badge color="teal" radius="sm" variant="outline" mr={6}>
-              {__("file_size")}
-            </Badge>
-            {Math.ceil(this.state.file_size / 1024 / 1024)} MB
-          </Text>
-        </List.Item>
-      </List>
+      <Card shadow="md" radius="md" p="md" mt={20}>
+        <Table fontSize="xs" style={{ tableLayout: "fixed" }}>
+          <tbody>
+            {data.map((d, index) => (
+              <tr key={index}>
+                <td width={60}>
+                  <Text>{d.label}</Text>
+                </td>
+                <td>
+                  <Text
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                    title={d.value.toString()}
+                  >
+                    {d.value}
+                  </Text>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Card>
     );
   }
 
@@ -48,5 +66,6 @@ export class Meta extends Component {
     node_count: 0,
     edge_count: 0,
     file_size: 0,
+    file_path: "",
   };
 }

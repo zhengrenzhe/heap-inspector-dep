@@ -87,6 +87,10 @@ const config = {
     "zh-CN": "文件大小",
     en: "File Size",
   },
+  file_path: {
+    "zh-CN": "文件路径",
+    en: "File Path",
+  },
 };
 const lang = navigator.language as "zh-CN" | "en";
 

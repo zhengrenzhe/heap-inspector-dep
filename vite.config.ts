@@ -19,6 +19,9 @@ export default defineConfig({
       sourceMap: !isProd,
     }),
   ],
+  server: {
+    hmr: false,
+  },
   build: {
     outDir: resolve(__dirname, "./dist"),
     assetsDir: "",

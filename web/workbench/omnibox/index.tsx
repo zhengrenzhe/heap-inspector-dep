@@ -45,9 +45,7 @@ export class Omnibox extends Component {
           </Tabs>
         </Paper>
 
-        <Paper shadow="md" radius="md" p="md" mt={20}>
-          <Meta />
-        </Paper>
+        <Meta />
       </div>
     );
   }
