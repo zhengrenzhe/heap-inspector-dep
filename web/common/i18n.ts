@@ -91,6 +91,14 @@ const config = {
     "zh-CN": "文件路径",
     en: "File Path",
   },
+  node_types: {
+    "zh-CN": "节点类型",
+    en: "Node Types",
+  },
+  node_types_desc: {
+    "zh-CN": "指定类型的节点才会出现在搜索结果中",
+    en: "Only nodes of the specified type will appear in the search results",
+  },
 };
 const lang = navigator.language as "zh-CN" | "en";
 

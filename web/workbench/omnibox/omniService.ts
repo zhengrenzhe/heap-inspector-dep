@@ -11,7 +11,9 @@ interface IFilter {
   self_size: number;
   retained_size_mode: string;
   retained_size: number;
+  depth_mode: string;
   depth: number;
+  node_types: string[];
 }
 
 interface IMeta {
@@ -19,6 +21,8 @@ interface IMeta {
   node_count: number;
   file_size: number;
   file_path: string;
+  node_types: string[];
+  edge_types: string[];
 }
 
 class ViewModel {
@@ -30,11 +34,16 @@ class ViewModel {
     self_size: 0,
     retained_size_mode: "more_than",
     retained_size: 0,
+    depth_mode: "more_than",
     depth: 0,
+    node_types: [],
   };
 
   @observable
   public searching = false;
+
+  @observable
+  public meta: IMeta | null = null;
 
   constructor() {
     makeObservable(this);
@@ -43,6 +52,11 @@ class ViewModel {
   @action
   public setSearching(s: boolean) {
     this.searching = s;
+  }
+
+  @action
+  public setMeta(meta: IMeta) {
+    this.meta = meta;
   }
 
   @action
@@ -57,6 +71,10 @@ export class OmniService {
 
   @inject()
   private canvasService: CanvasService;
+
+  public init() {
+    void this.getMeta();
+  }
 
   public async search() {
     this.viewModel.setSearching(true);
@@ -74,6 +92,7 @@ export class OmniService {
   }
 
   public async getMeta() {
-    return (await axios.get<IMeta>(API.meta)).data;
+    const meta = (await axios.get<IMeta>(API.meta)).data;
+    this.viewModel.setMeta(meta);
   }
 }

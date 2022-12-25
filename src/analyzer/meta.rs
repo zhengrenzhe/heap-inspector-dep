@@ -4,6 +4,8 @@ pub struct MetaInfo {
     pub edge_count: u32,
     pub node_count: u32,
     pub file_size: usize,
+    pub node_types: Vec<String>,
+    pub edge_types: Vec<String>,
 }
 
 impl Analyzer {
@@ -11,6 +13,8 @@ impl Analyzer {
         MetaInfo {
             edge_count: self.data_provider.edge_count,
             node_count: self.data_provider.node_count,
+            node_types: self.data_provider.node_types.clone(),
+            edge_types: self.data_provider.edge_types.clone(),
             file_size: self.file_size,
         }
     }

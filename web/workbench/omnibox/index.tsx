@@ -2,15 +2,19 @@ import React, { Component } from "react";
 import { Paper, Tabs } from "@mantine/core";
 import { observer } from "mobx-react";
 
-import { __ } from "@web/common";
+import { __, inject } from "@web/common";
 import { Meta } from "@web/workbench/omnibox/meta";
 import { FilterPanel } from "@web/workbench/omnibox/filter";
 import { RepeatedString } from "@web/workbench/omnibox/repeated_string";
+import { OmniService } from "@web/workbench/omnibox/omniService";
 
 import "./omnibox.less";
 
 @observer
 export class Omnibox extends Component {
+  @inject()
+  private omniService: OmniService;
+
   private panels = [
     {
       key: "search",
@@ -23,6 +27,10 @@ export class Omnibox extends Component {
       comp: <RepeatedString />,
     },
   ];
+
+  public override componentDidMount() {
+    this.omniService.init();
+  }
 
   public override render() {
     return (

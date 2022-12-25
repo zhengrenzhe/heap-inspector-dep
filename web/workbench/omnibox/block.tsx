@@ -7,7 +7,7 @@ interface IBlockProps {
   description?: string;
   left: ReactNode;
   leftSpan?: ColSpan;
-  right: ReactNode;
+  right?: ReactNode;
   rightSpan?: ColSpan;
   cols?: number;
 }

@@ -82,7 +82,9 @@ impl Local {
                         "edge_count": meta.edge_count,
                         "node_count": meta.node_count,
                         "file_size": meta.file_size,
-                        "file_path": lock.file_path
+                        "file_path": lock.file_path,
+                        "node_types": meta.node_types,
+                        "edge_types": meta.edge_types
                     }))
                 }
                 None => json_err_res(json!({ "msg": "analyzer not found" })),

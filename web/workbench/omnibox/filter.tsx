@@ -22,6 +22,10 @@ export class FilterPanel extends Component {
     return this.omniService.viewModel;
   }
 
+  private get meta() {
+    return this.vm.meta;
+  }
+
   public override render() {
     return (
       <div>
@@ -111,15 +115,45 @@ export class FilterPanel extends Component {
           description={__("depth_desc")}
           cols={3}
           left={
+            <SegmentedControl
+              size={"xs"}
+              value={this.vm.filter.depth_mode}
+              color="teal"
+              data={[
+                { label: __("less_than"), value: "less_than" },
+                { label: __("more_than"), value: "more_than" },
+              ]}
+              onChange={(val) => this.vm.setFilter("depth_mode", val)}
+            />
+          }
+          leftSpan="content"
+          right={
             <NumberInput
               size="xs"
               value={this.vm.filter.depth}
               onChange={(val) => this.vm.setFilter("depth", val ?? 0)}
             />
           }
-          leftSpan={"auto"}
-          right={null}
+          rightSpan="auto"
         />
+
+        {this.meta ? (
+          <Block
+            label={__("node_types")}
+            description={__("node_types_desc")}
+            cols={3}
+            left={
+              <MultiSelect
+                data={this.meta.node_types.map((t) => ({ label: t, value: t }))}
+                value={this.vm.filter.node_types}
+                size="xs"
+                clearable
+                onChange={(val) => this.vm.setFilter("node_types", val)}
+              />
+            }
+            leftSpan={"auto"}
+          />
+        ) : null}
 
         <Button
           leftIcon={<BsSearch />}
