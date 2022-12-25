@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Table, Text } from "@mantine/core";
+import { Table, Text } from "@mantine/core";
 
 import { __, inject } from "@web/common";
 import { OmniService } from "@web/workbench/omnibox/omniService";
@@ -34,31 +34,29 @@ export class Meta extends Component {
     ];
 
     return (
-      <Card shadow="md" radius="md" p="md" mt={20}>
-        <Table fontSize="xs" style={{ tableLayout: "fixed" }}>
-          <tbody>
-            {data.map((d, index) => (
-              <tr key={index}>
-                <td width={60}>
-                  <Text>{d.label}</Text>
-                </td>
-                <td>
-                  <Text
-                    style={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                    title={d.value.toString()}
-                  >
-                    {d.value}
-                  </Text>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Card>
+      <Table fontSize="xs" style={{ tableLayout: "fixed" }}>
+        <tbody>
+          {data.map((d, index) => (
+            <tr key={index}>
+              <td width={60}>
+                <Text>{d.label}</Text>
+              </td>
+              <td>
+                <Text
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                  title={d.value.toString()}
+                >
+                  {d.value}
+                </Text>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     );
   }
 
