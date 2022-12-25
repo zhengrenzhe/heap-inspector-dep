@@ -83,7 +83,6 @@ export class OmniService {
         params: this.viewModel.filter,
       })
     ).data;
-    console.log(data);
     this.canvasService.render({
       nodes: data.nodes,
       edges: [],

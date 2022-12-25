@@ -5,13 +5,15 @@ use crate::analyzer::analyzer::Analyzer;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct SearchQuery {
-    filter_from: Vec<String>,
-    filter_name: String,
-    self_size_mode: String,
-    self_size: usize,
-    retained_size_mode: String,
-    retained_size: usize,
-    depth: usize,
+    filter_from: Option<Vec<String>>,
+    filter_name: Option<String>,
+    self_size_mode: Option<String>,
+    self_size: Option<usize>,
+    retained_size_mode: Option<String>,
+    retained_size: Option<usize>,
+    depth: Option<usize>,
+    depth_mode: Option<String>,
+    node_types: Option<Vec<String>>,
 }
 
 impl Analyzer {
