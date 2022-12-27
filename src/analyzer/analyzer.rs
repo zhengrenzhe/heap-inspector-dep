@@ -11,12 +11,12 @@ pub struct Analyzer {
 
 impl Analyzer {
     pub fn from_bytes(bytes: &[u8]) -> Analyzer {
+        let start = SystemTime::now();
         let snapshot: Snapshot = match from_slice(bytes) {
             Ok(snapshot) => snapshot,
             Err(e) => panic!("parse snapshot error: {}", e),
         };
 
-        let start = SystemTime::now();
         let ds = parse_snapshot(snapshot);
         let end = SystemTime::now();
         println!("{:?}", end.duration_since(start));
