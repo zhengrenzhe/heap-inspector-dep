@@ -95,16 +95,17 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
 
     // parse nodes
     for node_base_idx in (0..all_nodes.len()).step_by(meta.node_fields.len()) {
+        let edge_count = all_nodes[node_base_idx + 4];
         nodes.push(Node {
             node_type_index: all_nodes[node_base_idx] as usize,
             name_index: all_nodes[node_base_idx + 1] as usize,
             id: all_nodes[node_base_idx + 2],
             self_size: all_nodes[node_base_idx + 3],
-            edge_count: all_nodes[node_base_idx + 4],
+            edge_count,
             trace_node_id: all_nodes[node_base_idx + 5],
             detachedness: all_nodes[node_base_idx + 6],
-            from_edge_index: vec![],
-            to_edge_index: vec![],
+            from_edge_index: Vec::with_capacity(edge_count as usize),
+            to_edge_index: Vec::with_capacity(edge_count as usize),
         })
     }
 
