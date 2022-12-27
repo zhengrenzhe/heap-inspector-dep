@@ -50,10 +50,10 @@ fn dump0(data: &Vec<EdgeOrNodeType>) -> Vec<String> {
 pub struct Node {
     pub node_type_index: usize,
     pub name_index: usize,
-    pub id: String,
+    pub id: u32,
     pub self_size: u32,
     pub edge_count: u32,
-    pub trace_node_id: String,
+    pub trace_node_id: u32,
     pub detachedness: u32,
     pub from_edge_index: Vec<usize>,
     pub to_edge_index: Vec<usize>,
@@ -65,11 +65,11 @@ pub struct Edge {
     pub edge_type_index: usize,
     pub name_or_index_raw: usize,
     pub to_node_index: usize,
-    pub to_node_id: String,
+    pub to_node_id: u32,
     pub from_node_index: usize,
-    pub from_node_id: String,
-    pub source: String,
-    pub target: String,
+    pub from_node_id: u32,
+    pub source: u32,
+    pub target: u32,
 }
 
 pub struct SnapshotDataProvider {
@@ -86,8 +86,8 @@ pub struct SnapshotDataProvider {
 }
 
 pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
-    let mut nodes: Vec<Node> = Vec::new();
-    let mut edges: Vec<Edge> = Vec::new();
+    let mut nodes: Vec<Node> = Vec::with_capacity(s.snapshot.node_count as usize);
+    let mut edges: Vec<Edge> = Vec::with_capacity(s.snapshot.edge_count as usize);
 
     let meta = s.snapshot.meta;
     let all_nodes = s.nodes;
@@ -98,10 +98,10 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
         nodes.push(Node {
             node_type_index: all_nodes[node_base_idx] as usize,
             name_index: all_nodes[node_base_idx + 1] as usize,
-            id: all_nodes[node_base_idx + 2].to_string(),
+            id: all_nodes[node_base_idx + 2],
             self_size: all_nodes[node_base_idx + 3],
             edge_count: all_nodes[node_base_idx + 4],
-            trace_node_id: all_nodes[node_base_idx + 5].to_string(),
+            trace_node_id: all_nodes[node_base_idx + 5],
             detachedness: all_nodes[node_base_idx + 6],
             from_edge_index: vec![],
             to_edge_index: vec![],
@@ -134,11 +134,11 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
             edge_type_index: all_edges[edge_base_idx] as usize,
             name_or_index_raw: all_edges[edge_base_idx + 1] as usize,
             to_node_index: edge_to_node_idx,
-            to_node_id: nodes[edge_to_node_idx].id.to_string(),
-            target: nodes[edge_to_node_idx].id.to_string(),
+            to_node_id: nodes[edge_to_node_idx].id,
+            target: nodes[edge_to_node_idx].id,
             from_node_index: edge_from_node_idx,
-            from_node_id: nodes[edge_from_node_idx].id.to_string(),
-            source: nodes[edge_from_node_idx].id.to_string(),
+            from_node_id: nodes[edge_from_node_idx].id,
+            source: nodes[edge_from_node_idx].id,
         });
 
         edge_from_node_acc += 1;
