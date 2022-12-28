@@ -8,4 +8,5 @@ export const API = {
   is_ready: createURL("/api/is_ready"),
   search: createURL("/api/search"),
   meta: createURL("/api/meta"),
+  statistics: createURL("/api/statistics"),
 };
