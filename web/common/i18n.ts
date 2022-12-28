@@ -99,6 +99,14 @@ const config = {
     "zh-CN": "指定类型的节点才会出现在搜索结果中",
     en: "Only nodes of the specified type will appear in the search results",
   },
+  total: {
+    "zh-CN": "总计",
+    en: "Total",
+  },
+  statistics: {
+    "zh-CN": "统计信息",
+    en: "Statistics",
+  },
 };
 const lang = navigator.language as "zh-CN" | "en";
 

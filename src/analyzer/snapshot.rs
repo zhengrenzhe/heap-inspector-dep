@@ -21,22 +21,22 @@ pub struct SnapshotMeta {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SnapshotInfo {
-    pub edge_count: u32,
+    pub edge_count: u64,
     pub meta: SnapshotMeta,
-    pub node_count: u32,
-    pub trace_function_count: u32,
+    pub node_count: u64,
+    pub trace_function_count: u64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Snapshot {
-    pub edges: Vec<u32>,
-    pub locations: Vec<u32>,
-    pub nodes: Vec<u32>,
-    pub samples: Vec<u32>,
+    pub edges: Vec<u64>,
+    pub locations: Vec<u64>,
+    pub nodes: Vec<u64>,
+    pub samples: Vec<u64>,
     pub snapshot: SnapshotInfo,
     pub strings: Vec<String>,
-    pub trace_function_infos: Vec<u32>,
-    pub trace_tree: Vec<u32>,
+    pub trace_function_infos: Vec<u64>,
+    pub trace_tree: Vec<u64>,
 }
 
 fn dump0(data: &Vec<EdgeOrNodeType>) -> Vec<String> {
@@ -48,28 +48,28 @@ fn dump0(data: &Vec<EdgeOrNodeType>) -> Vec<String> {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Node {
-    pub node_type_index: usize,
-    pub name_index: usize,
-    pub id: u32,
-    pub self_size: u32,
-    pub edge_count: u32,
-    pub trace_node_id: u32,
-    pub detachedness: u32,
-    pub from_edge_index: Vec<usize>,
-    pub to_edge_index: Vec<usize>,
+    pub node_type_index: u64,
+    pub name_index: u64,
+    pub id: u64,
+    pub self_size: u64,
+    pub edge_count: u64,
+    pub trace_node_id: u64,
+    pub detachedness: u64,
+    pub from_edge_index: Vec<u64>,
+    pub to_edge_index: Vec<u64>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Edge {
-    pub edge_index: usize,
-    pub edge_type_index: usize,
-    pub name_or_index_raw: usize,
-    pub to_node_index: usize,
-    pub to_node_id: u32,
-    pub from_node_index: usize,
-    pub from_node_id: u32,
-    pub source: u32,
-    pub target: u32,
+    pub edge_index: u64,
+    pub edge_type_index: u64,
+    pub name_or_index_raw: u64,
+    pub to_node_index: u64,
+    pub to_node_id: u64,
+    pub from_node_index: u64,
+    pub from_node_id: u64,
+    pub source: u64,
+    pub target: u64,
 }
 
 pub struct SnapshotDataProvider {
@@ -78,8 +78,8 @@ pub struct SnapshotDataProvider {
 
     pub strings: Vec<String>,
 
-    pub edge_count: u32,
-    pub node_count: u32,
+    pub edge_count: u64,
+    pub node_count: u64,
 
     pub edge_types: Vec<String>,
     pub node_types: Vec<String>,
@@ -97,8 +97,8 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
     for node_base_idx in (0..all_nodes.len()).step_by(meta.node_fields.len()) {
         let edge_count = all_nodes[node_base_idx + 4];
         nodes.push(Node {
-            node_type_index: all_nodes[node_base_idx] as usize,
-            name_index: all_nodes[node_base_idx + 1] as usize,
+            node_type_index: all_nodes[node_base_idx],
+            name_index: all_nodes[node_base_idx + 1],
             id: all_nodes[node_base_idx + 2],
             self_size: all_nodes[node_base_idx + 3],
             edge_count,
@@ -127,17 +127,21 @@ pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
         }
 
         // set from/to node
-        nodes[edge_from_node_idx].to_edge_index.push(edge_idx);
-        nodes[edge_to_node_idx].from_edge_index.push(edge_idx);
+        nodes[edge_from_node_idx]
+            .to_edge_index
+            .push(edge_idx as u64);
+        nodes[edge_to_node_idx]
+            .from_edge_index
+            .push(edge_idx as u64);
 
         edges.push(Edge {
-            edge_index: edge_idx,
-            edge_type_index: all_edges[edge_base_idx] as usize,
-            name_or_index_raw: all_edges[edge_base_idx + 1] as usize,
-            to_node_index: edge_to_node_idx,
+            edge_index: edge_idx as u64,
+            edge_type_index: all_edges[edge_base_idx],
+            name_or_index_raw: all_edges[edge_base_idx + 1],
+            to_node_index: edge_to_node_idx as u64,
             to_node_id: nodes[edge_to_node_idx].id,
             target: nodes[edge_to_node_idx].id,
-            from_node_index: edge_from_node_idx,
+            from_node_index: edge_from_node_idx as u64,
             from_node_id: nodes[edge_from_node_idx].id,
             source: nodes[edge_from_node_idx].id,
         });

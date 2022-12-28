@@ -1,8 +1,8 @@
 use crate::analyzer::analyzer::Analyzer;
 
 pub struct MetaInfo {
-    pub edge_count: u32,
-    pub node_count: u32,
+    pub edge_count: u64,
+    pub node_count: u64,
     pub file_size: usize,
     pub node_types: Vec<String>,
     pub edge_types: Vec<String>,

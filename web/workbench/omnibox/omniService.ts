@@ -25,6 +25,11 @@ interface IMeta {
   edge_types: string[];
 }
 
+interface IStatistics {
+  percent: Record<string, number>;
+  total_bytes: number;
+}
+
 class ViewModel {
   @observable
   public filter: IFilter = {
@@ -45,6 +50,9 @@ class ViewModel {
   @observable
   public meta: IMeta | null = null;
 
+  @observable
+  public statistics: IStatistics | null = null;
+
   constructor() {
     makeObservable(this);
   }
@@ -57,6 +65,11 @@ class ViewModel {
   @action
   public setMeta(meta: IMeta) {
     this.meta = meta;
+  }
+
+  @action
+  public setStatistics(statistics: IStatistics) {
+    this.statistics = statistics;
   }
 
   @action
@@ -74,6 +87,7 @@ export class OmniService {
 
   public init() {
     void this.getMeta();
+    void this.getStatistics();
   }
 
   public async search() {
@@ -90,8 +104,13 @@ export class OmniService {
     this.viewModel.setSearching(false);
   }
 
-  public async getMeta() {
+  private async getMeta() {
     const meta = (await axios.get<IMeta>(API.meta)).data;
     this.viewModel.setMeta(meta);
+  }
+
+  private async getStatistics() {
+    const statistics = (await axios.get<IStatistics>(API.statistics)).data;
+    this.viewModel.setStatistics(statistics);
   }
 }

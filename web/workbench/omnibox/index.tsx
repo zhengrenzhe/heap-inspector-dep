@@ -26,6 +26,11 @@ export class Omnibox extends Component {
       title: __("repeated_string"),
       comp: <RepeatedString />,
     },
+    {
+      key: "statistics",
+      title: __("statistics"),
+      comp: <Meta />,
+    },
   ];
 
   public override componentDidMount() {
@@ -51,10 +56,6 @@ export class Omnibox extends Component {
               </Tabs.Panel>
             ))}
           </Tabs>
-        </Paper>
-
-        <Paper shadow="md" radius="md" p="md" mt={20}>
-          <Meta />
         </Paper>
       </div>
     );
