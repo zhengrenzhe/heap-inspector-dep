@@ -2,8 +2,9 @@ use std::convert::Infallible;
 use std::fs;
 use std::sync::Mutex;
 use std::thread;
+use std::time::SystemTime;
 
-use log::{debug, error};
+use log::{debug, error, info};
 use serde_json::json;
 use warp::{Filter, Reply};
 
@@ -33,30 +34,49 @@ impl Local {
         let fp = file_path.clone();
         let fp2 = file_path.clone();
 
-        thread::spawn(move || {
-            debug!("start analyse file {}", fp);
+        let port = match port {
+            Some(port) => *port,
+            None => 9999,
+        };
 
+        thread::spawn(move || {
+            info!("start analyse file {}", fp);
+
+            let start = SystemTime::now();
             if let Ok(bytes) = fs::read(fp) {
-                debug!("reading finished");
+                let end = SystemTime::now();
+                debug!(
+                    "reading finished with {:?}",
+                    end.duration_since(start).unwrap()
+                );
+
                 debug!("start analyse");
+                let start = SystemTime::now();
                 let analyzer = Analyzer::from_bytes(&bytes);
+                let end = SystemTime::now();
+                debug!(
+                    "analyse finished with {:?}",
+                    end.duration_since(start).unwrap()
+                );
+
                 let mut lock = STATE.lock().expect("get state lock error");
                 lock.analyzer = Some(analyzer);
                 lock.is_ready = true;
                 lock.file_path = fp2.clone();
-                debug!("analyse finished");
+
+                info!("analyse finished");
+
+                let url = format!("http://localhost:{}", port);
+                info!("✨ open {}", url);
+                open_url(&url);
+
                 return;
             }
 
             error!("{} not exist", fp2);
         });
 
-        Local {
-            port: match port {
-                Some(port) => *port,
-                None => 9999,
-            },
-        }
+        Local { port }
     }
 
     pub async fn start(&self) {
@@ -68,9 +88,6 @@ impl Local {
                 .and(warp::query::raw())
                 .and_then(Local::search));
 
-        let url = format!("http://localhost:{}", self.port);
-        println!("✨ open {}", url);
-        open_url(&url);
         warp::serve(routes).run(([127, 0, 0, 1], self.port)).await;
     }
 

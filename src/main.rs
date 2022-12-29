@@ -4,6 +4,7 @@ use clap::{Parser, Subcommand};
 
 use crate::commands::local::Local;
 use crate::commands::realtime::realtime_command::realtime_command;
+use crate::utils::logger::init_logger;
 
 mod analyzer;
 mod commands;
@@ -47,7 +48,7 @@ async fn main() {
         env::set_var("RUST_LOG", "none,heap_inspector=info");
     }
 
-    pretty_env_logger::init();
+    init_logger();
 
     match &cli.command {
         Some(Commands::Local { file_path, port }) => Local::new(file_path, port).start().await,
