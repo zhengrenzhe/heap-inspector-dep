@@ -22,8 +22,4 @@ include_dir = "0.7.3"
 log = "0.4.17"
 env_logger = "0.10.0"
 serde_qs = "0.10.1"
-
-
-[[bin]]
-name = "heap-inspector"
-include = ["dist", "Cargo.toml", "src"]
+spinach = "2.1.0"
