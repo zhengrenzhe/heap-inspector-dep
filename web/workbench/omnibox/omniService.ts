@@ -4,7 +4,7 @@ import { action, makeObservable, observable } from "mobx";
 import { API, inject, injectable } from "@web/common";
 import { CanvasService } from "@web/workbench/canvas/canvas.service";
 
-interface IFilter {
+export interface IFilter {
   filter_from: string[];
   filter_name: string;
   self_size_mode: string;
@@ -16,7 +16,7 @@ interface IFilter {
   node_types: string[];
 }
 
-interface IMeta {
+export interface IMeta {
   edge_count: number;
   node_count: number;
   file_size: number;
@@ -25,7 +25,7 @@ interface IMeta {
   edge_types: string[];
 }
 
-interface IStatistics {
+export interface IStatistics {
   percent: Record<string, number>;
   total_bytes: number;
 }

@@ -100,8 +100,8 @@ const config = {
     en: "Only nodes of the specified type will appear in the search results",
   },
   total: {
-    "zh-CN": "总计",
-    en: "Total",
+    "zh-CN": "堆内存总计",
+    en: "Heap memory total",
   },
   statistics: {
     "zh-CN": "统计信息",
