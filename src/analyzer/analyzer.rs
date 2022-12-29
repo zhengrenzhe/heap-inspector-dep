@@ -1,5 +1,3 @@
-use std::time::SystemTime;
-
 use serde_json::from_slice;
 
 use crate::analyzer::snapshot::{parse_snapshot, Snapshot, SnapshotDataProvider};
@@ -16,10 +14,8 @@ impl Analyzer {
             Err(e) => panic!("parse snapshot error: {}", e),
         };
 
-        let ds = parse_snapshot(snapshot);
-
         Analyzer {
-            data_provider: ds,
+            data_provider: parse_snapshot(snapshot),
             file_size: bytes.len(),
         }
     }

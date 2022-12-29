@@ -157,7 +157,7 @@ function Statistics(props: { statistics: IStatistics | null }) {
         active: {
           style: {
             lineWidth: 3,
-            stroke: isDark ? theme.colors.dark[0] : theme.colors.dark[7],
+            stroke: isDark ? "#fff" : theme.colors.dark[7],
           },
         },
       }}
