@@ -1,12 +1,21 @@
 use include_dir::{include_dir, Dir};
+use warp::http::{HeaderMap, HeaderValue};
 use warp::reply::WithHeader;
 use warp::{Filter, Rejection, Reply};
 
 static PROJECT_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/dist/");
 
 pub fn webpage_routes() -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Clone {
-    let index = warp::path::end().map(|| host_webpage("index.html"));
-    let static_files = warp::path!(String).map(|path: String| host_webpage(&path));
+    let mut headers = HeaderMap::new();
+    headers.insert("Content-Encoding", HeaderValue::from_static("br"));
+
+    let index = warp::path::end()
+        .map(|| host_webpage("index.html"))
+        .with(warp::reply::with::headers(headers.clone()));
+    let static_files = warp::path!(String)
+        .map(|path: String| host_webpage(&path))
+        .with(warp::reply::with::headers(headers.clone()));
+
     index.or(static_files)
 }
 

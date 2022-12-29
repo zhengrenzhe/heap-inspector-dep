@@ -1,6 +1,7 @@
 use std::env;
 
 use clap::{Parser, Subcommand};
+use spinach::term;
 
 use crate::commands::local::Local;
 use crate::commands::realtime::realtime_command::realtime_command;
@@ -40,6 +41,12 @@ struct Cli {
 
 #[tokio::main]
 async fn main() {
+    ctrlc::set_handler(|| {
+        term::show_cursor();
+        std::process::exit(0);
+    })
+    .expect("ctrl-c error");
+
     let cli = Cli::parse();
 
     if cli.verbose {
