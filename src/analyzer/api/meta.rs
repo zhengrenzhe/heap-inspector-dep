@@ -1,4 +1,4 @@
-use crate::analyzer::analyzer::Analyzer;
+use crate::analyzer::Analyzer;
 
 pub struct MetaInfo {
     pub edge_count: u64,

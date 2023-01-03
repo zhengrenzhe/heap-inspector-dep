@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
-use crate::analyzer::analyzer::Analyzer;
+use crate::analyzer::Analyzer;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct SearchQuery {

@@ -8,8 +8,8 @@ use serde_json::json;
 use spinach::Spinach;
 use warp::{Filter, Reply};
 
-use crate::analyzer::analyzer::Analyzer;
 use crate::analyzer::api::search::SearchQuery;
+use crate::analyzer::Analyzer;
 use crate::utils::browser::open_url;
 use crate::utils::http::{json_err_res, json_ok_res};
 use crate::utils::time_count::TimeCount;

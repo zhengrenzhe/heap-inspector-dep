@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use serde_json::{json, Value};
 
-use crate::analyzer::analyzer::Analyzer;
+use crate::analyzer::Analyzer;
 
 impl Analyzer {
     pub fn statistics(&self) -> Value {
