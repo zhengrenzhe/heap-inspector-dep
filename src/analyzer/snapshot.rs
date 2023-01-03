@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::from_slice;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
@@ -85,86 +86,97 @@ pub struct SnapshotDataProvider {
     pub node_types: Vec<String>,
 }
 
-pub fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
-    let mut nodes: Vec<Node> = Vec::with_capacity(s.snapshot.node_count as usize);
-    let mut edges: Vec<Edge> = Vec::with_capacity(s.snapshot.edge_count as usize);
+impl SnapshotDataProvider {
+    pub fn from_slice(bytes: &[u8]) -> SnapshotDataProvider {
+        let snapshot: Snapshot = match from_slice(bytes) {
+            Ok(snapshot) => snapshot,
+            Err(e) => panic!("parse snapshot error: {}", e),
+        };
 
-    let meta = s.snapshot.meta;
-    let all_nodes = s.nodes;
-    let all_edges = s.edges;
-
-    // parse nodes
-    for node_base_idx in (0..all_nodes.len()).step_by(meta.node_fields.len()) {
-        let edge_count = all_nodes[node_base_idx + 4];
-        nodes.push(Node {
-            node_type_index: all_nodes[node_base_idx],
-            name_index: all_nodes[node_base_idx + 1],
-            id: all_nodes[node_base_idx + 2],
-            self_size: all_nodes[node_base_idx + 3],
-            edge_count,
-            trace_node_id: all_nodes[node_base_idx + 5],
-            detachedness: all_nodes[node_base_idx + 6],
-            from_edge_index: Vec::with_capacity(edge_count as usize),
-            to_edge_index: Vec::with_capacity(edge_count as usize),
-        })
+        SnapshotDataProvider::parse_snapshot(snapshot)
     }
 
-    let mut edge_from_node_idx = 0;
-    let mut edge_from_node_acc = 0;
+    fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {
+        let mut nodes: Vec<Node> = Vec::with_capacity(s.snapshot.node_count as usize);
+        let mut edges: Vec<Edge> = Vec::with_capacity(s.snapshot.edge_count as usize);
 
-    // parse edges
-    for (edge_idx, edge_base_idx) in (0..all_edges.len())
-        .step_by(meta.edge_fields.len())
-        .enumerate()
-    {
-        // edge base info
-        let edge_to_node_idx = all_edges[edge_base_idx + 2] as usize / meta.node_fields.len();
+        let meta = s.snapshot.meta;
+        let all_nodes = s.nodes;
+        let all_edges = s.edges;
 
-        // ignore empty edges node
-        while nodes[edge_from_node_idx].edge_count == 0 {
-            edge_from_node_idx += 1;
-            edge_from_node_acc = 0;
+        // parse nodes
+        for node_base_idx in (0..all_nodes.len()).step_by(meta.node_fields.len()) {
+            let edge_count = all_nodes[node_base_idx + 4];
+            nodes.push(Node {
+                node_type_index: all_nodes[node_base_idx],
+                name_index: all_nodes[node_base_idx + 1],
+                id: all_nodes[node_base_idx + 2],
+                self_size: all_nodes[node_base_idx + 3],
+                edge_count,
+                trace_node_id: all_nodes[node_base_idx + 5],
+                detachedness: all_nodes[node_base_idx + 6],
+                from_edge_index: Vec::with_capacity(edge_count as usize),
+                to_edge_index: Vec::with_capacity(edge_count as usize),
+            })
         }
 
-        // set from/to node
-        nodes[edge_from_node_idx]
-            .to_edge_index
-            .push(edge_idx as u64);
-        nodes[edge_to_node_idx]
-            .from_edge_index
-            .push(edge_idx as u64);
+        let mut edge_from_node_idx = 0;
+        let mut edge_from_node_acc = 0;
 
-        edges.push(Edge {
-            edge_index: edge_idx as u64,
-            edge_type_index: all_edges[edge_base_idx],
-            name_or_index_raw: all_edges[edge_base_idx + 1],
-            to_node_index: edge_to_node_idx as u64,
-            to_node_id: nodes[edge_to_node_idx].id,
-            target: nodes[edge_to_node_idx].id,
-            from_node_index: edge_from_node_idx as u64,
-            from_node_id: nodes[edge_from_node_idx].id,
-            source: nodes[edge_from_node_idx].id,
-        });
+        // parse edges
+        for (edge_idx, edge_base_idx) in (0..all_edges.len())
+            .step_by(meta.edge_fields.len())
+            .enumerate()
+        {
+            // edge base info
+            let edge_to_node_idx = all_edges[edge_base_idx + 2] as usize / meta.node_fields.len();
 
-        edge_from_node_acc += 1;
+            // ignore empty edges node
+            while nodes[edge_from_node_idx].edge_count == 0 {
+                edge_from_node_idx += 1;
+                edge_from_node_acc = 0;
+            }
 
-        // reset from node idx if needed
-        if edge_from_node_acc >= nodes[edge_from_node_idx].edge_count as usize {
-            edge_from_node_idx += 1;
-            edge_from_node_acc = 0;
+            // set from/to node
+            nodes[edge_from_node_idx]
+                .to_edge_index
+                .push(edge_idx as u64);
+            nodes[edge_to_node_idx]
+                .from_edge_index
+                .push(edge_idx as u64);
+
+            edges.push(Edge {
+                edge_index: edge_idx as u64,
+                edge_type_index: all_edges[edge_base_idx],
+                name_or_index_raw: all_edges[edge_base_idx + 1],
+                to_node_index: edge_to_node_idx as u64,
+                to_node_id: nodes[edge_to_node_idx].id,
+                target: nodes[edge_to_node_idx].id,
+                from_node_index: edge_from_node_idx as u64,
+                from_node_id: nodes[edge_from_node_idx].id,
+                source: nodes[edge_from_node_idx].id,
+            });
+
+            edge_from_node_acc += 1;
+
+            // reset from node idx if needed
+            if edge_from_node_acc >= nodes[edge_from_node_idx].edge_count as usize {
+                edge_from_node_idx += 1;
+                edge_from_node_acc = 0;
+            }
         }
+
+        let edge_types = dump0(&meta.edge_types);
+        let node_types = dump0(&meta.node_types);
+
+        return SnapshotDataProvider {
+            nodes,
+            edges,
+            strings: s.strings,
+            edge_count: s.snapshot.edge_count,
+            node_count: s.snapshot.node_count,
+            edge_types,
+            node_types,
+        };
     }
-
-    let edge_types = dump0(&meta.edge_types);
-    let node_types = dump0(&meta.node_types);
-
-    return SnapshotDataProvider {
-        nodes,
-        edges,
-        strings: s.strings,
-        edge_count: s.snapshot.edge_count,
-        node_count: s.snapshot.node_count,
-        edge_types,
-        node_types,
-    };
 }
