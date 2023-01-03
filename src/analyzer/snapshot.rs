@@ -1,5 +1,9 @@
+use std::collections::{HashMap, HashSet};
+
 use serde::{Deserialize, Serialize};
 use serde_json::from_slice;
+
+use crate::analyzer::consts::{NODE_TYPE_NATIVE, NODE_TYPE_OBJECT};
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
@@ -94,6 +98,14 @@ impl SnapshotDataProvider {
         };
 
         SnapshotDataProvider::parse_snapshot(snapshot)
+    }
+
+    pub fn get_node_name(&self, node: &Node) -> &String {
+        &self.strings[node.name_index as usize]
+    }
+
+    pub fn get_node_type(&self, node: &Node) -> &String {
+        &self.node_types[node.node_type_index as usize]
     }
 
     fn parse_snapshot(s: Snapshot) -> SnapshotDataProvider {

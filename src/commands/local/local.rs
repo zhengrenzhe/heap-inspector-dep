@@ -79,6 +79,7 @@ impl Local {
             .or(warp::path!("api" / "is_ready").and_then(Local::is_ready))
             .or(warp::path!("api" / "meta").and_then(Local::meta))
             .or(warp::path!("api" / "statistics").and_then(Local::statistics))
+            .or(warp::path!("api" / "constructors").and_then(Local::constructors))
             .or(warp::path!("api" / "search")
                 .and(warp::query::raw())
                 .and_then(Local::search));
@@ -128,6 +129,16 @@ impl Local {
         match &(STATE.lock()) {
             Ok(lock) => match &lock.analyzer {
                 Some(analyzer) => json_ok_res(analyzer.statistics()),
+                None => json_err_res(json!({ "msg": "analyzer not found" })),
+            },
+            Err(_) => json_err_res(json!({ "msg": "get lock error" })),
+        }
+    }
+
+    pub async fn constructors() -> Result<impl Reply, Infallible> {
+        match &(STATE.lock()) {
+            Ok(lock) => match &lock.analyzer {
+                Some(analyzer) => json_ok_res(json!(analyzer.constructors())),
                 None => json_err_res(json!({ "msg": "analyzer not found" })),
             },
             Err(_) => json_err_res(json!({ "msg": "get lock error" })),
