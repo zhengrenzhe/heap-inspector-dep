@@ -3,7 +3,7 @@ use std::env;
 use clap::{Parser, Subcommand};
 use spinach::term;
 
-use crate::commands::local::Local;
+use crate::commands::local::local::Local;
 use crate::commands::realtime::realtime_command::realtime_command;
 use crate::utils::logger::init_logger;
 

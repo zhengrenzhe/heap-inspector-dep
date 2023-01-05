@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 pub const NODE_TYPE_HIDDEN: &str = "hidden";
 pub const NODE_TYPE_ARRAY: &str = "array";
 pub const NODE_TYPE_STRING: &str = "string";
