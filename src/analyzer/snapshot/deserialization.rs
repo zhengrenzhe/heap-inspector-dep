@@ -26,20 +26,32 @@ pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>,
         let node_type_index = all_nodes[node_base_idx];
         let node_type = NodeType::from(&node_types[node_type_index as usize]);
 
-        // name_index
+        // name index
         let name_index = all_nodes[node_base_idx + 1];
+
+        // id
+        let id = all_nodes[node_base_idx + 2];
+
+        // self size
+        let self_size = all_nodes[node_base_idx + 3];
 
         // edge count
         let edge_count = all_nodes[node_base_idx + 4];
 
+        // trace node id
+        let trace_node_id = all_nodes[node_base_idx + 5];
+
+        // detachedness
+        let detachedness = all_nodes[node_base_idx + 6];
+
         nodes.push(Node {
             node_type,
             name_index,
-            id: all_nodes[node_base_idx + 2],
-            self_size: all_nodes[node_base_idx + 3],
+            id,
+            self_size,
             edge_count,
-            trace_node_id: all_nodes[node_base_idx + 5],
-            detachedness: all_nodes[node_base_idx + 6],
+            trace_node_id,
+            detachedness,
             from_edge_index: Vec::with_capacity(edge_count as usize),
             to_edge_index: Vec::with_capacity(edge_count as usize),
         })
