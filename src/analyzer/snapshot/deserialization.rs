@@ -76,24 +76,26 @@ pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>,
             edge_from_node_acc = 0;
         }
 
-        // set from/to node
-        nodes[edge_from_node_idx]
-            .to_edge_index
-            .push(edge_idx as u64);
-        nodes[edge_to_node_idx]
-            .from_edge_index
-            .push(edge_idx as u64);
+        // from node
+        let from_node = &mut nodes[edge_from_node_idx];
+        from_node.to_edge_index.push(edge_idx as u64);
+        let from_node_id = from_node.id;
+
+        // to node
+        let to_node = &mut nodes[edge_to_node_idx];
+        to_node.from_edge_index.push(edge_idx as u64);
+        let to_node_id = to_node.id;
 
         edges.push(Edge {
             edge_index: edge_idx as u64,
             edge_type_index: all_edges[edge_base_idx],
             name_or_index_raw: all_edges[edge_base_idx + 1],
             to_node_index: edge_to_node_idx as u64,
-            to_node_id: nodes[edge_to_node_idx].id,
-            target: nodes[edge_to_node_idx].id,
+            to_node_id,
+            target: to_node_id,
             from_node_index: edge_from_node_idx as u64,
-            from_node_id: nodes[edge_from_node_idx].id,
-            source: nodes[edge_from_node_idx].id,
+            from_node_id,
+            source: from_node_id,
         });
 
         edge_from_node_acc += 1;
