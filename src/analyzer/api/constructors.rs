@@ -18,7 +18,7 @@ impl Analyzer {
         for node in &self.data_provider.nodes {
             let node_type = &node.node_type;
             if [NodeType::Object, NodeType::Native].contains(node_type) {
-                let node_name = self.data_provider.get_node_name(node);
+                let node_name = &node.name;
                 match map.get_mut(node_name) {
                     Some(c) => {
                         c.total_self_size += node.self_size;

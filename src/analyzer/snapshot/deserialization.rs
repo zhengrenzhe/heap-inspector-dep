@@ -28,6 +28,7 @@ pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>,
 
         // name index
         let name_index = all_nodes[node_base_idx + 1];
+        let name = s.strings[name_index as usize].clone();
 
         // id
         let id = all_nodes[node_base_idx + 2];
@@ -45,6 +46,7 @@ pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>,
         let detachedness = all_nodes[node_base_idx + 6];
 
         nodes.push(Node {
+            name,
             node_type,
             name_index,
             id,

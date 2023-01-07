@@ -12,8 +12,6 @@ pub struct SnapshotProvider {
     pub edges: Vec<Edge>,
     pub edge_types: Vec<String>,
     pub edge_count: u64,
-
-    pub strings: Vec<String>,
 }
 
 impl SnapshotProvider {
@@ -33,11 +31,6 @@ impl SnapshotProvider {
             edges,
             edge_types,
             edge_count,
-            strings: snapshot.strings,
         }
-    }
-
-    pub fn get_node_name(&self, node: &Node) -> &String {
-        &self.strings[node.name_index as usize]
     }
 }
