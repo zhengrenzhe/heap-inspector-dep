@@ -87,15 +87,11 @@ function Statistics(props: { statistics: IStatistics | null }) {
   const data = Object.entries(props.statistics.percent)
     .map(([type, value]) => ({
       type: type,
-      value: Math.floor(value / 1024 / 1024),
+      value: Math.floor(value / 1024),
     }))
     .sort((a, b) => a.type.length - b.type.length);
 
-  console.log(data);
-
-  const total_bytes = `${Math.floor(
-    props.statistics.total_bytes / 1024 / 1024
-  )} MB`;
+  const total_bytes = `${Math.floor(props.statistics.total_bytes / 1024)} KB`;
 
   return (
     <Pie
@@ -140,7 +136,7 @@ function Statistics(props: { statistics: IStatistics | null }) {
             if (!datum) {
               return `${__("total")}\n${total_bytes}`;
             }
-            return `${datum["type"]}\n${datum["value"]} MB`;
+            return `${datum["type"]}\n${datum["value"]} KB`;
           },
         },
       }}
