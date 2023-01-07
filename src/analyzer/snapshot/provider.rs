@@ -1,3 +1,4 @@
+use petgraph::Graph;
 use serde_json::from_slice;
 
 use crate::analyzer::snapshot::definition::{Edge, Node};
@@ -12,6 +13,8 @@ pub struct SnapshotProvider {
     pub edges: Vec<Edge>,
     pub edge_types: Vec<String>,
     pub edge_count: u64,
+
+    pub graph: Graph<usize, usize>,
 }
 
 impl SnapshotProvider {
@@ -21,7 +24,7 @@ impl SnapshotProvider {
             Err(e) => panic!("parse snapshot error: {}", e),
         };
 
-        let (nodes, node_types, node_count, edges, edge_types, edge_count) =
+        let (nodes, node_types, node_count, edges, edge_types, edge_count, graph) =
             deserialization(&snapshot);
 
         SnapshotProvider {
@@ -31,6 +34,7 @@ impl SnapshotProvider {
             edges,
             edge_types,
             edge_count,
+            graph,
         }
     }
 }

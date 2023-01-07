@@ -8,6 +8,7 @@ use serde_json::json;
 use spinach::Spinach;
 use warp::{Filter, Reply};
 
+use crate::analyzer::api::constructors::ConstructorQuery;
 use crate::analyzer::api::search::SearchQuery;
 use crate::analyzer::Analyzer;
 use crate::utils::browser::open_url;
@@ -79,7 +80,9 @@ impl Local {
             .or(warp::path!("api" / "is_ready").and_then(Local::is_ready))
             .or(warp::path!("api" / "meta").and_then(Local::meta))
             .or(warp::path!("api" / "statistics").and_then(Local::statistics))
-            .or(warp::path!("api" / "constructors").and_then(Local::constructors))
+            .or(warp::path!("api" / "constructors")
+                .and(warp::query::raw())
+                .and_then(Local::constructors))
             .or(warp::path!("api" / "search")
                 .and(warp::query::raw())
                 .and_then(Local::search));
@@ -135,10 +138,11 @@ impl Local {
         }
     }
 
-    pub async fn constructors() -> Result<impl Reply, Infallible> {
+    pub async fn constructors(q: String) -> Result<impl Reply, Infallible> {
+        let query = serde_qs::from_str::<ConstructorQuery>(&q).unwrap();
         match &(STATE.lock()) {
             Ok(lock) => match &lock.analyzer {
-                Some(analyzer) => json_ok_res(json!(analyzer.constructors())),
+                Some(analyzer) => json_ok_res(json!(analyzer.constructors(&query))),
                 None => json_err_res(json!({ "msg": "analyzer not found" })),
             },
             Err(_) => json_err_res(json!({ "msg": "get lock error" })),
