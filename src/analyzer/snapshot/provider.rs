@@ -23,8 +23,8 @@ impl SnapshotProvider {
             Err(e) => panic!("parse snapshot error: {}", e),
         };
 
-        let (nodes, node_types, node_count, edges, edge_types, edge_count, strings) =
-            deserialization(snapshot);
+        let (nodes, node_types, node_count, edges, edge_types, edge_count) =
+            deserialization(&snapshot);
 
         SnapshotProvider {
             nodes,
@@ -33,7 +33,7 @@ impl SnapshotProvider {
             edges,
             edge_types,
             edge_count,
-            strings,
+            strings: snapshot.strings,
         }
     }
 

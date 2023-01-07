@@ -8,23 +8,13 @@ fn dump0(data: &Vec<EdgeOrNodeType>) -> Vec<String> {
     }
 }
 
-pub fn deserialization(
-    s: Snapshot,
-) -> (
-    Vec<Node>,
-    Vec<String>,
-    u64,
-    Vec<Edge>,
-    Vec<String>,
-    u64,
-    Vec<String>,
-) {
+pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>, Vec<String>, u64) {
     let mut nodes: Vec<Node> = Vec::with_capacity(s.snapshot.node_count as usize);
     let mut edges: Vec<Edge> = Vec::with_capacity(s.snapshot.edge_count as usize);
 
-    let meta = s.snapshot.meta;
-    let all_nodes = s.nodes;
-    let all_edges = s.edges;
+    let meta = &s.snapshot.meta;
+    let all_nodes = &s.nodes;
+    let all_edges = &s.edges;
 
     // parse nodes
     for node_base_idx in (0..all_nodes.len()).step_by(meta.node_fields.len()) {
@@ -98,6 +88,5 @@ pub fn deserialization(
         edges,
         edge_types,
         s.snapshot.edge_count,
-        s.strings,
     )
 }
