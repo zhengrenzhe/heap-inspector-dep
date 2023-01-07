@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use serde::Serialize;
 
-use crate::analyzer::consts::{NODE_TYPE_NATIVE, NODE_TYPE_OBJECT};
+use crate::analyzer::snapshot::consts::{NODE_TYPE_NATIVE, NODE_TYPE_OBJECT};
 use crate::analyzer::Analyzer;
 
 #[derive(Serialize)]

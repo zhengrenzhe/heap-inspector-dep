@@ -1,7 +1,6 @@
 use crate::analyzer::snapshot::provider::SnapshotProvider;
 
 pub mod api;
-pub mod consts;
 pub mod snapshot;
 
 pub struct Analyzer {
