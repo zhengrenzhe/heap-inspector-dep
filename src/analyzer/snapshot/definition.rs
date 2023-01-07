@@ -1,10 +1,11 @@
+use petgraph::graph::NodeIndex;
+
 use crate::analyzer::snapshot::consts::NodeType;
 
 #[derive(Debug)]
 pub struct Node {
     pub node_type: NodeType,
     pub name: String,
-    pub name_index: u64,
     pub id: u64,
     pub self_size: u64,
     pub edge_count: u64,
@@ -12,6 +13,7 @@ pub struct Node {
     pub detachedness: u64,
     pub from_edge_index: Vec<u64>,
     pub to_edge_index: Vec<u64>,
+    pub graph_node: NodeIndex,
 }
 
 #[derive(Debug)]
