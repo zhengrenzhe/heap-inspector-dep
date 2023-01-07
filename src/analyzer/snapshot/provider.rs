@@ -40,8 +40,4 @@ impl SnapshotProvider {
     pub fn get_node_name(&self, node: &Node) -> &String {
         &self.strings[node.name_index as usize]
     }
-
-    pub fn get_node_type(&self, node: &Node) -> &String {
-        &self.node_types[node.node_type_index as usize]
-    }
 }

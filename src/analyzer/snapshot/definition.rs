@@ -1,6 +1,8 @@
+use crate::analyzer::snapshot::consts::NodeType;
+
 #[derive(Debug)]
 pub struct Node {
-    pub node_type_index: u64,
+    pub node_type: NodeType,
     pub name_index: u64,
     pub id: u64,
     pub self_size: u64,

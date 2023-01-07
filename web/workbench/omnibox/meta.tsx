@@ -86,10 +86,12 @@ function Statistics(props: { statistics: IStatistics | null }) {
 
   const data = Object.entries(props.statistics.percent)
     .map(([type, value]) => ({
-      type,
+      type: type,
       value: Math.floor(value / 1024 / 1024),
     }))
     .sort((a, b) => a.type.length - b.type.length);
+
+  console.log(data);
 
   const total_bytes = `${Math.floor(
     props.statistics.total_bytes / 1024 / 1024
@@ -100,7 +102,7 @@ function Statistics(props: { statistics: IStatistics | null }) {
       data={data}
       angleField="value"
       colorField="type"
-      height={500}
+      height={550}
       width={290}
       appendPadding={[0, 10, 0, 10]}
       autoFit={false}

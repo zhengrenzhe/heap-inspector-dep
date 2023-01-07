@@ -1,3 +1,5 @@
+extern crate core;
+
 use std::env;
 
 use clap::{Parser, Subcommand};

@@ -1,7 +1,8 @@
+use crate::analyzer::snapshot::consts::NodeType;
 use crate::analyzer::snapshot::definition::{Edge, Node};
 use crate::analyzer::snapshot::serde_mapping::{EdgeOrNodeType, Snapshot};
 
-fn dump0(data: &Vec<EdgeOrNodeType>) -> Vec<String> {
+fn dump0(data: &[EdgeOrNodeType]) -> Vec<String> {
     match data.get(0).unwrap() {
         EdgeOrNodeType::MultiType(values) => values.clone(),
         EdgeOrNodeType::SingleType(_) => vec![],
@@ -16,12 +17,24 @@ pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>,
     let all_nodes = &s.nodes;
     let all_edges = &s.edges;
 
+    let edge_types = dump0(&meta.edge_types);
+    let node_types = dump0(&meta.node_types);
+
     // parse nodes
     for node_base_idx in (0..all_nodes.len()).step_by(meta.node_fields.len()) {
+        // node type
+        let node_type_index = all_nodes[node_base_idx];
+        let node_type = NodeType::from(&node_types[node_type_index as usize]);
+
+        // name_index
+        let name_index = all_nodes[node_base_idx + 1];
+
+        // edge count
         let edge_count = all_nodes[node_base_idx + 4];
+
         nodes.push(Node {
-            node_type_index: all_nodes[node_base_idx],
-            name_index: all_nodes[node_base_idx + 1],
+            node_type,
+            name_index,
             id: all_nodes[node_base_idx + 2],
             self_size: all_nodes[node_base_idx + 3],
             edge_count,
@@ -77,9 +90,6 @@ pub fn deserialization(s: &Snapshot) -> (Vec<Node>, Vec<String>, u64, Vec<Edge>,
             edge_from_node_acc = 0;
         }
     }
-
-    let edge_types = dump0(&meta.edge_types);
-    let node_types = dump0(&meta.node_types);
 
     (
         nodes,
