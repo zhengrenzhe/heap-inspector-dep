@@ -2,7 +2,7 @@ import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 
 import { API, inject, injectable } from "@web/common";
-import { CanvasService } from "@web/workbench/canvas/canvas.service";
+import { CanvasService } from "@web/workbenchx/canvas/canvas.service";
 
 export interface IFilter {
   filter_from: string[];

@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { Pie } from "@ant-design/plots";
 
 import { __, inject } from "@web/common";
-import { IStatistics, OmniService } from "@web/workbench/omnibox/omniService";
+import { IStatistics, OmniService } from "@web/workbenchx/omnibox/omniService";
 
 @observer
 export class Meta extends Component {

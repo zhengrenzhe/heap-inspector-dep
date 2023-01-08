@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { CanvasService } from "@web/workbench/canvas/canvas.service";
+import { CanvasService } from "@web/workbenchx/canvas/canvas.service";
 import { inject } from "@web/common";
 
 import "./canvas.less";

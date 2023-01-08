@@ -4,12 +4,12 @@ import { observer } from "mobx-react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 import { __, inject } from "@web/common";
-import { WorkbenchService } from "@web/workbench/workbench.service";
-import { Progress } from "@web/workbench/progress";
-import { Omnibox } from "@web/workbench/omnibox";
+import { WorkbenchService } from "@web/workbenchx/workbench.service";
+import { Progress } from "@web/workbenchx/progress";
+import { Omnibox } from "@web/workbenchx/omnibox";
 
 import "./workbench.less";
-import { Canvas } from "@web/workbench/canvas/canvas";
+import { Canvas } from "@web/workbenchx/canvas/canvas";
 
 interface IWorkbenchProps {
   cs: ColorScheme;

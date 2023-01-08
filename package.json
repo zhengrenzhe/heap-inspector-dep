@@ -38,6 +38,7 @@
     "@ant-design/plots": "^1.2.3",
     "@antv/g6": "^4.8.3",
     "@emotion/react": "^11.10.5",
+    "@fluentui/react": "^8.104.2",
     "@mantine/core": "^5.10.0",
     "@mantine/hooks": "^5.10.0",
     "axios": "^1.2.2",

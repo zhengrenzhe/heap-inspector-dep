@@ -1,36 +1,40 @@
-import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
-import "reflect-metadata";
-import { ColorScheme, MantineProvider } from "@mantine/core";
-import { configure } from "mobx";
+import React, { Component } from "react";
+import { WorkbenchService } from "@web/service";
+import { observer } from "mobx-react";
 
-import { Workbench } from "@web/workbench/workbench";
+import { __, inject } from "@web/common";
+import { ProgressIndicator } from "@fluentui/react";
 
-configure({
-  useProxies: "always",
-  enforceActions: "always",
-});
+import "./style.less";
 
-const rootDom = document.createElement("div");
-rootDom.id = "app-root";
-document.body.append(rootDom);
+@observer
+export class Workbench extends Component {
+  @inject()
+  private workbenchService: WorkbenchService;
 
-function App() {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(
-    (localStorage.getItem("colorScheme") as ColorScheme) ?? "dark"
-  );
-  const toggleColorScheme = () => {
-    const newVal = colorScheme === "dark" ? "light" : "dark";
-    localStorage.setItem("colorScheme", newVal);
-    setColorScheme(newVal);
-  };
+  public override componentDidMount() {
+    this.workbenchService.init();
+  }
 
-  return (
-    <MantineProvider theme={{ colorScheme, primaryColor: "teal" }}>
-      <Workbench cs={colorScheme} toggleColorScheme={toggleColorScheme} />
-    </MantineProvider>
-  );
+  public override render() {
+    const { isReady } = this.workbenchService.viewModel;
+    return (
+      <div id="workbench">
+        {isReady ? this.renderContent() : this.renderProgress()}
+      </div>
+    );
+  }
+
+  private renderContent() {
+    return <div>X</div>;
+  }
+
+  private renderProgress() {
+    return (
+      <ProgressIndicator
+        className="progress"
+        description={<div style={{ textAlign: "center" }}>{__("loading")}</div>}
+      />
+    );
+  }
 }
-
-const root = createRoot(rootDom);
-root.render(<App />);

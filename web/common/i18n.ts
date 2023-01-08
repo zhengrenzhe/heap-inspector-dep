@@ -1,7 +1,7 @@
 const config = {
   loading: {
-    "zh-CN": "加载中",
-    en: "loading",
+    "zh-CN": "加载中...",
+    en: "Loading...",
   },
   search: {
     "zh-CN": "搜索",
