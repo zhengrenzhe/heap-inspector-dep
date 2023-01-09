@@ -1,6 +1,8 @@
-const port = new URL(location.href).searchParams.get("port");
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const isDev: boolean = (import.meta as unknown).env["DEV"];
 
-const base = port ? `http://${location.hostname}:${port}` : location.href;
+const base = isDev ? `http://${location.hostname}:${9999}` : location.href;
 
 const createURL = (url: string) => new URL(url, base).toString();
 
