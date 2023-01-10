@@ -2,7 +2,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "reflect-metadata";
 import { configure } from "mobx";
-import "@vscode/codicons/dist/codicon.css";
 
 import "@web/pages";
 import { Workbench } from "@web/workbench";

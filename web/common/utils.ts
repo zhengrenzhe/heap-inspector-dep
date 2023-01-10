@@ -18,3 +18,9 @@ export async function sleep(ms: number) {
     }, ms);
   });
 }
+
+export function cx(obj: Record<string, boolean>) {
+  return Object.keys(obj)
+    .filter((k) => obj[k])
+    .join(" ");
+}

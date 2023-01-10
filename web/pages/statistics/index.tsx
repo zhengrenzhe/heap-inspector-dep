@@ -1,4 +1,5 @@
 import React from "react";
+import { VscPieChart } from "react-icons/vsc";
 
 import { IWorkbenchPageContribution } from "@web/workbench/contributions";
 import { __, contributionImplement } from "@web/common";
@@ -8,7 +9,7 @@ import { StatisticsView } from "@web/pages/statistics/view";
 export class Statistics extends IWorkbenchPageContribution {
   public id = "statistics";
 
-  public icon = "pie-chart";
+  public icon = (<VscPieChart size={26} />);
 
   public order = 1;
 

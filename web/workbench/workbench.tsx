@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import LoaderInline from "@jetbrains/ring-ui/dist/loader-inline/loader-inline";
 import { BrowserRouter } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
+import { ConfigProvider, Layout, Spin, theme } from "antd";
 
 import { WorkbenchService } from "@web/service";
 import { inject } from "@web/common";
 import { Sidebar } from "@web/workbench/sidebar";
 import { Main } from "@web/workbench/main";
-
-import "@jetbrains/ring-ui/dist/style.css";
 
 import "./style.less";
 
@@ -17,16 +16,31 @@ export class Workbench extends Component {
   @inject()
   private workbenchService: WorkbenchService;
 
+  private get theme() {
+    const themeVal = this.workbenchService.viewModel.theme;
+    if (themeVal === "dark") return theme.darkAlgorithm;
+    if (themeVal === "light") return theme.defaultAlgorithm;
+    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
+      return theme.darkAlgorithm;
+    }
+    return theme.defaultAlgorithm;
+  }
+
   public override componentDidMount() {
     this.workbenchService.init();
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", () => this.forceUpdate());
   }
 
   public override render() {
     const { isReady } = this.workbenchService.viewModel;
     return (
-      <div id="workbench">
-        {isReady ? this.renderContent() : this.renderProgress()}
-      </div>
+      <ConfigProvider theme={{ algorithm: this.theme }}>
+        <Layout id="workbench">
+          {isReady ? this.renderContent() : this.renderProgress()}
+        </Layout>
+      </ConfigProvider>
     );
   }
 
@@ -42,6 +56,6 @@ export class Workbench extends Component {
   }
 
   private renderProgress() {
-    return <LoaderInline className="progress" />;
+    return <Spin indicator={<LoadingOutlined spin />} className="progress" />;
   }
 }

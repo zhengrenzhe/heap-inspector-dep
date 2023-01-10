@@ -6,11 +6,13 @@ import { contribution } from "@web/common";
 export abstract class IWorkbenchPageContribution {
   public abstract id: string;
 
-  public abstract icon: string;
+  public abstract icon: ReactNode;
 
   public abstract order: number;
 
-  public abstract path: string;
+  public direction?: "top" | "bottom";
+
+  public path?: string;
 
   public view?: ReactNode;
 

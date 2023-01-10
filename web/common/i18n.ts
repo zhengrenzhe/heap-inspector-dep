@@ -107,6 +107,18 @@ const config = {
     "zh-CN": "统计信息",
     en: "Statistics",
   },
+  dark: {
+    "zh-CN": "Dark",
+    en: "Dark",
+  },
+  light: {
+    "zh-CN": "Light",
+    en: "Light",
+  },
+  "os-default": {
+    "zh-CN": "OS Default",
+    en: "OS Default",
+  },
 };
 const lang = navigator.language as "zh-CN" | "en";
 

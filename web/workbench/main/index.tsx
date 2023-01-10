@@ -11,12 +11,14 @@ export class Main extends Component {
   private workbenchPageContributions: IWorkbenchPageContribution[];
 
   private get routes() {
-    return this.workbenchPageContributions.map((p) => ({
-      id: p.id,
-      path: p.path,
-      exact: p.path === "/",
-      view: p.view,
-    }));
+    return this.workbenchPageContributions
+      .map((p) => ({
+        id: p.id,
+        path: p.path,
+        exact: p.path === "/",
+        view: p.view,
+      }))
+      .filter((p) => p.path);
   }
 
   public override render() {
@@ -24,7 +26,7 @@ export class Main extends Component {
       <div className="main">
         <Routes>
           {this.routes.map((r) => (
-            <Route key={r.id} path={r.path} element={r.view} />
+            <Route key={r.id} path={r.path!} element={r.view} />
           ))}
         </Routes>
       </div>

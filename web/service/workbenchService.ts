@@ -3,9 +3,14 @@ import { action, makeObservable, observable } from "mobx";
 
 import { API, injectable, until } from "@web/common";
 
+export type ITheme = "dark" | "light" | "auto";
+
 class ViewModel {
   @observable
   public isReady = false;
+
+  @observable
+  public theme: ITheme = "auto";
 
   constructor() {
     makeObservable(this);
@@ -14,6 +19,11 @@ class ViewModel {
   @action
   public setReady() {
     this.isReady = true;
+  }
+
+  @action
+  public setTheme(newTheme: ITheme) {
+    this.theme = newTheme;
   }
 }
 

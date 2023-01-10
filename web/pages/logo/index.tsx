@@ -1,13 +1,13 @@
+import React from "react";
+
 import { contributionImplement } from "@web/common";
 import { IWorkbenchPageContribution } from "@web/workbench/contributions";
 
-import "./icon.less";
-
 @contributionImplement()
-export class Icon extends IWorkbenchPageContribution {
+export class Logo extends IWorkbenchPageContribution {
   public id = "icon";
 
-  public icon = "hubot";
+  public icon = (<span>H</span>);
 
   public order = 0;
 
