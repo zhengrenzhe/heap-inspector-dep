@@ -10,7 +10,7 @@ class ViewModel {
   public isReady = false;
 
   @observable
-  public theme: ITheme = "auto";
+  public theme: ITheme = (localStorage.getItem("theme") as ITheme) || "auto";
 
   constructor() {
     makeObservable(this);
@@ -24,6 +24,7 @@ class ViewModel {
   @action
   public setTheme(newTheme: ITheme) {
     this.theme = newTheme;
+    localStorage.setItem("theme", newTheme);
   }
 }
 
