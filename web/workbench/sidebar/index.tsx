@@ -1,69 +1,51 @@
-import React, { Component, Fragment, ReactNode } from "react";
+import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, theme } from "antd";
+import { Button } from "antd";
 
-import { cx, getContributions } from "@web/common";
-import { IWorkbenchPageContribution } from "@web/workbench/contributions";
+import { cx, useColor, useContributions } from "@web/common";
+import { IWorkbenchPageContribution as IPage } from "@web/workbench/contributions";
 
 import "./style.less";
 
-export class Sidebar extends Component {
-  @getContributions(IWorkbenchPageContribution)
-  private workbenchPageContributions: IWorkbenchPageContribution[];
+export function Sidebar() {
+  const pages = useContributions(IPage).sort((a, b) => a.order - b.order);
 
-  private get pages() {
-    return this.workbenchPageContributions.sort((a, b) => a.order - b.order);
-  }
+  const topButtons = pages.filter((p) => p.direction != "bottom");
+  const bottomButtons = pages.filter((p) => p.direction === "bottom");
 
-  private get topButtons() {
-    return this.pages.filter((p) => p.direction != "bottom");
-  }
+  const { colorBorder } = useColor();
 
-  private get bottomButtons() {
-    return this.pages.filter((p) => p.direction === "bottom");
-  }
-
-  public override render() {
-    return (
-      <SideBarRoot>
-        {this.renderButtons(this.topButtons)}
-        <div className="spacer" />
-        {this.renderButtons(this.bottomButtons)}
-      </SideBarRoot>
-    );
-  }
-
-  private renderButtons(items: IWorkbenchPageContribution[]) {
-    return items.map((page) => (
-      <Fragment key={page.id}>
-        {page.path ? (
-          <NavSidebarButton page={page} />
-        ) : (
-          <NormalSideBarButton page={page} />
-        )}
-      </Fragment>
-    ));
-  }
-}
-
-function NavSidebarButton(props: { page: IWorkbenchPageContribution }) {
   return (
-    <NavLink to={props.page.path ?? ""}>
-      {({ isActive }) => (
-        <SideBarButton page={props.page} isActive={isActive} />
-      )}
-    </NavLink>
+    <div
+      className="sidebar"
+      style={{ borderRight: `1px solid ${colorBorder}` }}
+    >
+      <RenderButtons items={topButtons} />
+      <div className="spacer" />
+      <RenderButtons items={bottomButtons} />
+    </div>
   );
 }
 
-function NormalSideBarButton(props: { page: IWorkbenchPageContribution }) {
-  return <SideBarButton page={props.page} />;
+function RenderButtons(props: { items: IPage[] }) {
+  return (
+    <>
+      {props.items.map((page) => (
+        <Fragment key={page.id}>
+          {page.path ? (
+            <NavLink to={page.path}>
+              {(arg) => <SideBarButton page={page} isActive={arg.isActive} />}
+            </NavLink>
+          ) : (
+            <SideBarButton page={page} />
+          )}
+        </Fragment>
+      ))}
+    </>
+  );
 }
 
-function SideBarButton(props: {
-  page: IWorkbenchPageContribution;
-  isActive?: boolean;
-}) {
+function SideBarButton(props: { page: IPage; isActive?: boolean }) {
   return (
     <Button
       type="text"
@@ -74,17 +56,5 @@ function SideBarButton(props: {
       })}
       title={props.page.name}
     />
-  );
-}
-
-function SideBarRoot(props: { children: ReactNode }) {
-  const { token } = theme.useToken();
-  return (
-    <div
-      className="sidebar"
-      style={{ borderRight: `1px solid ${token.colorBorder}` }}
-    >
-      {props.children}
-    </div>
   );
 }

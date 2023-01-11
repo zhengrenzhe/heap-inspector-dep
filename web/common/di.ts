@@ -24,6 +24,12 @@ export function inject() {
   };
 }
 
+export function useService<T extends abstract new (...args: any) => any>(
+  type: T
+): InstanceType<T> {
+  return Container.get(type as any);
+}
+
 export function contribution() {
   return function (target: any) {
     Reflect.defineMetadata(target.name, "", target);
@@ -52,4 +58,10 @@ export function getContributions(obj: any) {
       },
     });
   };
+}
+
+export function useContributions<T extends abstract new (...args: any) => any>(
+  obj: T
+): InstanceType<T>[] {
+  return Container.getMany((obj as any).name);
 }
