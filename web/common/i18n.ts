@@ -83,6 +83,10 @@ const config = {
     "zh-CN": "边数量",
     en: "Edge Count",
   },
+  file_info: {
+    "zh-CN": "文件信息",
+    en: "File Info",
+  },
   file_size: {
     "zh-CN": "文件大小",
     en: "File Size",

@@ -1,14 +1,14 @@
-import React, { cloneElement, Component } from "react";
+import React, { cloneElement } from "react";
 import { Dropdown } from "antd";
-import { observer } from "mobx-react";
 import { VscColorMode } from "react-icons/vsc";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
-import { __, contributionImplement, inject } from "@web/common";
+import { __, contributionImplement, useService } from "@web/common";
 import { IWorkbenchPageContribution } from "@web/workbench/contributions";
 import { ITheme, WorkbenchService } from "@web/service";
 
 import "./style.less";
+import { observer } from "mobx-react";
 
 @contributionImplement()
 export class ThemeToggle extends IWorkbenchPageContribution {
@@ -41,27 +41,23 @@ const items = [
   },
 ];
 
-@observer
-class ToggleIcon extends Component {
-  @inject()
-  public wbService: WorkbenchService;
+const ToggleIcon = observer(() => {
+  const wbService = useService(WorkbenchService);
 
-  public override render() {
-    const theme = this.wbService.viewModel.theme;
-    const curIcon = items.find((t) => t.key === theme)?.icon;
-    return (
-      <Dropdown
-        menu={{
-          items,
-          selectable: true,
-          selectedKeys: [theme],
-          onSelect: (val) =>
-            this.wbService.viewModel.setTheme(val.key as ITheme),
-        }}
-        trigger={["click"]}
-      >
-        {curIcon && cloneElement(curIcon, { size: 22 })}
-      </Dropdown>
-    );
-  }
-}
+  const theme = wbService.viewModel.theme;
+  const curIcon = items.find((t) => t.key === theme)?.icon;
+
+  return (
+    <Dropdown
+      menu={{
+        items,
+        selectable: true,
+        selectedKeys: [theme],
+        onSelect: (val) => wbService.viewModel.setTheme(val.key as ITheme),
+      }}
+      trigger={["click"]}
+    >
+      {curIcon && cloneElement(curIcon, { size: 22 })}
+    </Dropdown>
+  );
+});
