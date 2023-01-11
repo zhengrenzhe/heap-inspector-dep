@@ -17,12 +17,7 @@ export class Workbench extends Component {
   private workbenchService: WorkbenchService;
 
   private get theme() {
-    const themeVal = this.workbenchService.viewModel.theme;
-    if (themeVal === "dark") return theme.darkAlgorithm;
-    if (themeVal === "light") return theme.defaultAlgorithm;
-    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
-      return theme.darkAlgorithm;
-    }
+    if (this.workbenchService.themeValue === "dark") return theme.darkAlgorithm;
     return theme.defaultAlgorithm;
   }
 

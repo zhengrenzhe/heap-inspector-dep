@@ -19,6 +19,8 @@ export class ThemeToggle extends IWorkbenchPageContribution {
   public order = 999;
 
   public override direction = "bottom" as const;
+
+  public override name = __("theme");
 }
 
 const items = [
@@ -53,10 +55,10 @@ class ToggleIcon extends Component {
           items,
           selectable: true,
           selectedKeys: [theme],
-          onSelect: (val) => {
-            this.wbService.viewModel.setTheme(val.key as ITheme);
-          },
+          onSelect: (val) =>
+            this.wbService.viewModel.setTheme(val.key as ITheme),
         }}
+        trigger={["click"]}
       >
         {curIcon && cloneElement(curIcon, { size: 22 })}
       </Dropdown>

@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, ReactNode } from "react";
 import { NavLink } from "react-router-dom";
-import { Button } from "antd";
+import { Button, theme } from "antd";
 
 import { cx, getContributions } from "@web/common";
 import { IWorkbenchPageContribution } from "@web/workbench/contributions";
@@ -25,11 +25,11 @@ export class Sidebar extends Component {
 
   public override render() {
     return (
-      <div className="sidebar">
+      <SideBarRoot>
         {this.renderButtons(this.topButtons)}
         <div className="spacer" />
         {this.renderButtons(this.bottomButtons)}
-      </div>
+      </SideBarRoot>
     );
   }
 
@@ -74,5 +74,17 @@ function SideBarButton(props: {
       })}
       title={props.page.name}
     />
+  );
+}
+
+function SideBarRoot(props: { children: ReactNode }) {
+  const { token } = theme.useToken();
+  return (
+    <div
+      className="sidebar"
+      style={{ borderRight: `1px solid ${token.colorBorder}` }}
+    >
+      {props.children}
+    </div>
   );
 }

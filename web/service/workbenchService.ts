@@ -2,6 +2,7 @@ import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 
 import { API, injectable, until } from "@web/common";
+import { presetDarkPalettes, presetPalettes } from "@ant-design/colors";
 
 export type ITheme = "dark" | "light" | "auto";
 
@@ -31,6 +32,20 @@ class ViewModel {
 @injectable()
 export class WorkbenchService {
   public viewModel = new ViewModel();
+
+  public get themeValue(): "dark" | "light" {
+    if (this.viewModel.theme === "dark") return "dark";
+    if (this.viewModel.theme === "light") return "light";
+    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  }
+
+  public get themeColor() {
+    if (this.themeValue === "dark") return presetDarkPalettes;
+    return presetPalettes;
+  }
 
   public init() {
     void this.checkIsReady();

@@ -107,6 +107,10 @@ const config = {
     "zh-CN": "统计信息",
     en: "Statistics",
   },
+  theme: {
+    "zh-CN": "主题",
+    en: "Theme",
+  },
   dark: {
     "zh-CN": "Dark",
     en: "Dark",

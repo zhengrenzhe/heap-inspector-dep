@@ -36,6 +36,7 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
+    "@ant-design/colors": "^7.0.0",
     "@ant-design/icons": "^5.0.0",
     "antd": "^5.1.4",
     "axios": "^1.2.2",
