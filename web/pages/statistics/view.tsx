@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart, ChartData } from "chart.js/auto";
-import { Divider, List, Typography } from "antd";
+import { Card, Col, List, Row, Typography } from "antd";
 
 import { APIService } from "@web/service";
 import { __, useColor, useService } from "@web/common";
@@ -96,25 +96,31 @@ export function StatisticsView() {
 
   return (
     <div className="statistics">
-      <div className="statistics-graph">
-        <canvas ref={ref} style={{ width: 570, height: 300 }} />
-      </div>
-      <Divider />
-      {tableData ? (
-        <List
-          size="small"
-          // bordered
-          split={false}
-          dataSource={tableData}
-          renderItem={(item) => (
-            <List.Item>
-              <Typography.Text>
-                {item.label} {item.value}
-              </Typography.Text>
-            </List.Item>
-          )}
-        />
-      ) : null}
+      <Row gutter={24}>
+        <Col>
+          <Card style={{ backgroundColor: color.colorFillAlter }}>
+            <canvas ref={ref} style={{ height: 300 }} />
+          </Card>
+        </Col>
+        {tableData ? (
+          <Col>
+            <Card style={{ backgroundColor: color.colorFillAlter }}>
+              <List
+                size="small"
+                split
+                dataSource={tableData}
+                renderItem={(item) => (
+                  <List.Item>
+                    <Typography.Text style={{ fontSize: 13 }}>
+                      {item.label} {item.value}
+                    </Typography.Text>
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+        ) : null}
+      </Row>
     </div>
   );
 }

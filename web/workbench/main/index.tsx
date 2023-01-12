@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { useContributions } from "@web/common";
+import { useColor, useContributions } from "@web/common";
 import { IWorkbenchPageContribution as IPage } from "@web/workbench/contributions";
 
 import "./style.less";
@@ -13,8 +13,10 @@ export function Main() {
       Object.assign(p, { path: p.path ?? "", exact: p.path === "/" })
     );
 
+  const colors = useColor();
+
   return (
-    <div className="main">
+    <div className="main" style={{ backgroundColor: colors.colorBgContainer }}>
       <Routes>
         {routes.map((r) => (
           <Route key={r.id} path={r.path} element={r.view} />
