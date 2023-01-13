@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { CSSProperties, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "antd";
 
@@ -46,6 +46,11 @@ function RenderButtons(props: { items: IPage[] }) {
 }
 
 function SideBarButton(props: { page: IPage; isActive?: boolean }) {
+  const color = useColor();
+  const style = {
+    "--btn-active": color.colorFillContent,
+  } as CSSProperties;
+
   return (
     <Button
       type="text"
@@ -54,6 +59,7 @@ function SideBarButton(props: { page: IPage; isActive?: boolean }) {
         "sidebar-button": true,
         "sidebar-button-active": !!props.isActive,
       })}
+      style={style}
       title={props.page.name}
     />
   );
