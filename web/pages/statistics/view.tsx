@@ -63,6 +63,9 @@ export function StatisticsView() {
             legend: {
               position: "right",
               align: "start",
+              title: {
+                color: color.colorText,
+              },
             },
             title: {
               display: false,
@@ -96,7 +99,7 @@ export function StatisticsView() {
 
   return (
     <div className="statistics">
-      <Row gutter={24}>
+      <Row gutter={[24, 24]}>
         <Col>
           <Card style={{ backgroundColor: color.colorFillAlter }}>
             <canvas ref={ref} style={{ height: 300 }} />
