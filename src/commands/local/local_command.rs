@@ -16,11 +16,12 @@ use crate::utils::http::{json_err_res, json_ok_res};
 use crate::utils::time_count::TimeCount;
 use crate::utils::webpage::webpage_routes;
 
-struct State {
-    analyzer: Option<Analyzer>,
+struct State<'a> {
+    analyzer: Option<Analyzer<'a>>,
     is_ready: bool,
     file_path: String,
 }
+
 static STATE: Mutex<State> = Mutex::new(State {
     analyzer: None,
     is_ready: false,
@@ -32,9 +33,9 @@ pub struct Local {
 }
 
 impl Local {
-    pub fn new(file_path: &String, port: &Option<u16>) -> Self {
-        let fp = file_path.clone();
-        let fp2 = file_path.clone();
+    pub fn new(file_path: &str, port: &Option<u16>) -> Self {
+        let fp = String::from(file_path);
+        let fp2 = fp.clone();
 
         let port = match port {
             Some(port) => *port,
@@ -42,29 +43,29 @@ impl Local {
         };
 
         thread::spawn(move || {
-            let progress = Spinach::new(format!("reading file {}", fp));
+            let progress = Spinach::new(format!("reading file {fp}"));
 
             let start = TimeCount::start();
             if let Ok(bytes) = fs::read(fp) {
                 let diff = start.end();
-                progress.succeed(format!("reading finished with {:?}", diff));
+                progress.succeed(format!("reading finished with {diff:?}"));
 
                 let progress = Spinach::new("analysing...");
                 let start = TimeCount::start();
-                let analyzer = Analyzer::from_bytes(&bytes);
+                let analyzer = Analyzer::from_bytes(bytes);
 
                 let mut lock = STATE.lock().expect("get state lock error");
                 lock.analyzer = Some(analyzer);
                 lock.is_ready = true;
-                lock.file_path = fp2.clone();
+                lock.file_path = fp2;
 
                 let diff = start.end();
-                progress.succeed(format!("analyse finished with {:?}", diff));
+                progress.succeed(format!("analyse finished with {diff:?}"));
 
-                let url = format!("http://localhost:{}", port);
-                let progress = Spinach::new(format!("open {}", url));
+                let url = format!("http://localhost:{port}");
+                let progress = Spinach::new(format!("open {url}"));
                 open_url(&url);
-                progress.succeed(format!("open {}", url));
+                progress.succeed(format!("open {url}"));
 
                 return;
             }

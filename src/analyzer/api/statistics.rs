@@ -5,7 +5,7 @@ use serde_json::{json, Value};
 use crate::analyzer::snapshot::consts::NodeType;
 use crate::analyzer::Analyzer;
 
-impl Analyzer {
+impl<'a> Analyzer<'a> {
     pub fn statistics(&self) -> Value {
         let mut node_types_map: HashMap<&NodeType, u64> = HashMap::new();
         let mut total_bytes = 0;

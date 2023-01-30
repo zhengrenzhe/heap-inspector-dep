@@ -18,7 +18,7 @@ pub struct ConstructorQuery {
     pub q: Option<Vec<String>>,
 }
 
-impl Analyzer {
+impl<'a> Analyzer<'a> {
     pub fn get_neighbors(&self, node: &Node) -> Vec<&Node> {
         let mut arr: Vec<&Node> = Vec::with_capacity(10000);
         for nei in self
@@ -43,9 +43,9 @@ impl Analyzer {
                         let mut size = 0;
                         for neighbor in neighbors {
                             size += neighbor.self_size;
-                            println!("{:?}", neighbor);
+                            println!("{neighbor:?}");
                         }
-                        println!("total size: {}", size);
+                        println!("total size: {size}");
                     }
                 }
             }

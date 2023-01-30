@@ -1,1 +1,1 @@
-pub mod local;
+pub(crate) mod local_command;

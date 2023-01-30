@@ -8,7 +8,7 @@ pub struct MetaInfo {
     pub edge_types: Vec<String>,
 }
 
-impl Analyzer {
+impl<'a> Analyzer<'a> {
     pub fn meta(&self) -> MetaInfo {
         MetaInfo {
             edge_count: self.data_provider.edge_count,

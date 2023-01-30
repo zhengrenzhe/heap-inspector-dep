@@ -16,7 +16,7 @@ pub struct SearchQuery {
     node_types: Option<Vec<String>>,
 }
 
-impl Analyzer {
+impl<'a> Analyzer<'a> {
     pub fn search(&self, query: &SearchQuery) -> Value {
         println!("{:?}", query);
         json!({"nodes":[], "edges": []})
