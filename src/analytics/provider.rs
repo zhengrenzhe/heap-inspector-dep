@@ -17,6 +17,14 @@ pub struct MetaInfo {
     pub edge_types: Vec<String>,
 }
 
+pub struct DeserializationResult {
+    nodes: Vec<Node>,
+    node_types: Vec<String>,
+    edges: Vec<Edge>,
+    edge_types: Vec<String>,
+    graph: Graph<usize, usize>,
+}
+
 #[derive(Deserialize, Serialize, Debug)]
 pub struct SearchQuery {
     filter_from: Option<Vec<String>>,
@@ -110,28 +118,20 @@ impl Provider {
 
         let snapshot = Snapshot::from_bytes(&bytes);
 
-        let (nodes, node_types, edges, edge_types, graph) = Provider::deserialization(&snapshot);
+        let result = Provider::deserialization(&snapshot);
 
         SnapshotSample {
-            nodes,
-            node_types,
+            nodes: result.nodes,
+            node_types: result.node_types,
             node_count: snapshot.snapshot.node_count,
-            edges,
-            edge_types,
+            edges: result.edges,
+            edge_types: result.edge_types,
             edge_count: snapshot.snapshot.edge_count,
-            graph,
+            graph: result.graph,
         }
     }
 
-    pub fn deserialization(
-        snapshot: &Snapshot,
-    ) -> (
-        Vec<Node>,
-        Vec<String>,
-        Vec<Edge>,
-        Vec<String>,
-        Graph<usize, usize>,
-    ) {
+    pub fn deserialization(snapshot: &Snapshot) -> DeserializationResult {
         let mut nodes: Vec<Node> = Vec::with_capacity(snapshot.snapshot.node_count as usize);
         let mut edges: Vec<Edge> = Vec::with_capacity(snapshot.snapshot.edge_count as usize);
 
@@ -242,7 +242,13 @@ impl Provider {
             }
         }
 
-        (nodes, node_types, edges, edge_types, graph)
+        DeserializationResult {
+            nodes,
+            node_types,
+            edges,
+            edge_types,
+            graph,
+        }
     }
 
     pub fn dump0(data: &[EdgeOrNodeType]) -> Vec<String> {

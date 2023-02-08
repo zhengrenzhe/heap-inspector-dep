@@ -38,7 +38,7 @@ impl Local {
         let file_path = String::from(file_path);
 
         thread::spawn(move || {
-            let progress = Spinach::new(format!("reading and analyzing..."));
+            let progress = Spinach::new("reading and analyzing...");
             let start = TimeCount::start();
 
             let provider = Provider::new(ProviderMode::Local(LocalConfig { file_path }));

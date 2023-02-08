@@ -55,7 +55,7 @@ impl NodeType {
             NODE_TYPE_SYMBOL => NodeType::Symbol,
             NODE_TYPE_BIGINT => NodeType::Bigint,
             NODE_TYPE_OBJECT_SHAPE => NodeType::ObjectShape,
-            _ => panic!("unknown node type {}", str),
+            _ => panic!("unknown node type {str}"),
         }
     }
 }
