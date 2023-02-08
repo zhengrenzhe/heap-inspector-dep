@@ -1,31 +1,27 @@
 use std::convert::Infallible;
-use std::fs;
 use std::sync::Mutex;
 use std::thread;
 
-use log::error;
 use serde_json::json;
 use spinach::Spinach;
 use warp::{Filter, Reply};
 
-use crate::analyzer::api::constructors::ConstructorQuery;
-use crate::analyzer::api::search::SearchQuery;
-use crate::analyzer::Analyzer;
+use crate::analytics::provider::{
+    ConstructorQuery, LocalConfig, Provider, ProviderMode, SearchQuery,
+};
 use crate::utils::browser::open_url;
 use crate::utils::http::{json_err_res, json_ok_res};
 use crate::utils::time_count::TimeCount;
 use crate::utils::webpage::webpage_routes;
 
-struct State<'a> {
-    analyzer: Option<Analyzer<'a>>,
+struct State {
+    provider: Option<Provider>,
     is_ready: bool,
-    file_path: String,
 }
 
 static STATE: Mutex<State> = Mutex::new(State {
-    analyzer: None,
+    provider: None,
     is_ready: false,
-    file_path: String::new(),
 });
 
 pub struct Local {
@@ -34,43 +30,28 @@ pub struct Local {
 
 impl Local {
     pub fn new(file_path: &str, port: &Option<u16>) -> Self {
-        let fp = String::from(file_path);
-        let fp2 = fp.clone();
-
         let port = match port {
             Some(port) => *port,
             None => 9999,
         };
 
+        let file_path = String::from(file_path);
+
         thread::spawn(move || {
-            let progress = Spinach::new(format!("reading file {fp}"));
-
+            let progress = Spinach::new(format!("reading and analyzing..."));
             let start = TimeCount::start();
-            if let Ok(bytes) = fs::read(fp) {
-                let diff = start.end();
-                progress.succeed(format!("reading finished with {diff:?}"));
 
-                let progress = Spinach::new("analysing...");
-                let start = TimeCount::start();
-                let analyzer = Analyzer::from_bytes(bytes);
+            let provider = Provider::new(ProviderMode::Local(LocalConfig { file_path }));
 
-                let mut lock = STATE.lock().expect("get state lock error");
-                lock.analyzer = Some(analyzer);
-                lock.is_ready = true;
-                lock.file_path = fp2;
+            let time_diff = start.end();
+            progress.succeed(format!("analyse finished with {time_diff:?}"));
 
-                let diff = start.end();
-                progress.succeed(format!("analyse finished with {diff:?}"));
+            let mut lock = STATE.lock().expect("get state lock error");
+            lock.provider = Some(provider);
+            lock.is_ready = true;
 
-                let url = format!("http://localhost:{port}");
-                let progress = Spinach::new(format!("open {url}"));
-                open_url(&url);
-                progress.succeed(format!("open {url}"));
-
-                return;
-            }
-
-            error!("{} not exist", fp2);
+            let url = format!("http://localhost:{port}");
+            open_url(&url);
         });
 
         Local { port }
@@ -93,14 +74,12 @@ impl Local {
 
     pub async fn meta() -> Result<impl Reply, Infallible> {
         match &(STATE.lock()) {
-            Ok(lock) => match &lock.analyzer {
+            Ok(lock) => match &lock.provider {
                 Some(analyzer) => {
                     let meta = analyzer.meta();
                     json_ok_res(json!({
                         "edge_count": meta.edge_count,
                         "node_count": meta.node_count,
-                        "file_size": meta.file_size,
-                        "file_path": lock.file_path,
                         "node_types": meta.node_types,
                         "edge_types": meta.edge_types
                     }))
@@ -121,7 +100,7 @@ impl Local {
     pub async fn search(q: String) -> Result<impl Reply, Infallible> {
         let query = serde_qs::from_str::<SearchQuery>(&q).unwrap();
         match &(STATE.lock()) {
-            Ok(lock) => match &lock.analyzer {
+            Ok(lock) => match &lock.provider {
                 Some(analyzer) => json_ok_res(analyzer.search(&query)),
                 None => json_err_res(json!({ "msg": "analyzer not found" })),
             },
@@ -131,7 +110,7 @@ impl Local {
 
     pub async fn statistics() -> Result<impl Reply, Infallible> {
         match &(STATE.lock()) {
-            Ok(lock) => match &lock.analyzer {
+            Ok(lock) => match &lock.provider {
                 Some(analyzer) => json_ok_res(analyzer.statistics()),
                 None => json_err_res(json!({ "msg": "analyzer not found" })),
             },
@@ -142,7 +121,7 @@ impl Local {
     pub async fn constructors(q: String) -> Result<impl Reply, Infallible> {
         let query = serde_qs::from_str::<ConstructorQuery>(&q).unwrap();
         match &(STATE.lock()) {
-            Ok(lock) => match &lock.analyzer {
+            Ok(lock) => match &lock.provider {
                 Some(analyzer) => json_ok_res(json!(analyzer.constructors(&query))),
                 None => json_err_res(json!({ "msg": "analyzer not found" })),
             },

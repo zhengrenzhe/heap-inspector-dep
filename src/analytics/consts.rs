@@ -2,11 +2,6 @@
 
 use serde::Serialize;
 
-use crate::analyzer::snapshot::consts::NodeType::{
-    Array, Bigint, Closure, Code, ConcatenatedString, Hidden, Native, Number, Object, ObjectShape,
-    Regexp, SlicedString, String, Symbol, Synthetic,
-};
-
 const NODE_TYPE_HIDDEN: &str = "hidden";
 const NODE_TYPE_ARRAY: &str = "array";
 const NODE_TYPE_STRING: &str = "string";
@@ -45,21 +40,21 @@ pub enum NodeType {
 impl NodeType {
     pub fn from(str: &str) -> NodeType {
         match str {
-            NODE_TYPE_HIDDEN => Hidden,
-            NODE_TYPE_ARRAY => Array,
-            NODE_TYPE_STRING => String,
-            NODE_TYPE_OBJECT => Object,
-            NODE_TYPE_CODE => Code,
-            NODE_TYPE_CLOSURE => Closure,
-            NODE_TYPE_REGEXP => Regexp,
-            NODE_TYPE_NUMBER => Number,
-            NODE_TYPE_NATIVE => Native,
-            NODE_TYPE_SYNTHETIC => Synthetic,
-            NODE_TYPE_CONCATENATED_STRING => ConcatenatedString,
-            NODE_TYPE_SLICED_STRING => SlicedString,
-            NODE_TYPE_SYMBOL => Symbol,
-            NODE_TYPE_BIGINT => Bigint,
-            NODE_TYPE_OBJECT_SHAPE => ObjectShape,
+            NODE_TYPE_HIDDEN => NodeType::Hidden,
+            NODE_TYPE_ARRAY => NodeType::Array,
+            NODE_TYPE_STRING => NodeType::String,
+            NODE_TYPE_OBJECT => NodeType::Object,
+            NODE_TYPE_CODE => NodeType::Code,
+            NODE_TYPE_CLOSURE => NodeType::Closure,
+            NODE_TYPE_REGEXP => NodeType::Regexp,
+            NODE_TYPE_NUMBER => NodeType::Number,
+            NODE_TYPE_NATIVE => NodeType::Native,
+            NODE_TYPE_SYNTHETIC => NodeType::Synthetic,
+            NODE_TYPE_CONCATENATED_STRING => NodeType::ConcatenatedString,
+            NODE_TYPE_SLICED_STRING => NodeType::SlicedString,
+            NODE_TYPE_SYMBOL => NodeType::Symbol,
+            NODE_TYPE_BIGINT => NodeType::Bigint,
+            NODE_TYPE_OBJECT_SHAPE => NodeType::ObjectShape,
             _ => panic!("unknown node type {}", str),
         }
     }

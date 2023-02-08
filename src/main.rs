@@ -5,11 +5,11 @@ use std::env;
 use clap::{Parser, Subcommand};
 use spinach::term;
 
-use crate::commands::local::local_command::Local;
-use crate::commands::realtime::realtime_command::realtime_command;
+use crate::commands::local::Local;
+use crate::commands::realtime::realtime_command;
 use crate::utils::logger::init_logger;
 
-mod analyzer;
+mod analytics;
 mod commands;
 mod utils;
 
