@@ -12,7 +12,7 @@ include = [
 
 [dependencies]
 clap = { version = "4.1.4", features = ["derive"] }
-open = "3.2.0"
+open = "4.0.0"
 tokio = { version = "1.25.0", features = ["full"] }
 futures = "0.3.26"
 serde = { version = "1.0.152", features = ["derive"] }
