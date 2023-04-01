@@ -6,6 +6,8 @@ specifiers:
   '@mui/joy': 5.0.0-alpha.72
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
+  '@types/stream-json': ^1.7.3
+  '@types/wicg-file-system-access': ^2020.9.5
   '@typescript-eslint/eslint-plugin': ^5.56.0
   '@typescript-eslint/parser': ^5.56.0
   buffer: ^6.0.3
@@ -16,6 +18,7 @@ specifiers:
   process: ^0.11.10
   react: ^18.2.0
   react-dom: ^18.2.0
+  stream-json: ^1.7.5
   typescript: ^5.0.2
 
 dependencies:
@@ -24,10 +27,13 @@ dependencies:
   '@mui/joy': 5.0.0-alpha.72_xqeqsl5kvjjtyxwyi3jhw3yuli
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  stream-json: 1.7.5
 
 devDependencies:
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
+  '@types/stream-json': 1.7.3
+  '@types/wicg-file-system-access': 2020.9.5
   '@typescript-eslint/eslint-plugin': 5.56.0_2hcjazgfnbtq42tcc73br2vup4
   '@typescript-eslint/parser': 5.56.0_j4766f7ecgqbon3u7zlxn5zszu
   buffer: 6.0.3
@@ -1278,6 +1284,10 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
+  /@types/node/18.15.11:
+    resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
+    dev: true
+
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
 
@@ -1308,6 +1318,23 @@ packages:
 
   /@types/semver/7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
+    dev: true
+
+  /@types/stream-chain/2.0.1:
+    resolution: {integrity: sha512-D+Id9XpcBpampptkegH7WMsEk6fUdf9LlCIX7UhLydILsqDin4L0QT7ryJR0oycwC7OqohIzdfcMHVZ34ezNGg==}
+    dependencies:
+      '@types/node': 18.15.11
+    dev: true
+
+  /@types/stream-json/1.7.3:
+    resolution: {integrity: sha512-Jqsyq5VPOTWorvEmzWhEWH5tJnHA+bB8vt/Zzb11vSDj8esfSHDMj2rbVjP0mfJQzl3YBJSXBBq08iiyaBK3KA==}
+    dependencies:
+      '@types/node': 18.15.11
+      '@types/stream-chain': 2.0.1
+    dev: true
+
+  /@types/wicg-file-system-access/2020.9.5:
+    resolution: {integrity: sha512-UYK244awtmcUYQfs7FR8710MJcefL2WvkyHMjA8yJzxd1mo0Gfn88sRZ1Bls7hiUhA2w7ne1gpJ9T5g3G0wOyA==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.56.0_2hcjazgfnbtq42tcc73br2vup4:
@@ -3169,6 +3196,16 @@ packages:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
     dev: true
+
+  /stream-chain/2.2.5:
+    resolution: {integrity: sha512-1TJmBx6aSWqZ4tx7aTpBDXK0/e2hhcNSTV8+CbFJtDjbb+I1mZ8lHit0Grw9GRT+6JbIrrDd8esncgBi8aBXGA==}
+    dev: false
+
+  /stream-json/1.7.5:
+    resolution: {integrity: sha512-NSkoVduGakxZ8a+pTPUlcGEeAGQpWL9rKJhOFCV+J/QtdQUEU5vtBgVg6eJXn8JB8RZvpbJWZGvXkhz70MLWoA==}
+    dependencies:
+      stream-chain: 2.2.5
+    dev: false
 
   /string.prototype.matchall/4.0.8:
     resolution: {integrity: sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==}
