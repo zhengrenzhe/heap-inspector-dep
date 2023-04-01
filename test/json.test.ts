@@ -19,6 +19,11 @@ describe('parse json', () => {
 
   testObject(`
   {
+  }
+  `);
+
+  testObject(`
+  {
     "foo": "bar"
   }
   `);
@@ -130,6 +135,37 @@ describe('parse json', () => {
     "qqq": 123,
     "aisxji": 123,
     "fff": 0
+  }
+  `);
+
+  testObject(`
+  {
+    "foo": {}
+  }
+  `);
+
+  testObject(`
+  {
+    "foo": {
+      "bar": 1
+    }
+  }
+  `);
+
+  testObject(`
+  {
+    "foo": {
+      "bar": 1,
+      "baz": 2,
+      "vvv": 3,
+      "qqq": {
+        "xxx": {
+          "yyy": {
+            "qqq": 1
+          }
+        }
+      }
+    }
   }
   `);
 });

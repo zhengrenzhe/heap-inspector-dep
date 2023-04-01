@@ -1,5 +1,4 @@
 enum JSONState {
-  Start,
   Object,
 }
 
@@ -30,8 +29,12 @@ export function readNumberTo(chunk: string, start: number) {
   return index - 1;
 }
 
+export function isObject(v: unknown) {
+  return v && typeof v === 'object' && !Array.isArray(v);
+}
+
 export class JSONParser {
-  private stateStack: JSONState[] = [JSONState.Start];
+  private stateStack: JSONState[] = [];
 
   private valueStack: unknown[] = [];
 
@@ -122,7 +125,17 @@ export class JSONParser {
 
         if (char === '}') {
           if (this.valueStackLength > 2) {
-            this.gotObjectKeyValue();
+            const lastValue = this.valueStack[this.valueStackLength - 1];
+            const last1Value = this.valueStack[this.valueStackLength - 2];
+            const last2Value = this.valueStack[this.valueStackLength - 3];
+            if (
+              lastValue !== undefined &&
+              last1Value !== undefined &&
+              last2Value !== undefined &&
+              isObject(last2Value)
+            ) {
+              this.gotObjectKeyValue();
+            }
           }
           this.popState();
           index += 1;
